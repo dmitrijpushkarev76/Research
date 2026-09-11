@@ -1,0 +1,4 @@
+
+# Source PDFs for verification - not redistributable, never commit
+sources/*
+!sources/README.md
