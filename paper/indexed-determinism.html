@@ -48,7 +48,7 @@ body{
   -webkit-text-size-adjust:100%;
 }
 .wrap{max-width:var(--col); margin-inline:auto}
-.wide{max-width:calc(var(--col) + 22rem); margin-inline:auto}
+.wide{max-width:1180px; margin-inline:auto}
 
 /* ---- masthead ---- */
 .mast{border-bottom:2px solid var(--accent); padding-block:52px 22px; margin-bottom:30px}
@@ -115,6 +115,7 @@ sub,sup{font-size:.72em; line-height:0}
   border-left:3px solid var(--accent); background:var(--raise);
   padding:15px 17px; margin:22px 0; position:relative;
 }
+.thm .hd .gk{text-transform:none; font-size:1.08em}
 .thm .hd{
   font-family:var(--sans); font-weight:700; font-size:.79rem; letter-spacing:.07em;
   text-transform:uppercase; color:var(--accent); margin-bottom:5px;
@@ -156,12 +157,12 @@ pre code{background:none; border:none; padding:0; font-size:inherit}
 
 /* ---- tables ---- */
 .scroll{overflow-x:auto; margin:22px 0; border:1px solid var(--rule)}
-table{border-collapse:collapse; width:100%; min-width:840px;
+table{border-collapse:collapse; width:100%; min-width:760px; table-layout:fixed;
   font-family:var(--sans); font-size:13px; font-variant-numeric:tabular-nums}
 th,td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
 thead th{background:var(--sunk); font-weight:600; font-size:10.5px; letter-spacing:.06em;
   text-transform:uppercase; color:var(--muted)}
-tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:nowrap}
+tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:normal}
 tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
 .y{color:var(--verify); font-weight:600}
 .n{color:var(--errata); font-weight:600}
@@ -190,8 +191,8 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
   <h1>Determinism Is an Indexed Predicate</h1>
   <p class="dek">A determinism verdict is not a function of a law. It is a function of a law and three further coordinates, each independently capable of flipping the answer — and the standing disputes in the field are disputes about coordinates, not about physics.</p>
   <p class="meta">
-    <b>Machine verification.</b> 39 theorems in Lean 4.24.0 (core only, no Mathlib, no <code>sorry</code>); 28 depend on no axioms whatever, 11 on <code>propext</code>/<code>Quot.sound</code>, none on <code>Classical.choice</code>. 17 symbolic checks in SymPy. Both compile and run clean; the axiom audit covers every theorem in the file, none omitted.<br>
-    <b>Status.</b> This is a substantial revision. The previous draft was a survey; it contained one false claim about quantum mechanics, one false claim about ordinary differential equations, a transposed pair of figures in its own axiom audit, and two theorems whose names claimed more than their statements. All are corrected below, and each correction is marked <span class="st st-e">CORR</span> in place rather than absorbed silently. §14 lists them.
+    <b>Machine verification.</b> 39 theorems in Lean 4.24.0 (core only, no Mathlib, no <code>sorry</code>); 28 depend on no axioms whatever, 11 on <code>propext</code>/<code>Quot.sound</code>, none on <code>Classical.choice</code>. 17 symbolic checks in SymPy. Both compile and run clean; the axiom audit covers every theorem in the file, none omitted.</p>
+  <p class="meta"><b>Status.</b> This is a substantial revision. The previous draft was a survey; it contained one false claim about quantum mechanics, one false claim about ordinary differential equations, a transposed pair of figures in its own axiom audit, and two theorems whose names claimed more than their statements. All are corrected below, and each correction is marked <span class="st st-e">CORR</span> in place rather than absorbed silently. §14 lists them.
   </p>
 </header>
 
@@ -310,25 +311,25 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 <p>The framework is worth having only if the coordinates are genuinely separate. They are. For each, a law and a pair of index-assignments differing in that coordinate alone, with opposite verdicts.</p>
 
 <div class="thm key" data-coord="δ">
-  <div class="hd">Theorem 3 · δ is not eliminable <span class="st st-m">LEAN</span></div>
+  <div class="hd">Theorem 3 · <span class="gk">δ</span> is not eliminable <span class="st st-m">LEAN</span></div>
   <p>Let <span class="m up">blowup</span> be the law whose sole possible history is defined on <span class="m">{0,1,2}</span> and nowhere after — the formal shadow of finite-time blow-up. Then <span class="m">ℋ</span> is <b>empty</b> under δ = total and a <b>singleton</b> under δ = maximal, with σ and μ held fixed.</p>
   <p class="src">delta_matters, blowup_no_total_history, blowup_exactlyOne_maximal — no axioms</p>
 </div>
 
 <div class="thm key" data-coord="σ ↑">
-  <div class="hd">Theorem 4 · σ can manufacture determinism <span class="st st-m">LEAN</span></div>
+  <div class="hd">Theorem 4 · <span class="gk">σ</span> can manufacture determinism <span class="st st-m">LEAN</span></div>
   <p>A law with two histories that share a state at time 0 and diverge after is indeterministic. Coarsening by a map that identifies the two divergent successors — and <em>only</em> those — makes the pushforward deterministic.</p>
   <p class="src">sigma_can_create — propext, Quot.sound</p>
 </div>
 
 <div class="thm key" data-coord="σ ↓">
-  <div class="hd">Theorem 5 · σ can destroy determinism <span class="st st-m">LEAN</span></div>
+  <div class="hd">Theorem 5 · <span class="gk">σ</span> can destroy determinism <span class="st st-m">LEAN</span></div>
   <p>A law with two histories that share <em>no</em> state is deterministic, vacuously. Coarsening by a map that identifies their two initial states while keeping their successors apart makes the pushforward <b>indeterministic</b>.</p>
   <p class="src">sigma_can_destroy — propext</p>
 </div>
 
 <div class="thm key" data-coord="μ">
-  <div class="hd">Theorem 6 · μ is not eliminable <span class="st st-m">LEAN</span></div>
+  <div class="hd">Theorem 6 · <span class="gk">μ</span> is not eliminable <span class="st st-m">LEAN</span></div>
   <p>Two admissibility classes, one properly contained in the other, with the law and the individuation held fixed: every law in the narrow class is deterministic, and the wide class contains one that is not.</p>
   <p class="src">mu_matters — propext</p>
 </div>
@@ -368,7 +369,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 <p>A universal state is a function from branch labels to local states. A branch-relative history is that function evaluated at a label. Evaluation is a map between state spaces. So the branch history is <em>literally the pushforward of the universal history along a σ-redescription</em> — the same operation, and the same coordinate, that the hole argument turns on.</p>
 
 <div class="thm key" data-coord="σ">
-  <div class="hd">Theorem 9 · The level shift is a σ-shift <span class="st st-m">LEAN</span></div>
+  <div class="hd">Theorem 9 · The level shift is a <span class="gk">σ</span>-shift <span class="st st-m">LEAN</span></div>
   <p>For each branch label <span class="m">b</span>, the branch history is the image of the universal history under <span class="m up">push(L, eval<sub>b</sub>)</span>. At the universal level <span class="m">|ℋ| = 1</span>; the branch histories are distinct. Both are true, and they are the same law read at two σ settings.</p>
   <p class="src">everett_is_a_sigma_shift, everett_universal_unique, everett_branches_differ</p>
 </div>
@@ -410,9 +411,12 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 
 <p>The framework earns its keep if the standing disputes sort onto the coordinates. They do. Each row names a dispute, the coordinate it turns on, and what is <em>not</em> in dispute — which in every case is the mathematics.</p>
 
+</div>
+
 <div class="wide">
 <div class="scroll">
 <table>
+<colgroup><col style="width:21%"><col style="width:12%"><col style="width:23%"><col style="width:25%"><col style="width:19%"></colgroup>
 <thead><tr>
   <th>Dispute</th><th>Coordinate</th><th>What is agreed</th><th>What is at issue</th><th>Can more mathematics settle it?</th>
 </tr></thead>
@@ -430,6 +434,8 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 </table>
 </div>
 </div>
+
+<div class="wrap">
 
 <p>The bottom three rows are the control. They are questions about determinism that <em>are</em> mathematical, and every one of them has either been settled or is under active and productive attack. The contrast is the evidence for the diagnosis: disputes that sit on a coordinate do not move, and disputes that do not sit on a coordinate move.</p>
 
