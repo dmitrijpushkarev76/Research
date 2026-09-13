@@ -1,0 +1,848 @@
+% One State, Many Maximal Futures
+% Expository note, formatted for an expository mathematics journal
+% (American Mathematical Monthly / Mathematics Magazine house style:
+%  plain article class, 12pt, single column, numbered theorem environments).
+%
+% Build:  pdflatex one-state-many-futures  (twice, for cross-references)
+% The figure needs figure-branches.tex, produced by make_figure_data.py.
+
+\documentclass[12pt]{article}
+
+\usepackage{lmodern}          % scalable Type 1 faces; microtype needs these
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{mathtools}
+\usepackage[margin=1.15in]{geometry}
+\usepackage{microtype}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\cont}{\mathfrak{c}}
+\newcommand{\Hglob}{\mathcal{H}^{+}_{\mathrm{glob}}}
+\newcommand{\Hmax}{\mathcal{H}^{+}_{\max}}
+\DeclareMathOperator{\sgn}{sgn}
+
+\title{One State, Many Maximal Futures}
+\author{\normalsize [author name] \\ \normalsize [affiliation] \\ \normalsize [email]}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+For the initial-value problem $\dot x = f(x)$, $x(0)=0$ with $f$ continuous,
+$f(0)=0$ and $f>0$ off the origin, the structure of the solution set is
+classical: it was characterised by Wallach \cite{Wallach} in 1948 and treated in
+general form by Binding \cite{Binding} in 1979. This note takes one concrete
+member of that class, $f(x)=|x|^{2/3}+x^{2}$, and works it out completely.
+
+The example has exactly one solution defined on all of $[0,\infty)$, namely
+$x\equiv 0$. It also has continuum-many solutions that admit no forward
+extension: for each waiting time $T\ge 0$ there is a solution that rests at the
+origin until $T$, departs, and reaches $+\infty$ at $T+3\sqrt{2}\pi/4$. Every
+non-trivial branch terminates in finite time, which is exactly why the first
+count is one; the second count is $\cont$ for an independent reason, that the
+equilibrium can be left at any moment. Each hypothesis moves one count, and only
+their conjunction separates the two.
+
+The distinction this illustrates --- between uniqueness among globally defined
+solutions and uniqueness among solutions that merely cannot be extended --- is
+not introduced here either. It is discussed for general relativity by Earman
+\cite{Earman}, Smeenk and W\"uthrich \cite{SmeenkWuthrich} and Doboszewski
+\cite{Doboszewski}, for Newtonian blow-up by Wilson \cite{Wilson}, and within a
+broader formulation of indeterminism by Azhar and Namjoo \cite{AzharNamjoo}.
+What is offered here is a minimal worked example in which every quantity is
+available in closed form.
+\end{abstract}
+
+%------------------------------------------------------------------
+\section{Introduction}\label{sec:intro}
+
+Here is a question with a less obvious answer than it looks.
+
+\begin{quote}
+\emph{If an initial state admits exactly one solution that exists for all future
+times, does it follow that the state has a unique possible future history?}
+\end{quote}
+
+Not necessarily --- not if histories are taken to be solutions that cannot be
+extended any further, rather than solutions defined at every future time. The
+two classes can differ, and where they do, the uniqueness verdict can differ
+with them. That is the whole content of this note, and none of it is new.
+
+We use \emph{history} throughout for a solution regarded as a candidate physical
+evolution. Nothing in Sections~\ref{sec:example}--\ref{sec:senses} depends on
+that identification; Section~\ref{sec:determinism} is where it does work, and
+says so.
+
+The mathematics is classical. For scalar autonomous equations the solution set
+through an equilibrium was characterised by Wallach \cite{Wallach} in 1948, and
+the general theory --- the exact conditions for departure from an equilibrium,
+for escape to infinity in finite time, and for the structure of the solution set
+--- is given by Binding \cite{Binding}. The conceptual point is also familiar.
+In general relativity the maximal globally hyperbolic development of initial
+data is unique while extensions past a Cauchy horizon are not, and whether to
+restrict attention to the well-behaved class is a live question rather than a
+settled one \cite{Earman, SmeenkWuthrich}. In Newtonian mechanics Wilson
+\cite{Wilson} argues that failures of global existence are descriptive gaps
+rather than failures of determinism, in explicit opposition to Earman and
+Norton. Azhar and Namjoo \cite{AzharNamjoo} argue that a uniqueness-based
+criterion misses the sense in which a terminating history is itself a failure of
+determination.
+
+What follows is therefore expository. Its purpose is to put the distinction into
+a small explicit example and work it out in full: a single scalar equation,
+elementary integrals, a blow-up time in closed form, an explicit solution
+family. No general relativity, no $N$-body mechanics, no partial differential
+equations, no geometry.
+
+%------------------------------------------------------------------
+\section{The example}\label{sec:example}
+
+Throughout we study
+\begin{equation}\label{eq:ivp}
+  \dot x = f(x), \qquad x(0)=0,
+\end{equation}
+for a continuous $f\colon\R\to\R$.
+
+\begin{definition}\label{def:solution}
+A \emph{solution} of \eqref{eq:ivp} is a differentiable function $x\colon I\to\R$
+on an interval $I\subseteq[0,\infty)$ with non-empty interior and $\min I = 0$,
+satisfying $\dot x(t)=f(x(t))$ throughout, with one-sided derivatives at any
+endpoint belonging to $I$.
+\end{definition}
+
+We work forward from $0$ until Appendix~\ref{app:twosided}. The standing
+hypotheses are
+\begin{enumerate}
+  \item[(H1)] $f$ is continuous, $f(0)=0$, and $f(x)>0$ for $x\ne 0$;
+  \item[(H2)] $\displaystyle\int_{0}^{1}\frac{dx}{f(x)}<\infty$;
+  \item[(H3)] $\displaystyle\int_{1}^{\infty}\frac{dx}{f(x)}<\infty$.
+\end{enumerate}
+
+The example is
+\[
+  \boxed{\,f(x)=|x|^{2/3}+x^{2}.\,}
+\]
+
+Four properties matter, and all four are elementary.
+
+\begin{lemma}\label{lem:properties}
+For $f(x)=|x|^{2/3}+x^{2}$:
+\begin{enumerate}
+  \item[(i)] \textup{(H1)} holds.
+  \item[(ii)] $f$ is not locally Lipschitz at the origin, but is $C^{1}$ on
+        $\R\setminus\{0\}$, so the failure sits at exactly one point.
+  \item[(iii)] The substitution $x=u^{3}$ gives
+        $\dfrac{dx}{x^{2/3}+x^{2}}=\dfrac{3\,du}{1+u^{4}}$ for $x>0$.
+  \item[(iv)] \textup{(H2)} and \textup{(H3)} both hold.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $|x|^{2/3}$ is the composition of $x\mapsto|x|$ with $s\mapsto s^{2/3}$ on
+$[0,\infty)$, so $f$ is continuous on $\R$; $f(0)=0$; and $f(x)>0$ for $x\ne0$
+since $|x|^{2/3}>0$ and $x^{2}\ge 0$.
+
+(ii) $|f(x)-f(0)|/|x| = |x|^{-1/3}+|x| \to +\infty$ as $x\to 0$, so no Lipschitz
+constant works on any neighbourhood of the origin. Away from it,
+$f'(x)=\tfrac{2}{3}\sgn(x)|x|^{-1/3}+2x$ is continuous.
+
+(iii) For $x>0$ put $x=u^{3}$, a $C^{1}$ increasing bijection of $(0,\infty)$.
+Then $dx=3u^{2}\,du$, $x^{2/3}=u^{2}$, $x^{2}=u^{6}$, and
+\[
+  \frac{dx}{x^{2/3}+x^{2}}
+  =\frac{3u^{2}\,du}{u^{2}(1+u^{4})}
+  =\frac{3\,du}{1+u^{4}}.
+\]
+
+(iv) By (iii) the two integrals become $\int_{0}^{1}3\,du/(1+u^{4})\le 3$ and
+$\int_{1}^{\infty}3\,du/(1+u^{4})\le\int_{1}^{\infty}3u^{-4}\,du=1$.
+\end{proof}
+
+The two halves of (iv) do different work: (H2) is what allows a solution to
+leave the equilibrium at all, and (H3) is what makes the departing solution
+reach $+\infty$ in finite time. Both facts are classical, and
+Section~\ref{sec:classical} says whose they are. Because the substitution
+rationalises the integrand completely, the total is available in closed form.
+
+\begin{proposition}[The blow-up time]\label{prop:Tstar}
+\[
+  T_{*}:=\int_{0}^{\infty}\frac{dx}{x^{2/3}+x^{2}}
+       = 3\int_{0}^{\infty}\frac{du}{1+u^{4}}
+       = 3\cdot\frac{\pi/4}{\sin(\pi/4)}
+       = \frac{3\sqrt{2}\,\pi}{4}
+       \approx 3.3321622036 .
+\]
+\end{proposition}
+
+\begin{proof}
+The first equality is Lemma~\ref{lem:properties}(iii); the second is the
+standard evaluation $\int_{0}^{\infty}du/(1+u^{n})=(\pi/n)/\sin(\pi/n)$ at
+$n=4$; the third is arithmetic, since $\sin(\pi/4)=\sqrt2/2$.
+\end{proof}
+
+That closed form is a convenience, and not a reason to prefer this $f$ to other
+members of the class. Some of them do better. For $f(x)=\sqrt{|x|}\,(1+|x|)$ one
+has $F(x)=2\arctan\sqrt{x}$, so $T_{*}=\pi$ exactly, and every branch is
+elementary: $x_{T}(t)=\tan^{2}\!\big((t-T)/2\big)$ on $(T,T+\pi)$. The $f$ used
+here admits no such closed form for $\varphi$ itself, which is why
+Figure~\ref{fig:branches} is drawn by inverting $F$ numerically. Nothing in what
+follows depends on the choice; any member of the class would serve.
+
+%------------------------------------------------------------------
+\section{The solution family}\label{sec:family}
+
+Define, for $x>0$,
+\begin{equation}\label{eq:F}
+  F(x)=\int_{0}^{x}\frac{du}{f(u)} .
+\end{equation}
+
+\begin{lemma}\label{lem:phi}
+Assume \textup{(H1)--(H3)}. Then $F$ is a $C^{1}$ strictly increasing bijection
+from $(0,\infty)$ onto $(0,T_{*})$ with $F(0^{+})=0$. Let $\varphi=F^{-1}$,
+extended by $\varphi(0)=0$. Then $\varphi$ is defined on $[0,T_{*})$, is $C^{1}$
+there including at $0$, satisfies $\varphi'=f(\varphi)$ and $\varphi'(0^{+})=0$,
+and $\varphi(t)\to+\infty$ as $t\to T_{*}^{-}$.
+\end{lemma}
+
+\begin{proof}
+$F'=1/f>0$ is continuous on $(0,\infty)$, so $F$ is $C^{1}$ and strictly
+increasing there; (H2) gives $F(0^{+})=0$ and (H3) gives
+$F(\infty^{-})=T_{*}<\infty$, so $F$ is onto $(0,T_{*})$. Hence $\varphi=F^{-1}$
+is defined on $(0,T_{*})$, and $\varphi'=1/F'(\varphi)=f(\varphi)$ there;
+$\varphi(t)\to+\infty$ as $t\to T_{*}^{-}$ because $F$ is a bijection onto
+$(0,T_{*})$.
+
+It remains to treat $t=0$, which is what lets the pieces glue in
+Proposition~\ref{prop:xT}. Since $F(0^{+})=0$ and $F$ is increasing,
+$\varphi(t)\to 0$ as $t\to0^{+}$, so $\varphi$ is continuous at $0$ with
+$\varphi(0)=0$. Then $\varphi'(t)=f(\varphi(t))\to f(0)=0$ by continuity of $f$.
+Now $\varphi$ is continuous on $[0,t]$ and differentiable on $(0,t)$, so the
+mean value theorem gives $\big(\varphi(t)-\varphi(0)\big)/t=\varphi'(\xi_{t})$
+for some $\xi_{t}\in(0,t)$; letting $t\to0^{+}$ forces $\xi_{t}\to0$ and hence
+$\varphi'(\xi_{t})\to0$. So the right derivative of $\varphi$ at $0$ exists and
+equals $0=f(\varphi(0))$, and $\varphi'$ is continuous at $0$.
+\end{proof}
+
+\begin{proposition}[The waiting-time family]\label{prop:xT}
+For each $T\in[0,\infty)$ define
+\[
+  x_{T}(t)=\begin{cases}
+    0, & 0\le t\le T,\\[2pt]
+    \varphi(t-T), & T<t<T+T_{*},
+  \end{cases}
+\]
+and let $x_{\infty}\equiv 0$ on $[0,\infty)$. Then every $x_{T}$ and $x_{\infty}$
+solves \eqref{eq:ivp}, and each $x_{T}$ is $C^{1}$ on $[0,T+T_{*})$.
+\end{proposition}
+
+\begin{proof}
+On $[0,T)$ and on $(T,T+T_{*})$ this holds by construction and
+Lemma~\ref{lem:phi}. At $t=T$ the left derivative is $0$, the right derivative
+is $\varphi'(0^{+})=0$ by Lemma~\ref{lem:phi}, and $f(x_{T}(T))=f(0)=0$; so the
+two-sided derivative exists and equals $f(x_{T}(T))$. The join is therefore
+$C^{1}$, not merely continuous. That $x_{\infty}$ solves \eqref{eq:ivp} is
+immediate from $f(0)=0$.
+\end{proof}
+
+In words: the solution rests at the equilibrium as long as it likes, leaves with
+zero slope at a time of its choosing, and then --- after exactly
+$T_{*}=3\sqrt2\pi/4$ more, the same for every branch --- runs off to $+\infty$.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.92\textwidth, height=6.2cm,
+  xlabel={$t$}, ylabel={$x$},
+  xmin=0, xmax=9, ymin=0, ymax=6.6,
+  ytick={0,2,4,6},
+  xtick={0,1.6,3.2,4.8,6.4,8},
+  axis lines=left,
+  every axis plot/.append style={line width=0.9pt},
+  clip mode=individual,
+]
+\pgfplotsset{branch/.style={black, line width=0.9pt}}
+\addplot[black, line width=1.3pt, domain=0:9] {0};
+\input{figure-branches.tex}
+\draw[dashed, gray] (axis cs:0,6) -- (axis cs:9,6);
+\node[anchor=east, font=\footnotesize, gray] at (axis cs:8.9,6.32)
+      {display cut-off $x=6$};
+\draw[black, line width=1.3pt] (axis cs:0.35,4.9) -- (axis cs:0.95,4.9);
+\node[anchor=west, font=\footnotesize] at (axis cs:1.05,4.9) {$x_{\infty}\equiv 0$};
+\end{axis}
+\end{tikzpicture}
+\caption{Four members of the family, departing at $T=0,\,1.6,\,3.2,\,4.8$. Each
+curve is $\varphi$, traced \emph{for the drawing only} by sampling $x$ and
+plotting $\big(T+F(x),\,x\big)$, so that $F$ is evaluated and never inverted;
+the blow-up time is the analytic $T_{*}=3\sqrt2\pi/4$ of
+Proposition~\ref{prop:Tstar}, and nothing here is offered as evidence for it.
+The curves are drawn only up to $x=6$; that ceiling is graphical, and each
+branch in fact runs to $+\infty$ as $t$ approaches $T+T_{*}$. Along the axis is
+$x_{\infty}$, the one solution still defined at every later time.}
+\label{fig:branches}
+\end{figure}
+
+%------------------------------------------------------------------
+\section{Globally defined versus forward-maximal}\label{sec:counts}
+
+Two classes of forward solution, kept apart.
+
+\begin{definition}\label{def:classes}
+$\Hglob(0)$ is the set of solutions of \eqref{eq:ivp} defined at \emph{every}
+$t\ge0$, that is, those with $I=[0,\infty)$.
+
+$\Hmax(0)$ is the set of solutions of \eqref{eq:ivp} on intervals
+$I\subseteq[0,\infty)$ admitting no extension to a solution on a strictly larger
+$J\subseteq[0,\infty)$. We call these \emph{forward-maximal};
+Section~\ref{sec:senses} explains why the prefix is not optional.
+\end{definition}
+
+Plainly $\Hglob(0)\subseteq\Hmax(0)$: a solution on $[0,\infty)$ has nowhere
+further to go inside $[0,\infty)$. The main statement is that the two classes
+are nevertheless as far apart as they could be.
+
+\begin{theorem}\label{thm:counts}
+Assume \textup{(H1)--(H3)} and let $f^{-1}(0)=\{0\}$. Then
+\[
+  \Hglob(0)=\{x_{\infty}\},
+  \qquad
+  \Hmax(0)=\{x_{T}: T\in[0,\infty)\}\cup\{x_{\infty}\},
+\]
+so that $|\Hglob(0)|=1$ while $|\Hmax(0)|=\cont$.
+\end{theorem}
+
+\begin{proof}
+We argue in seven steps.
+
+\smallskip
+\emph{Step 1 (monotonicity).} Since $f\ge0$ everywhere, every solution has
+$\dot x\ge0$ and so is non-decreasing; as $x(0)=0$, every solution is
+non-negative.
+
+\smallskip
+\emph{Step 2 (the zero set).} Let $x$ be a solution on $I$ and put
+$Z=\{t\in I: x(t)=0\}$. Then $Z$ is closed in $I$ by continuity, and is an
+interval: if $t_{1}<t<t_{2}$ with $t_{1},t_{2}\in Z$ then
+$0=x(t_{1})\le x(t)\le x(t_{2})=0$ by Step 1. Also $0\in Z$. Set
+$T=\sup Z\in[0,\infty]$.
+
+\smallskip
+\emph{Step 3 (each $x_{T}$ is forward-maximal).} By Lemma~\ref{lem:phi},
+$x_{T}(t)\to+\infty$ as $t\to(T+T_{*})^{-}$. Any $J\subseteq[0,\infty)$ strictly
+containing $I=[0,T+T_{*})$ and admitting a solution extending $x_{T}$ would have
+to contain the point $T+T_{*}$, at which the extension would have to be finite
+and continuous --- impossible. So $x_{T}\in\Hmax(0)$. Likewise
+$x_{\infty}\in\Hglob(0)\subseteq\Hmax(0)$.
+
+\smallskip
+\emph{Step 4 (no forward-maximal solution has a compact domain).} Suppose
+$x\in\Hmax(0)$ has $I=[0,b]$ with $b<\infty$. Then $x(b)$ is finite and $f$ is
+continuous, so Peano's existence theorem supplies a solution $y$ of
+$\dot y=f(y)$ on some $[b,b+\delta]$ with $y(b)=x(b)$. Concatenating $x$ and $y$
+gives a solution on $[0,b+\delta]$ properly extending $x$, contradicting
+maximality. Hence every $I$ arising in $\Hmax(0)$ is right-open or is
+$[0,\infty)$.
+
+\smallskip
+\emph{Step 5 (the case $T=\infty$).} If $T=\infty$ then $Z$ is unbounded, and
+being an interval containing $0$ it equals $I$; so $x\equiv0$ on $I$. If
+$I\ne[0,\infty)$ then extending by $0$ gives a solution on a strictly larger
+subinterval of $[0,\infty)$, contradicting maximality. So $I=[0,\infty)$ and
+$x=x_{\infty}$.
+
+\smallskip
+\emph{Step 6 (the case $T<\infty$).} First, $T\in I$. Otherwise $I$ is an
+interval containing $[0,T)$ but not $T$, hence $I\subseteq[0,T)$ and $x\equiv0$
+on $I$, which extends by $0$ --- contradicting maximality.
+
+For $t\in I$ with $t>T$ we have $x(t)\ne0$ by the definition of $T$ as
+$\sup Z$, and $x(t)\ge x(T)=0$ by Step 1; hence $x(t)>0$. On $I\cap(T,\infty)$
+therefore $\dot x=f(x)>0$, so $x$ is strictly increasing there and
+$\dot x/f(x)=1$. Integrating from $s$ to $t$ with $T<s<t$ and substituting
+$u=x(\sigma)$ --- legitimate since $x$ is a $C^{1}$ strictly increasing
+bijection from $[s,t]$ onto $[x(s),x(t)]$ --- gives
+\[
+  t-s=\int_{s}^{t}\frac{\dot x(\sigma)}{f(x(\sigma))}\,d\sigma
+     =\int_{x(s)}^{x(t)}\frac{du}{f(u)}
+     =F(x(t))-F(x(s)).
+\]
+Letting $s\downarrow T$ and using $x(s)\to x(T)=0$ together with $F(0^{+})=0$
+yields $F(x(t))=t-T$, that is $x(t)=\varphi(t-T)$. Since $F$ takes values in
+$(0,T_{*})$ this forces $t-T<T_{*}$, so $I\subseteq[0,T+T_{*})$. By Step 4 the
+domain is not compact, and by maximality together with Step 3 it cannot be a
+proper subinterval of $[0,T+T_{*})$; hence $I=[0,T+T_{*})$ and $x=x_{T}$.
+
+\smallskip
+\emph{Step 7 (the two counts).} Steps 3, 5 and 6 together give the stated
+description of $\Hmax(0)$. The map $T\mapsto x_{T}$ is injective: if
+$T_{1}<T_{2}$ then $x_{T_{1}}>0=x_{T_{2}}$ on $(T_{1},T_{2}]$, an interval of
+positive length. Hence $|\Hmax(0)|\ge|[0,\infty)|=\cont$. Conversely a solution
+is a continuous real function on a subinterval of $[0,\infty)$; there are
+$\cont$ such subintervals, and a continuous function on an interval is
+determined by its values on a countable dense set, so each interval carries at
+most $\cont^{\aleph_{0}}=\cont$ of them. Thus
+$|\Hmax(0)|\le\cont\cdot\cont=\cont$, and equality holds.
+
+Finally, each $x_{T}$ with $T<\infty$ has bounded domain and so is not globally
+defined, while $x_{\infty}\in\Hglob(0)$. Since
+$\Hglob(0)\subseteq\Hmax(0)$, this leaves $\Hglob(0)=\{x_{\infty}\}$.
+\end{proof}
+
+\begin{remark}[The counts do not depend on the solution concept]\label{rem:AC}
+Definition~\ref{def:solution} asks for a differentiable solution; Binding
+\cite{Binding} works instead with absolutely continuous $x$ satisfying
+$\dot x=f(x)$ almost everywhere. The two give the same sets here. If $x$ is
+absolutely continuous with $\dot x=f(x)$ a.e., then
+$x(t)=x(0)+\int_{0}^{t}f(x(s))\,ds$, and $f\circ x$ is continuous, so $x$ is
+$C^{1}$ and solves \eqref{eq:ivp} in the classical sense. So
+Theorem~\ref{thm:counts} is not an artefact of the regularity demanded of
+solutions.
+\end{remark}
+
+\begin{remark}[Each hypothesis moves one count]\label{rem:sensitivity}
+Without (H2) no branch could leave the origin, and both counts would be $1$;
+without (H3) every $x_{T}$ would be defined on all of $[0,\infty)$, and both
+counts would be $\cont$. Only the conjunction separates them. The margin is also
+the largest available, since by Step 7 no solution set of \eqref{eq:ivp} can
+exceed $\cont$.
+\end{remark}
+
+%------------------------------------------------------------------
+\section{Three senses of ``maximal''}\label{sec:senses}
+
+The word carries at least three meanings in the surrounding literature, and
+conflating them produces false statements about this example. We separate them
+once and then keep the prefix.
+
+\begin{itemize}
+  \item \textbf{Forward-maximal:} no extension within $[0,\infty)$. These are the
+        $x_{T}$, on $[0,T+T_{*})$ --- the class counted in
+        Theorem~\ref{thm:counts}.
+  \item \textbf{Maximal (standard):} no extension to any larger interval of $\R$.
+        \emph{No $x_{T}$ is maximal in this sense.} Setting $x(t)=0$ for $t<0$
+        always extends it, since $f(0)=0$. Appendix~\ref{app:twosided}
+        classifies the genuinely maximal solutions.
+  \item \textbf{Maximal (extremal):} the pointwise \emph{largest} solution. Here
+        that is $x_{0}$, which departs immediately; the pointwise smallest is
+        $x_{\infty}$. Hartman \cite[ch.~III \S2]{Hartman} uses the word in this
+        sense.
+\end{itemize}
+
+So $[0,T+T_{*})$ is a forward-maximal interval and not a maximal interval, and
+$\Hmax(0)$ is not a set of maximal solutions.
+
+%------------------------------------------------------------------
+\section{What is classical, and where}\label{sec:classical}
+
+None of the mathematics above is new. The attributions below are specific rather
+than general, because a general gesture at ``the classical theory'' would leave
+a reader unable to check them.
+
+\textbf{Wallach \cite{Wallach}, 1948.} Characterised \emph{all} solutions of
+$\dot x=f\circ x$, $x(0)=0$ for continuous $f$. Binding reports this at
+\cite[p.~184]{Binding} --- ``Wallach characterized all solutions of (1.1)'' ---
+and credits the monotonicity lemma to \cite[\S2]{Wallach} and the structure
+theorem to \cite[\S7]{Wallach}. \emph{We know this paper only through Binding;
+we have not read it.}
+
+\textbf{Binding \cite[\S3, pp.~186--188]{Binding}.} The machinery of
+Theorem~\ref{thm:counts}. Lemma 3.2: every solution is monotonic, which Binding
+credits to Wallach \cite[\S2]{Wallach} for continuous $f$ --- our Step 1.
+Theorem 3.3: the separation identity
+$\lambda([s,t]\setminus\dot x^{-1}(0))=\int_{x(s)}^{x(t)}1/f$ in
+measure-theoretic form, of which the computation in Step 6 is the elementary
+case. Theorem 3.5: necessary conditions for local existence, reducing for
+continuous $f$ with $x>0$, in his words, to ``$f>0$ and $1/f$ integrable, as
+given by Wallach''.
+
+\textbf{Binding \cite[\S\S5--6, pp.~190--193]{Binding}.} Theorem 5.3 is the
+uniqueness criterion, in the Osgood \cite{Osgood} and Kamke line; see Hartman
+\cite[ch.~III \S6]{Hartman} and, for a modern restatement citing Binding,
+Fjordholm \cite{Fjordholm}. Case (6.5) is exactly hypothesis (H3): when
+$\int^{\infty}1/f<\infty$, Binding writes, ``we have the phenomenon of escape to
+infinity for at least one solution''; his case (6.2), where it diverges, is the
+complementary one in which the branch survives on the whole half-line. Lemma 6.3
+is a duality --- $\hat f(\alpha)=\alpha^{2}f(1/\alpha)$ turns escape to infinity
+into non-uniqueness at the origin --- so the observation that (H2) and (H3) are
+the two ends of one integral is his; he credits awareness of it to Wintner and
+to Brauer and Sternberg.
+
+\textbf{Binding \cite[Lemma 7.5, p.~194]{Binding}.} The structure theorem: every
+solution is obtained from the extremal one by inserting constant segments at
+zeros of $f$. With $f^{-1}(0)=\{0\}$ that is precisely the waiting-time family
+of Proposition~\ref{prop:xT}. Binding notes that Wallach's proof for continuous
+$f$ carries over.
+
+\textbf{Hartman \cite[ch.~III \S5 Thm.~5.1, p.~30]{Hartman}.} A theorem of
+Wintner: if $\int^{\infty}du/\psi=\infty$ and $|f|\le\psi$, solutions exist on
+the whole strip; finite-time escape requires the negation. Exercise 6.4 (p.~33),
+attributed in the chapter Notes to Wallach, states the departure criterion as an
+exact dichotomy. The general fact that non-uniqueness forces continuum-many
+solutions --- our Step 7, in far greater generality --- is Kneser's theorem,
+\cite[ch.~II \S4 Thm.~4.1]{Hartman}.
+
+\textbf{Drivas and Mailybaev \cite{DrivasMailybaev}, 2018.} State the
+continuum-many waiting-time solutions explicitly for $\dot x=x^{1/3}$: ``a
+continuum infinity of solutions, which stay at the origin until an arbitrary
+time $t_{1}$ and peal [sic] off.'' There the branches are global, so no gap
+between the two counts arises.
+
+\textbf{Berndl et al.\ \cite{Berndl}, 1995.} Use ``maximal (non-extendible)
+solution'' against ``global existence'' as basic vocabulary in a foundational
+setting, and list escape to infinity in finite time among the ways a solution
+may cease to exist.
+
+Given Lemma 7.5 and case (6.5) together, Theorem~\ref{thm:counts} follows in two
+lines; the self-contained proof above is written out because it is short, not
+because it is new. The wider uniqueness and non-uniqueness literature is
+surveyed in Agarwal and Lakshmikantham \cite{AgarwalLakshmikantham}.
+
+On the particular choice of $f$: we have not found a prior publication using
+$|x|^{2/3}+x^{2}$ to illustrate this point, though the search behind that remark
+is bounded and we make no priority claim. What can be said without qualification
+is that the choice gives a compact closed-form blow-up time. It is not the most
+economical member of the class --- Section~\ref{sec:example} names one that is
+--- and we claim no advantage for it beyond convenience.
+
+%------------------------------------------------------------------
+\section{Bearing on determinism}\label{sec:determinism}
+
+The example admits at least three readings. \textbf{None of them is introduced
+here.} We set them out with attributions and do not adjudicate between them.
+
+First, what is being tested. We do not propose a definition of determinism; we
+borrow one already in use, so that the readings below have something definite to
+disagree about. Doboszewski \cite[p.~2]{Doboszewski} adopts the criterion of
+Butterfield (1989) --- his DM2 --- under which a theory is deterministic for a
+given kind of region when any two models agreeing on a region of that kind agree
+throughout, so that, in his gloss, ``to find a witness of indeterminism one
+needs merely to find two models that are isomorphic in region $S$ but are not
+isomorphic overall --- just as standard Laplacian intuitions demand.''
+Transposed to the present setting with all due looseness, the region is the
+initial state $x(0)=0$, the models are the solutions through it, and the
+question is whether agreement there forces agreement throughout.
+\textbf{Everything then turns on what ``throughout'' ranges over} --- which is
+precisely the choice Theorem~\ref{thm:counts} makes visible. Other criteria are
+in circulation and give different verdicts on this example; we take no stand on
+which is correct, and the example is not evidence for any of them.
+
+\subsection*{Reading 1: the global-solution criterion}
+
+If a physical history must be defined at every time, the branches $x_{T}$ are
+not histories, the state $x=0$ has exactly one future, and the example says
+something about an initial-value problem and nothing about determinism. This is
+close to the position Wilson \cite[p.~182]{Wilson} defends for Newtonian
+mechanics: failures of global existence are ``descriptive holes'', and ``it is
+as descriptive holes such issues should be addressed, \emph{not as failures of
+determinism}.'' He names Earman and Norton as holding the contrary view and
+calls their classification ``terminologically unfortunate''.
+
+\subsection*{Reading 2: the maximal-history criterion}
+
+If a solution that cannot be extended counts as a history even though it ends,
+the same state has continuum-many futures, and requiring totality looks like a
+stipulation that secures determinism rather than a discovery that it holds. The
+structure of this objection is familiar from general relativity, where the
+maximal globally hyperbolic development of initial data is unique but, in
+Earman's phrase \cite[\S6.4]{Earman}, often ``not maximal simpliciter'', and the
+larger extensions are not unique. Smeenk and W\"uthrich \cite{SmeenkWuthrich}
+organise their treatment around whether global hyperbolicity should be imposed
+by fiat, established from weaker assumptions, or justified from outside the
+theory --- their \S5 is titled ``Global Hyperbolicity by Fiat'' --- and note
+that their analysis ``runs parallel to recent discussions of determinism in
+Newtonian particle mechanics.''
+
+A closer analogue, though only an analogue, is Doboszewski's discussion
+\cite[p.~12]{Doboszewski} of spacetimes that simply stop --- Minkowski space
+with a spacelike slice and its future removed --- for which he coins
+\emph{Doomsday indeterminism}, remarking that ``there is no physical reason for
+spacetime to come to an end abruptly in this way.'' The comparison should be
+kept limited and it is not an equivalence: his truncations are produced by
+excising the future by hand, whereas here the finite endpoint is generated by
+the equation. That difference bears on his own desideratum, paraphrased from
+Earman and Norton, that ``determinism may fail, but (one hopes) if it fails, it
+should fail because of reasons of physics, not because of a clever mathematical
+trick'' \cite[p.~2]{Doboszewski}. We claim no priority over that discussion and
+do not suggest the two constructions are of a kind.
+
+\subsection*{Reading 3: termination as its own failure}
+
+A third position holds that the uniqueness-based formulation is the wrong test
+in the first place. Azhar and Namjoo \cite{AzharNamjoo} propose that
+indeterminism arises when future states are ``(i) not unique \dots; (ii) not
+specified; or (iii) `incoherent'\,'', and argue that a Laplacian criterion based
+on non-uniqueness alone ``does not comprehensively capture the relevant sense of
+a lack of determination''. On such a view the branches here witness a failure of
+determination by ending, independently of how many of them there are.
+
+\subsection*{What happens at $T+T_{*}$}
+
+The mathematical fact is bare: $x_{T}(t)\to+\infty$ as $t\uparrow T+T_{*}$, and
+no continuation past that time exists. What that \emph{is} remains open, and at
+least three answers are available: (a) the branch is a history that terminates
+at a finite time; (b) the divergence signals that the model has broken down and
+is no longer describing anything; (c) $+\infty$ is not a state, so the solution
+leaves the state space and simply ceases to exist.
+
+The mathematics is indifferent: Theorem~\ref{thm:counts} holds under all three,
+because it is a statement about a set of solutions and not about what solutions
+represent. The determinism verdict is not indifferent. The example bears on
+determinism only under (a), or under a criterion on which failure of
+continuation counts against determinism however the failure is described.
+\textbf{We therefore make no unconditional claim that any physical theory is
+indeterministic.} Under (b) or (c) the example remains exactly what
+Theorem~\ref{thm:counts} says it is, and nothing more.
+
+As to the positions, the example adds nothing. What it adds is a test case in
+which the three readings give visibly different verdicts about one state of one
+system, with no idealisation to argue over: the equation is scalar and
+autonomous, $f$ is continuous everywhere and $C^{1}$ away from one point, and
+every quantity is exact. One point is common to all three readings: the
+distinction is not dissolved by demanding more regularity. The Lipschitz failure
+sits at the equilibrium alone, and the branches terminate because the equation
+is superlinear at infinity, which is ordinary behaviour.
+
+%------------------------------------------------------------------
+\section{What this note contributes}\label{sec:contribution}
+
+The phenomenon is classical and the distinction has substantial precedent, so
+the point of the example is not a theorem or a new criterion of determinism. It
+is that the whole thing is cheap: a scalar autonomous equation, elementary
+integrals, an exact blow-up time, an explicit family that can be drawn, and no
+general relativity, $N$-body mechanics or partial differential equations needed
+to check any step. Where the standard illustrations of the two failure modes are
+Norton's dome \cite{Norton} for non-uniqueness and the non-collision
+singularities of Xia \cite{Xia} for finite-time escape, here both occur in one
+equation that fits on a line.
+
+\paragraph{Limitations.} Everything above concerns a scalar autonomous equation;
+the monotonicity argument of Step 1 uses the scalar order structure and does not
+survive to systems without new work. Nothing here is a theorem about Newtonian
+$N$-body dynamics. Appendix~\ref{app:mechanical} gives a one-dimensional
+mechanical system exhibiting the mechanism, but it realises the mechanism, not
+this $f$. The interpretive question of Section~\ref{sec:determinism} is left
+open, as it is in the literature cited there.
+
+\paragraph{Conclusion.} The example shows, in a simple setting, why a statement
+about uniqueness must specify the class of solutions being quantified over.
+Uniqueness among globally defined solutions and uniqueness among solutions that
+cannot be extended are different properties of the same law, and here they
+disagree at the same state, by the largest margin available.
+
+%------------------------------------------------------------------
+\appendix
+
+\section{Two-sided time}\label{app:twosided}
+
+The forward account says nothing about $x<0$, and for this $f$, which is even,
+the negative half-line is populated: solutions can also arrive at the origin
+from below in finite time. Accounting for them identifies the solutions maximal
+in the standard sense and confirms that they are not the objects counted in
+Theorem~\ref{thm:counts}.
+
+Write $S_{*}=\int_{-\infty}^{0}du/f(u)$. Two conditions are involved, and they
+are logically separate:
+\begin{enumerate}
+  \item[(H4a)] $\int_{-1}^{0}du/f<\infty$ --- finite-time access to the
+        equilibrium from below;
+  \item[(H4b)] $\int_{-\infty}^{-1}du/f<\infty$ --- finite-time escape to
+        $-\infty$ in backward time.
+\end{enumerate}
+
+For an even $f$ both follow from (H2) and (H3); in general neither follows from
+anything on the positive side.
+
+\begin{example}[\textup{(H4b)} without \textup{(H4a)}]\label{ex:independence}
+Take $f(x)=x^{2/3}+x^{2}$ for $x\ge0$ and $f(x)=|x|+x^{2}$ for $x<0$. This is
+continuous, and the forward conditions hold because the positive half-line is
+unchanged. Since $1/(v+v^{2})=1/v-1/(1+v)$ has antiderivative
+$\log\!\big(v/(1+v)\big)$, we get $\int_{1}^{\infty}dv/(v+v^{2})=\log 2$ but
+$\int_{0}^{1}dv/(v+v^{2})=\infty$. So (H4b) holds and (H4a) fails.
+\end{example}
+
+When $T_{*}$ and $S_{*}$ are both finite, the same classical mechanism applied
+to $\tilde f(y)=f(-y)$ in reversed time gives a two-parameter family: for
+$(S,T)\in[0,\infty]^{2}$ there is a solution whose zero set is $[-S,T]$, defined
+on $(-S-S_{*},\,T+T_{*})$, with the convention that an infinite parameter
+removes the corresponding bound. These are the maximal solutions in the standard
+sense, and $x\equiv0$ is the only one defined on all of $\R$.
+
+The point relevant to Section~\ref{sec:senses} falls out. For every $S$, the
+restriction to $[0,\infty)$ of the solution indexed by $(S,T)$ is the same
+$x_{T}$ --- the zero set meets $[0,\infty)$ in $[0,T]$ whatever $S$ is. So each
+forward-maximal solution extends backward in continuum-many ways, and none of
+them is maximal.
+
+\section{A mechanical realisation}\label{app:mechanical}
+
+It is natural to ask whether a Newtonian particle can exhibit the mechanism. It
+can, though not in the way one first tries.
+
+\subsection{Not by steepening a dome}
+
+Norton's construction \cite{Norton} places a particle on a frictionless surface
+of revolution, with $r$ the arc length along a meridian from the apex and $h(r)$
+the depth below it, giving $\ddot r=g\,h'(r)$. The obvious candidate here,
+$h(r)=\tfrac1g\big(\tfrac23 r^{3/2}+\tfrac13 r^{3}\big)$, does give
+$\ddot r=\sqrt r+r^{2}$, but it cannot be realised.
+
+\begin{proposition}\label{prop:dome}
+In a Norton-type model --- frictionless, uniform gravity, arc-length meridional
+coordinate, purely meridional motion with zero angular momentum, and the
+particle remaining on the surface --- no surface of revolution admits a solution
+reaching $r=+\infty$ in finite time.
+\end{proposition}
+
+\begin{proof}
+Parametrising the meridian by arc length forces $\rho'^{2}+z'^{2}=1$ and hence
+$|h'|\le1$, so $|\ddot r|\le g$. Integrating this bound twice from rest gives
+$r(t)\le r(0)+\dot r(0)t+\tfrac12 g t^{2}$, which is finite for every finite
+$t$.
+\end{proof}
+
+With $g=9.8$ the candidate above already violates the constraint at
+$r\approx2.85$. The bound genuinely uses the whole model: with angular momentum
+the equation gains a centrifugal term
+$(p_{\theta}^{2}/m^{2})\,\rho'(r)/\rho(r)^{3}$, unbounded as $\rho\to0$. So this
+closes one route and no more.
+
+\subsection{In a potential}
+
+Let $V(x)=-\big(\tfrac23 x^{3/2}+\tfrac13 x^{3}\big)$ for $x\ge0$, so
+$\ddot x=-V'(x)=\sqrt x+x^{2}$, with $x(0)=\dot x(0)=0$. Energy conservation
+from rest at the origin gives $\tfrac12\dot x^{2}=-V(x)$, that is $\dot x=G(x)$
+with
+\[
+  G(x)=\Big(\tfrac43 x^{3/2}+\tfrac23 x^{3}\Big)^{1/2},
+\]
+and conversely $GG'=\tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=\sqrt x+x^{2}$, so
+solutions of the first-order equation solve the second-order one. The even
+extension $\hat G(x)=G(|x|)$ is continuous with $\hat G(0)=0$ and $\hat G>0$ off
+the origin; $G(x)\asymp x^{3/4}$ as $x\to0^{+}$ and $\asymp x^{3/2}$ as
+$x\to\infty$, so (H2) and (H3) hold. Everything in
+Sections~\ref{sec:family}--\ref{sec:counts} therefore applies, with
+\[
+  T_{*}^{\mathrm{mech}}=\int_{0}^{\infty}\frac{dx}{G(x)}
+  =\tfrac23\sqrt{\tfrac32}\,2^{-1/3}B\!\left(\tfrac16,\tfrac13\right)
+  \approx 5.4521363617 .
+\]
+
+This realises the \emph{mechanism} of Theorem~\ref{thm:counts} in a Newtonian
+system --- not the example of Section~\ref{sec:example}. The reduced right-hand
+side $G$ is not $|x|^{2/3}+x^{2}$, and accordingly
+$T_{*}^{\mathrm{mech}}\ne T_{*}$: a different member of the same class. Two
+caveats. The potential is unbounded below, the idealisation that attracts the
+standard objection to escape solutions \cite{Earman}; and $V$ is $C^{1}$ but not
+$C^{2}$ at the origin, the force being continuous and not locally Lipschitz
+there. Whether such a force law counts as a legitimate Newtonian system is the
+question the dome literature asks about $\sqrt r$ \cite{Fletcher, Norton}; we
+take no position.
+
+%------------------------------------------------------------------
+\begin{thebibliography}{99}
+
+\bibitem{AgarwalLakshmikantham}
+R.~P. Agarwal and V.~Lakshmikantham,
+\emph{Uniqueness and Nonuniqueness Criteria for Ordinary Differential
+Equations}, Series in Real Analysis 6, World Scientific, 1993.
+
+\bibitem{AzharNamjoo}
+F.~Azhar and M.~H. Namjoo,
+Spacetime singularities and a novel formulation of indeterminism,
+arXiv:2101.10887, 2021.
+
+\bibitem{Berndl}
+K.~Berndl, D.~D\"urr, S.~Goldstein, G.~Peruzzi and N.~Zangh\`i,
+On the global existence of Bohmian mechanics,
+\emph{Comm. Math. Phys.} \textbf{173} (1995) 647--673.
+
+\bibitem{Binding}
+P.~Binding,
+The differential equation $\dot x=f\circ x$,
+\emph{J. Differential Equations} \textbf{31} (1979) 183--199.
+
+\bibitem{Doboszewski}
+J.~Doboszewski,
+Epistemic holes and determinism in classical general relativity,
+\emph{British J. Philos. Sci.} \textbf{71} (2020) 1093--1111.
+Page references in the text are to the preprint, whose pagination differs from
+the journal's.
+
+\bibitem{DrivasMailybaev}
+T.~D. Drivas and A.~A. Mailybaev,
+``Life after death'' in ordinary differential equations with a non-Lipschitz
+singularity,
+\emph{Nonlinearity} \textbf{34} (2021) 2296--2326.
+
+\bibitem{Earman}
+J.~Earman,
+Aspects of determinism in modern physics,
+in J.~Butterfield and J.~Earman (eds.),
+\emph{Handbook of the Philosophy of Science: Philosophy of Physics},
+North-Holland, 2007, pp.~1369--1434.
+
+\bibitem{Fjordholm}
+U.~S. Fjordholm,
+Sharp uniqueness conditions for one-dimensional, autonomous ordinary
+differential equations, arXiv:1804.08377, 2018.
+
+\bibitem{Fletcher}
+S.~C. Fletcher,
+What counts as a Newtonian system? The view from Norton's dome,
+\emph{European J. Philos. Sci.} \textbf{2} (2012) 275--297.
+
+\bibitem{Hartman}
+P.~Hartman,
+\emph{Ordinary Differential Equations}, Wiley, 1964.
+
+\bibitem{Norton}
+J.~D. Norton,
+The dome: an unexpectedly simple failure of determinism,
+\emph{Philos. Sci.} \textbf{75} (2008) 786--798.
+
+\bibitem{Osgood}
+W.~F. Osgood,
+Beweis der Existenz einer L\"osung der Differentialgleichung $dy/dx=f(x,y)$ ohne
+Hinzunahme der Cauchy--Lipschitz'schen Bedingung,
+\emph{Monatsh. Math. Phys.} \textbf{9} (1898) 331--345.
+
+\bibitem{SmeenkWuthrich}
+C.~Smeenk and C.~W\"uthrich,
+Determinism and general relativity, arXiv:2009.07555, 2020.
+
+\bibitem{Wallach}
+S.~Wallach,
+The differential equation $y'=f(y)$,
+\emph{Amer. J. Math.} \textbf{70} (1948) 345--350.
+
+\bibitem{Wilson}
+M.~Wilson,
+Determinism and the mystery of the missing physics,
+\emph{British J. Philos. Sci.} \textbf{60} (2009) 173--193.
+
+\bibitem{Xia}
+Z.~Xia,
+The existence of noncollision singularities in Newtonian systems,
+\emph{Ann. of Math.} \textbf{135} (1992) 411--468.
+
+\end{thebibliography}
+
+\end{document}

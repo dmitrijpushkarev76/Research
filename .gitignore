@@ -1,0 +1,4 @@
+paper/tex/*.aux
+paper/tex/*.log
+paper/tex/*.out
+paper/tex/*.synctex.gz
