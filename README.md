@@ -1,52 +1,60 @@
-# Determinism Is an Indexed Predicate
+# Linearity Does Not Immunise
 
-A determinism verdict is not a function of a law. It is a function of a law and
-three further coordinates, each independently able to flip the answer:
+A short note on why the Schrödinger equation's linearity does **not** free
+quantum mechanics from the determinism pathologies of classical mechanics, and
+three corrections about ordinary differential equations.
 
-- **σ** — individuation: which redescription of the state space carries the physics
-- **δ** — temporal domain: must a history be total in time, or merely maximal
-- **μ** — admissibility: which models count as models of the theory
+**Read it:** `paper/note-linearity.html`
 
-A fourth coordinate, the agreement relation, is already well mapped in the
-literature and is held fixed throughout.
+## Status: this repository contains a retraction
+
+An earlier paper here, *Determinism Is an Indexed Predicate*, argued that a
+determinism verdict is a function of a law plus three independent,
+non-eliminable coordinates (σ individuation, δ temporal domain, μ
+admissibility). **Its central claims are withdrawn.** A referee refuted two of
+the three with counter-theorems stated against the paper's own definitions, and
+they compile:
+
+| Withdrawn | Refutation |
+|---|---|
+| "No definition of determinism that suppresses σ, δ or μ is well-formed" | `DetIn L C ↔ DetIn (restrict L C) triv`, **axiom-free**. δ and μ fold into the law; `push L r` was always just another law. One slot, not four. |
+| The independence theorem | Its δ conjunct is about `ExactlyOne`, its σ/μ conjuncts about `DetIn`. On the paper's own δ witness the determinism verdict does not move. *(Repairable — see `delta_really_does_flip_determinism`.)* |
+| "Everettian branching is a σ-shift" | The pushforward of a singleton law is a singleton law, so the model is deterministic at every σ setting; and the branch law is not a pushforward along any redescription. |
+
+Both Lean files are kept under `retracted/` as the record. They compile; the
+second refutes the first.
 
 ## Contents
 
 | Path | What it is |
 |---|---|
-| `paper/indexed-determinism.html` | The paper |
-| `lean/Indexed.lean` | 39 theorems, Lean 4.24.0 core, no Mathlib, no `sorry` |
-| `verification/classical_checks.py` | 17 symbolic checks (SymPy) |
+| `paper/note-linearity.html` | The note, with the retraction in full (§6) |
+| `verification/note_checks.py` | 14 symbolic checks, all passing; audits its own source |
+| `retracted/Indexed.lean` | The withdrawn paper's development (39 theorems) |
+| `retracted/Referee.lean` | The counter-development that refutes it (7 theorems) |
 
 ## Reproducing
 
 ```bash
-lean lean/Indexed.lean            # prints the axiom audit and nothing else
-python3 verification/classical_checks.py   # pass/fail table; non-zero exit on failure
+python3 verification/note_checks.py    # 14/14, plus an AST audit of itself
+lean retracted/Indexed.lean            # the withdrawn development
+lean retracted/Referee.lean            # the refutation
 ```
 
-Audit as printed: **39 theorems, all 39 audited — 28 depend on no axioms
-whatever, 11 on `propext` and/or `Quot.sound`, none on `Classical.choice`.**
-Symbolic checks: **17/17 passing.**
+`note_checks.py` walks its own AST and fails the run if any check's predicate is
+a literal constant. That guard exists because the previous verification file
+shipped a check whose predicate was the literal `True`, and a "tent map" check
+that only ever differentiated `2*x` — the identical check passes for `x ↦ 2x+7`,
+which is not chaotic.
 
-## Main results
+## What the note claims
 
-- **Independence** (Thms 3–6): each coordinate can reverse a verdict with the
-  other two held fixed, so none is eliminable.
-- **σ is non-monotone in both directions** (Thms 4–5): coarsening the state
-  space can manufacture determinism *and* can destroy it, with non-degenerate
-  witnesses. The second direction is the one matching Ornstein–Weiss, and the
-  one usually stated backwards.
-- **Everettian level-relativity is a σ-shift** (Thm 9): the branch projection
-  is a pushforward, so the branching puzzle and the hole argument are the same
-  coordinate.
-- **The coordinates interact** (Thm 7): on one law both δ settings return
-  "deterministic" while disagreeing about whether anything is possible at all.
-
-## Supersedes
-
-An earlier survey, *One History or Many?* (10–11 September 2026). Section 14 of
-the paper lists ten corrections to it, including two false claims (the linearity
-of the Schrödinger equation does **not** avoid the classical pathologies; local
-uniqueness **does** propagate to global uniqueness in continuous time) and a
-transposed pair of figures in its own axiom audit.
+Nothing novel. The central point is Earman's (*Synthese* 169, 2008; *Philosophy
+of Science* 75, 2008): Stone's theorem needs self-adjointness, not symmetry, so
+a Hamiltonian that is symmetric but not essentially self-adjoint generates a
+family of unitary groups rather than one. The note adds a symbolic computation
+of the classical side — for V = −xⁿ at zero energy the escape time to infinity
+is finite exactly when n > 2, sharp at the harmonic case — and corrects the
+withdrawn paper's claim that the classical and quantum failures are "the same
+failure". They sit at the same threshold but are different failures: existence
+classically, uniqueness quantum-mechanically.
