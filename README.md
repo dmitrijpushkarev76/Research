@@ -1,10 +1,23 @@
-# Linearity Does Not Immunise
+# The Ways Determinism Fails
 
-A short note on why the Schrödinger equation's linearity does **not** free
-quantum mechanics from the determinism pathologies of classical mechanics, and
-three corrections about ordinary differential equations.
+A critical survey of determinism across classical mechanics, quantum theory and
+general relativity, organised around four structurally different failure modes
+that are routinely conflated:
 
-**Read it:** `paper/note-linearity.html`
+| | Mode | What goes wrong |
+|---|---|---|
+| **F1** | Non-uniqueness | Two possible histories through one state. Norton's dome, GRW, space invaders, Cauchy horizons. |
+| **F2** | Non-existence | No possible history past some time. Blow-up, geodesic incompleteness. Falsifies "exactly one future" while producing *no* alternative future. |
+| **F3** | Directional asymmetry | Unique one way in time, not the other. `x' = -x^(1/3)`. |
+| **F4** | Model underdetermination | The formalism does not fix which object the theory is about. Which models count, which self-adjoint extension, which individuation. Not a fact about the world. |
+
+The sustained correction: the linearity of the Schrödinger equation does **not**
+immunise quantum mechanics against the classical pathologies. Stone's theorem
+needs self-adjointness, not symmetry. And the classical failure (F2) and the
+quantum failure at the same threshold (F4) are *different failures* — the word
+doing illicit work is "domain".
+
+**Read it:** `paper/ways-determinism-fails.html`
 
 ## Status: this repository contains a retraction
 
@@ -28,7 +41,7 @@ second refutes the first.
 
 | Path | What it is |
 |---|---|
-| `paper/note-linearity.html` | The note, with the retraction in full (§6) |
+| `paper/ways-determinism-fails.html` | The note, with the retraction in full (§6) |
 | `verification/note_checks.py` | 14 symbolic checks, all passing; audits its own source |
 | `retracted/Indexed.lean` | The withdrawn paper's development (39 theorems) |
 | `retracted/Referee.lean` | The counter-development that refutes it (7 theorems) |

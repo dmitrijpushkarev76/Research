@@ -1,0 +1,743 @@
+<title>The Ways Determinism Fails</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root{
+  --paper:#F7F8FA; --raise:#FFFFFF; --sunk:#EEF0F4;
+  --ink:#12151C; --ink-2:#333A48; --muted:#59616F; --faint:#89909D;
+  --rule:#DCE0E7; --rule-2:#C2C8D2;
+  --accent:#3A3D8F; --accent-soft:#E5E6F3;
+  --verify:#1B6B52; --verify-soft:#DEEDE7;
+  --errata:#96591A; --errata-soft:#F4EADB;
+  --src:#1F5E86; --src-soft:#E0EBF2;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans Condensed",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --col:66ch;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+  --src:#74AAD0; --src-soft:#101E28;
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+  --src:#74AAD0; --src-soft:#101E28;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:17.5px; line-height:1.62;
+  margin:0; padding-block:0 96px; padding-left:20px; padding-right:20px;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:var(--col); margin-inline:auto}
+.wide{max-width:1180px; margin-inline:auto}
+
+.mast{border-bottom:2px solid var(--accent); padding-block:50px 22px; margin-bottom:26px}
+.kicker{font-family:var(--sans); font-size:11.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
+  display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px}
+.kicker span:not(:first-child){color:var(--muted)}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(2rem,5.6vw,3rem);
+  line-height:1.04; letter-spacing:-.021em; margin:0 0 12px; text-wrap:balance}
+.dek{font-size:1.1rem; color:var(--ink-2); margin:0 0 18px; text-wrap:balance}
+.meta{font-family:var(--sans); font-size:13.5px; color:var(--muted); line-height:1.65}
+.meta b{color:var(--ink-2); font-weight:600}
+
+h2{font-family:var(--serif); font-weight:600; font-size:1.54rem; line-height:1.18;
+  letter-spacing:-.011em; margin:56px 0 6px; text-wrap:balance;
+  padding-top:20px; border-top:1px solid var(--rule)}
+h2 .num{font-family:var(--mono); font-size:.64em; font-weight:500; color:var(--accent); margin-right:.6em}
+h3{font-family:var(--sans); font-weight:600; font-size:1.05rem; margin:30px 0 2px; color:var(--ink)}
+h4{font-family:var(--sans); font-weight:600; font-size:.8rem; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin:22px 0 2px}
+p{margin:13px 0}
+a{color:inherit; text-decoration:underline; text-decoration-color:var(--rule-2); text-underline-offset:3px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+strong{font-weight:600}
+
+.m{font-family:var(--serif); font-style:italic; white-space:nowrap}
+.m.up{font-style:normal}
+.disp{font-family:var(--serif); font-size:1.02rem; text-align:center;
+  margin:20px auto; padding:14px 12px; border-block:1px solid var(--rule); overflow-x:auto}
+.disp .lbl{font-family:var(--mono); font-size:.68rem; color:var(--faint);
+  display:block; margin-top:7px; font-style:normal}
+sub,sup{font-size:.72em; line-height:0}
+
+.st{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.06em;
+  padding:2px 6px; white-space:nowrap; vertical-align:2px; border:1px solid transparent}
+.st .gk{text-transform:none}
+.st-m{background:var(--verify-soft); color:var(--verify); border-color:var(--verify)}
+.st-s{background:var(--src-soft); color:var(--src); border-color:var(--src)}
+.st-n{background:var(--errata-soft); color:var(--errata); border-color:var(--errata)}
+.st-d{background:var(--sunk); color:var(--ink-2); border-color:var(--rule-2)}
+
+.fmode{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.05em;
+  padding:2px 7px; background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent)}
+
+.retract{border:2px solid var(--errata); background:var(--errata-soft);
+  padding:18px 20px; margin:0 0 28px}
+.retract h4{margin-top:0; color:var(--errata); font-size:.86rem}
+.retract p{margin:9px 0 0}
+
+.box{border-left:3px solid var(--accent); background:var(--raise); padding:15px 17px; margin:22px 0}
+.box .hd{font-family:var(--sans); font-weight:700; font-size:.79rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px;
+  display:flex; flex-wrap:wrap; gap:7px; align-items:center}
+.box .hd .gk{text-transform:none; font-size:1.08em}
+.box p{margin:7px 0 0} .box p:first-of-type{margin-top:0}
+.box.neg{border-left-color:var(--errata)} .box.neg .hd{color:var(--errata)}
+.box.pos{border-left-color:var(--verify)} .box.pos .hd{color:var(--verify)}
+.box.defn{border-left-color:var(--ink-2)} .box.defn .hd{color:var(--ink-2)}
+
+.callout{background:var(--sunk); border:1px solid var(--rule); padding:16px 18px; margin:24px 0}
+.callout h4{margin-top:0}
+blockquote{margin:18px 0; padding-left:16px; border-left:2px solid var(--rule-2);
+  color:var(--ink-2); font-style:italic}
+ul,ol{margin:13px 0; padding-left:1.3em}
+li{margin:6px 0} li::marker{color:var(--faint)}
+.tight li{margin:3px 0}
+
+code{font-family:var(--mono); font-size:.84em; background:var(--sunk); padding:1px 5px; border:1px solid var(--rule)}
+pre{font-family:var(--mono); font-size:12px; line-height:1.6; background:var(--sunk);
+  border:1px solid var(--rule); padding:15px 17px; overflow-x:auto; margin:18px 0}
+pre code{background:none; border:none; padding:0; font-size:inherit}
+.cmt{color:var(--faint)} .kw{color:var(--accent); font-weight:500}
+
+.scroll{overflow-x:auto; margin:22px 0; border:1px solid var(--rule)}
+table{border-collapse:collapse; width:100%; min-width:760px; table-layout:fixed;
+  font-family:var(--sans); font-size:13px; font-variant-numeric:tabular-nums}
+th,td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
+thead th{background:var(--sunk); font-weight:600; font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:normal}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+.y{color:var(--verify); font-weight:600}
+.n{color:var(--errata); font-weight:600}
+.q{color:var(--src); font-weight:600}
+
+.toc{background:var(--raise); border:1px solid var(--rule); padding:18px 20px; margin:26px 0}
+.toc ol{list-style:none; padding:0; margin:0; columns:2; column-gap:30px}
+.toc li{margin:0; break-inside:avoid; font-family:var(--sans); font-size:13px; line-height:1.85}
+.toc a{text-decoration:none; color:var(--ink-2); display:flex; gap:8px}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--mono); color:var(--faint); font-size:11px; min-width:1.5em; font-weight:400}
+@media (max-width:560px){ .toc ol{columns:1} }
+
+.refs{font-size:14px; color:var(--ink-2)} .refs li{margin:8px 0}
+.tag{font-family:var(--mono); font-size:9.5px; color:var(--faint); letter-spacing:.04em}
+hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
+.foot{font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kicker">
+    <span>Critical survey</span><span>Philosophy of physics · Mathematical physics</span><span>Revision 3 · 13 September 2026</span>
+  </div>
+  <h1>The Ways Determinism Fails</h1>
+  <p class="dek">Determinism does not fail in physics in one way. It fails in four structurally different ways, which are routinely conflated — including, twice, by earlier drafts of this document.</p>
+  <p class="meta">
+    <b>What this is.</b> A critical survey with a corrections apparatus. It makes no claim to a novel result; where a point is someone else's, §17 says whose. Its organising device is a four-way taxonomy of failure modes, which is a classification rather than a theorem.<br>
+    <b>Verification.</b> 14 symbolic checks (SymPy), all passing; the verification file audits its own source and fails if any check's predicate is a literal constant. Two Lean developments are retained in the repository — one withdrawn, one refuting it — and both compile.<br>
+    <b>Status.</b> Revision 3. Revision 2 advanced a framework whose central claims were refuted; they are withdrawn in §16, in full, with the refutation. Every correction to a previous draft is marked <span class="st st-n">CORR</span> in place.
+  </p>
+</header>
+
+<div class="retract">
+  <h4>Standing retraction</h4>
+  <p><em>Determinism Is an Indexed Predicate</em> (Revision 2) claimed that a determinism verdict is a function of a law plus three independent, non-eliminable coordinates. Two of its three headline claims were refuted by counter-theorems stated against its own definitions; a third theorem contained none of the structure its name claimed. All are withdrawn. <b>§16 gives the full record</b>, including the machine-checked refutations. Readers who saw Revision 2 should start there.</p>
+</div>
+
+<h4 style="margin-top:0">Summary</h4>
+
+<p>"Is the world deterministic?" is not one question, and "determinism fails here" does not name one phenomenon. This survey separates four failure modes that differ in what goes wrong, in what would repair them, and in whether they are even about the world rather than about our description of it.</p>
+
+<p><b>F1, non-uniqueness:</b> two possible histories through one state. Norton's dome, objective collapse, space invaders. <b>F2, non-existence:</b> no possible history at all past some time. Finite-time blow-up, geodesic incompleteness. <b>F3, directional asymmetry:</b> unique in one temporal direction and not the other. <b>F4, underdetermination of the model:</b> the laws do not fix which object the theory is about — which models count, which operator is the Hamiltonian, which individuation of states is physical.</p>
+
+<p>Getting these apart is not pedantry. F2 falsifies "exactly one possible future" while producing no alternative future at all. F4 is not a fact about the world. And the survey's one sustained correction — that the linearity of the Schrödinger equation does not immunise quantum mechanics against the classical pathologies — turns on seeing that the classical failure is F2 and the quantum failure at the same threshold is F4.</p>
+
+<nav class="toc">
+  <h4 style="margin:0 0 10px">Contents</h4>
+  <ol>
+    <li><a href="#s1"><span class="n">1</span> What is being asked</a></li>
+    <li><a href="#s2"><span class="n">2</span> Definitions, and the family of them</a></li>
+    <li><a href="#s3"><span class="n">3</span> Four failure modes</a></li>
+    <li><a href="#s4"><span class="n">4</span> Existence and uniqueness</a></li>
+    <li><a href="#s5"><span class="n">5</span> Classical mechanics</a></li>
+    <li><a href="#s6"><span class="n">6</span> Chaos and predictability</a></li>
+    <li><a href="#s7"><span class="n">7</span> Quantum mechanics: the two rules</a></li>
+    <li><a href="#s8"><span class="n">8</span> Self-adjointness</a></li>
+    <li><a href="#s9"><span class="n">9</span> Bell's theorem</a></li>
+    <li><a href="#s10"><span class="n">10</span> The interpretations</a></li>
+    <li><a href="#s11"><span class="n">11</span> General relativity</a></li>
+    <li><a href="#s12"><span class="n">12</span> The hole argument</a></li>
+    <li><a href="#s13"><span class="n">13</span> The complete state problem</a></li>
+    <li><a href="#s14"><span class="n">14</span> Modality</a></li>
+    <li><a href="#s15"><span class="n">15</span> Agency</a></li>
+    <li><a href="#s16"><span class="n">16</span> Retraction in full</a></li>
+    <li><a href="#s17"><span class="n">17</span> What is and is not mine</a></li>
+    <li><a href="#s18"><span class="n">18</span> Status register</a></li>
+    <li><a href="#s19"><span class="n">19</span> Corrections register</a></li>
+    <li><a href="#refs"><span class="n">—</span> References</a></li>
+    <li><a href="#appA"><span class="n">A</span> Symbolic checks</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1</span>What is being asked</h2>
+
+<p>The question is not whether the future can be <em>predicted</em>. It is whether the future is <em>uniquely fixed as a physical possibility</em>. These come apart completely, and most confusion in this area comes from running them together.</p>
+
+<p>Four propositions must be held apart throughout.</p>
+
+<div class="box defn">
+  <div class="hd">The four propositions</div>
+  <p><b>P1 — Causal dependence.</b> Not every state permits the same continuations.</p>
+  <p><b>P2 — Deterministic evolution.</b> The prior complete state uniquely determines the future state.</p>
+  <p><b>P3 — Unique history.</b> The state and the laws permit exactly one complete history.</p>
+  <p><b>P4 — Predictability.</b> An embedded observer can compute the future.</p>
+</div>
+
+<p><b>P1 does not give P2:</b> a law may constrain the future without fixing it, which is the situation in any genuinely stochastic theory. <b>P2 does not give P4:</b> determinism is a modal property of a solution set, predictability an epistemic and computational property of agents inside it; an evolution operator may be uncomputable and the theory is deterministic all the same. <b>And P2 does not give P3</b>, which is the point §4 is about: P2 as usually stated delivers <em>at most</em> one continuation, and P3 asserts <em>exactly</em> one. The difference is existence, and existence fails in ordinary physical models.</p>
+
+<p>The converse errors are as common. Unpredictability is constantly read as indeterminism (§6). And "the future is fixed" in the sense of eternalism — that future events are equally real — is a different claim from determinism, as a stochastic block universe shows: a GRW world has a perfectly good four-dimensional history, fully laid out, in which the transitions were chancy.</p>
+
+<h2 id="s2"><span class="num">2</span>Definitions, and the family of them</h2>
+
+<p>Write <span class="m">ℋ(S<sub>t</sub>, L)</span> for the set of histories compatible with the state <span class="m">S<sub>t</sub></span> and the laws <span class="m">L</span>. The thesis under examination is <span class="m">|ℋ| = 1</span>. Working with the set rather than the slogan is what makes the rest tractable.</p>
+
+<p>There is no single definition of determinism, and the differences are not cosmetic. The standard possible-worlds form, due to Montague and to Lewis, is:</p>
+
+<div class="disp">
+  ∀ h₁ h₂ . L(h₁) ∧ L(h₂) ∧ (∃t . h₁(t) = h₂(t)) ⟹ h₁ = h₂
+  <span class="lbl">agreement at one instant forces agreement at every instant</span>
+</div>
+
+<p>Three choices are already made here, and each is contested in the literature. The relation is <b>instantaneous</b> rather than segment-based. It is <b>two-directional</b>: agreement propagates backwards as well as forwards, which is strictly stronger than the "the past fixes the future" formulations, and §5.5 gives a law that satisfies the weaker one and not this. And it is <b>qualitative</b> rather than haecceitistic — it asks whether the histories are the same, not whether the same individuals occupy them, which is exactly what the hole argument turns on (§12).</p>
+
+<p>Belot's D1–D3 discriminate several strengths; Müller and Placek [22] give a branching-model framework and identify three main approaches in the literature (equations, mappings between temporal realisations, branching models); Halvorson, Manchak and Weatherall [18] argue that determinism should be treated as a property of theories rather than a metaphysical doctrine, and that the "agreement" relation admits several readings. <span class="st st-s">SOURCED</span> A survey that pretended to one canonical definition would be misrepresenting its subject.</p>
+
+<p>One consequence is worth stating early because it recurs. <b>Determinism is relative to how states are individuated.</b> Coarsen the state space and the verdict can change; refine it and it can change back. This is not a deep discovery — it follows from the definition quantifying over a state space — but it is load-bearing in §12, and an argument that reaches determinism at one level of description has not thereby reached it at another.</p>
+
+<h2 id="s3"><span class="num">3</span>Four failure modes</h2>
+
+<p>The organising device of this survey. It is a classification, not a result, and its justification is that it sorts the cases in a way that makes the standard confusions visible.</p>
+
+<div class="box">
+  <div class="hd"><span class="fmode">F1</span> Non-uniqueness at a state</div>
+  <p>Two possible histories pass through the same state and diverge. <span class="m">|ℋ| &gt; 1</span>. This is what "indeterminism" ordinarily means, and it is the only mode that produces genuine alternative futures.</p>
+  <p><em>Cases:</em> Norton's dome; objective-collapse theories; space invaders; extension past a Cauchy horizon.</p>
+</div>
+
+<div class="box">
+  <div class="hd"><span class="fmode">F2</span> Non-existence</div>
+  <p>No possible history at all, past some time. <span class="m">|ℋ| = 0</span>. This falsifies "exactly one possible future" while producing <em>no</em> alternative future. A theory can be deterministic in the uniqueness sense and admit no complete history whatever.</p>
+  <p><em>Cases:</em> finite-time blow-up; escape to infinity, read forwards; geodesic incompleteness.</p>
+</div>
+
+<div class="box">
+  <div class="hd"><span class="fmode">F3</span> Directional asymmetry</div>
+  <p>Unique in one temporal direction, not the other. The two-directional definition of §2 fails; a forward-only definition holds.</p>
+  <p><em>Cases:</em> <span class="m">dx/dt = −x<sup>1/3</sup></span>; any dissipative law that forgets its initial data.</p>
+</div>
+
+<div class="box">
+  <div class="hd"><span class="fmode">F4</span> Underdetermination of the model</div>
+  <p>The formalism does not fix which object the theory is about. Not a fact about the world at all — a fact about the theory's individuation conditions, and repaired by a decision rather than a discovery.</p>
+  <p><em>Cases:</em> whether the dome is a Newtonian system; which self-adjoint extension is the Hamiltonian; whether the metric or the isometry class is the state; which consistent set of histories is physical.</p>
+</div>
+
+<p>Two remarks about the taxonomy. First, <b>a phenomenon and its time-reverse need not share a mode.</b> Escape to infinity is F2 forwards and F1 backwards, which is why "space invaders" and "non-collision singularities" describe one mathematical fact and two different failures. <span class="st st-n">CORR</span> Revision 2's diagnostic table placed them in the same cell.</p>
+
+<p>Second, <b>F4 is a different kind of thing from F1–F3.</b> F1–F3 are properties of a solution set, given a theory. F4 is the absence of a determinate theory. Arguments that move between them without noticing are the largest single source of confusion in this literature, and the correction in §8 is exactly an instance.</p>
+
+<h2 id="s4"><span class="num">4</span>Existence and uniqueness</h2>
+
+<h3>4.1 The classical apparatus</h3>
+
+<p>For <span class="m">dx/dt = f(x,t)</span>, <span class="m">x(t₀) = x₀</span>: <b>Peano</b> gives local existence from continuity of <span class="m">f</span> alone, and no uniqueness. <b>Picard–Lindelöf</b> gives local existence and uniqueness when <span class="m">f</span> is Lipschitz in <span class="m">x</span>, and the standard extension corollary gives a unique <em>maximal</em> solution. Neither gives global existence: solutions can leave every compact set in finite time.</p>
+
+<p>So Lipschitz continuity is a <em>sufficient</em> condition for uniqueness, not a necessary one, and the honest statement is that determinism is uniqueness of solutions through each state, with Lipschitz continuity a convenient sufficient condition satisfied by textbook models and violated by constructible ones.</p>
+
+<p>Two corrections to claims made in earlier drafts of this document, both elementary.</p>
+
+<div class="box neg">
+  <div class="hd">Local uniqueness does propagate <span class="st st-n">CORR</span></div>
+  <p>Revision 1 asserted that in continuous time, local uniqueness fails to give global uniqueness, with Norton's dome as the counterexample. Both halves are wrong.</p>
+  <p>If uniqueness holds locally at every point, it holds globally on a connected interval: for solutions <span class="m">x₁, x₂</span> agreeing at <span class="m">t₀</span>, the agreement set is non-empty, closed by continuity, and open by local uniqueness, hence all of the interval. And the dome is not a counterexample, because it <em>fails</em> local uniqueness at the apex — the hypothesis does not hold there.</p>
+  <p>The genuine discrete/continuous disanalogy is different: in discrete time a step function forces forward uniqueness; in continuous time a well-defined right-hand side does not. What fails to propagate from local to global in continuous time is <b>existence</b>.</p>
+</div>
+
+<h3>4.2 F2 in its simplest form</h3>
+
+<p><span class="m">|ℋ| = 1</span> is a conjunction — at least one, at most one — and determinism as standardly defined delivers only the second conjunct. The law admitting <em>no</em> history is vacuously deterministic and has <span class="m">|ℋ| = 0</span>.</p>
+
+<div class="disp">
+  dx/dt = x²,&nbsp; x(0) = 1 &nbsp;⟹&nbsp; x(t) = 1/(1 − t),&nbsp; defined only on (−∞, 1)
+  <span class="lbl">verified symbolically · unique wherever defined, and not defined on all of ℝ</span>
+</div>
+
+<p>The same structure recurs at every level of physics: incomplete Hamiltonian flows, non-collision singularities in the <span class="m">n</span>-body problem (§5.4), geodesic incompleteness and the singularity theorems in general relativity (§11). Each is F2. Each falsifies <span class="m">|ℋ| = 1</span> without producing a single alternative history. Any argument moving from "the laws are deterministic" to "there is exactly one possible future" has skipped a conjunct.</p>
+
+<div class="box neg">
+  <div class="hd">But whether F2 obtains is partly a convention <span class="st st-n">CORR</span></div>
+  <p>Revision 2 presented "physics fails the existence half more often than the uniqueness half" as a finding about physics. It is not. It follows from requiring histories to be <em>total</em> functions of time. Under the maximal-solution convention — which is what working mathematicians use — <span class="m">1/(1−t)</span> on <span class="m">(−∞,1)</span> is the unique maximal solution, <span class="m">|ℋ| = 1</span>, and the failure disappears.</p>
+  <p>Neither convention is forced. What is not conventional is that <em>something</em> must be decided, and that the decision determines whether singularities in general relativity and blow-up in ordinary differential equations count as failures of determinism or as instances of it. Earman [11] makes the general point; the conventionality is why F2 sits uneasily alongside F1 and why lumping them as "indeterminism" misleads.</p>
+</div>
+
+<h2 id="s5"><span class="num">5</span>Classical mechanics</h2>
+
+<p>Classical mechanics is the textbook home of determinism and does not deserve the reputation.</p>
+
+<h3>5.1 The favourable case</h3>
+
+<p>For finitely many point particles under smooth bounded forces the equations are Lipschitz on the relevant domain, Picard–Lindelöf applies, and trajectories through each phase point are unique. In Hamiltonian form the state is a point of a symplectic manifold, evolution is the flow of <span class="m">X<sub>H</sub></span>, and where that flow is complete it is a one-parameter group of symplectomorphisms — uniqueness in both directions, with Liouville's theorem conserving phase volume. This is the setting in which Laplace's demon is well posed.</p>
+
+<p>It is worth being precise about what the demon establishes, because it is an epistemic image doing modal work. The demon is a claim about P4 given P2: <em>if</em> evolution is unique <em>and</em> the state is knowable to arbitrary precision <em>and</em> the computation is performable, the future is calculable. P3 needs none of these. Deleting the demon changes nothing about the size of <span class="m">ℋ</span>.</p>
+
+<h3>5.2 Scale changes nothing modal</h3>
+
+<p>At <span class="m">n = 10</span> with regular interactions, the solution through each phase point is unique. At <span class="m">n = 10²³</span>, with the same regularity assumption, it is still unique: phase space has more dimensions and the Lipschitz argument has not weakened. What changes is that no closed form exists (already true at <span class="m">n = 3</span>), that error growth becomes catastrophic, and that the state becomes unknowable in practice. Every one of those is P4. <b>Complexity does not manufacture alternative futures; it makes a unique future incalculable.</b></p>
+
+<p>What does change with scale is the <em>availability</em> of the pathologies below, which need either singular potentials or unboundedly many degrees of freedom. With gravitational or Coulomb interactions the regularity assumption is not innocent, and §5.4 is what it costs.</p>
+
+<h3>5.3 Norton's dome <span class="fmode">F1</span> and <span class="fmode">F4</span></h3>
+
+<p>A mass slides frictionlessly on a dome whose height below the apex, as a function of arc length <span class="m">r</span>, is <span class="m">h(r) = (2/3g)·r<sup>3/2</sup></span>, chosen exactly so that the factor of <span class="m">g</span> cancels:</p>
+
+<div class="disp">
+  tangential acceleration = g·dh/dr = √r &nbsp;⟹&nbsp; r̈ = √r
+  <span class="lbl">verified symbolically</span>
+</div>
+
+<p>At rest at the apex this admits <span class="m">r(t) = 0</span> and, for every <span class="m">T ≥ 0</span>, the family <span class="m">r(t) = (t−T)⁴/144</span> for <span class="m">t ≥ T</span>. The mass spontaneously begins to move at an arbitrary time, with no cause and no violation of the equation of motion. The mechanism is the failure of Lipschitz continuity of <span class="m">√r</span> at the origin.</p>
+
+<p>One small sharpening. The join with the rest solution is routinely described as <span class="m up">C²</span>. Differentiating at <span class="m">T</span> gives <span class="m">[0, 0, 0, 0, 1/6]</span> at orders 0 through 4: the join is exactly <span class="m up">C³</span>, one degree smoother than usually stated. <span class="st st-m">CHECKED</span> Nothing turns on it, but the sharp value is the one to quote.</p>
+
+<p><b>Why this is also F4.</b> Whether the dome shows that Newtonian mechanics is indeterministic, or shows that the dome is not a Newtonian system, is a dispute about the theory's scope. Malament [21] declines both labels explicitly, concluding that the breakdown is not captured by saying either "Newtonian particle mechanics is an indeterministic theory" or "Norton's example is not a well-defined Newtonian system," because we lack a sufficiently clear idea of what should count as a Newtonian system in the first place. <span class="st st-s">QUOTED ANCHOR VERIFIED</span> [18, p. 816] Fletcher [15] argues that each objection which would rule the dome out is too strong, ruling out unproblematic systems too, and concludes pluralistically; he also widens the phenomenon beyond the dome with a saddle-shaped ridge and two electrostatic cases, which matters against the reply that the dome is a lone contrivance. Antoszek [1] argues the determinism predicate should attach to particular theories rather than to the framework.</p>
+
+<p>The dispute cannot be settled by more mathematics, because the mathematics has been settled since 2003. That is the signature of F4.</p>
+
+<h3>5.4 Escape to infinity <span class="fmode">F2</span> forwards, <span class="fmode">F1</span> backwards</h3>
+
+<p>The second family needs no exotic surface, only gravity. Xia [29] proved the existence of non-collision singularities in Newtonian systems: a five-body configuration in which particles are driven to spatial infinity in finite time, with a modification giving the behaviour for all <span class="m">n ≥ 5</span>. The four-body case remained open for decades — Malament, writing in 2008, records it as open — and was settled by Xue [30], who exhibits a Cantor set of initial conditions in the <em>planar</em> four-body problem on which all four bodies escape to infinity in finite time without collision, closing the Painlevé conjecture. Since <span class="m">n = 3</span> admits only collision singularities, the conjecture is now complete. Mather and McGehee had earlier obtained unbounded-in-finite-time behaviour in the collinear four-body problem, but by way of infinitely many binary collisions, so it is not a non-collision singularity.</p>
+
+<p>Two morals, usually conflated, and the conflation is exactly a failure to separate F1 from F2:</p>
+
+<ul>
+  <li><b>Forwards this is F2.</b> The solution has no continuation past the singular time, so <span class="m">ℋ</span> is empty. No alternative future is produced.</li>
+  <li><b>Backwards this is F1.</b> Newtonian mechanics is time-reversal invariant, so the reverse is the "space invader": particles arrive from spatial infinity at an arbitrary time, unheralded. Here there genuinely are two total histories — one empty, one with an invader — agreeing before <span class="m">t*</span> and differing after. Both are defined at every time, so no convention about totality touches it. <span class="st st-n">CORR</span></li>
+</ul>
+
+<p>Space invaders are the more serious case for determinism, because the standard reply to the dome — that the model is unphysical — is harder to run against four point masses under ordinary gravity. And unlike the dome, no non-Lipschitz force is needed: only the non-compactness of space and the unboundedness of the gravitational potential.</p>
+
+<h3>5.5 Forward uniqueness is not determinism <span class="fmode">F3</span></h3>
+
+<p>The equation <span class="m">dx/dt = −x<sup>1/3</sup></span> is the standard example of uniqueness without Lipschitz continuity. Forwards it is unique, because the origin attracts from both sides. Backwards it is not: for every <span class="m">T</span>, the function <span class="m">((2/3)(T−t))<sup>3/2</sup></span> for <span class="m">t ≤ T</span> and zero after is a solution agreeing with the zero solution at every instant past <span class="m">T</span> and differing from it before. <span class="st st-m">CHECKED</span></p>
+
+<p>Under the two-directional definition of §2 this law is therefore <b>indeterministic</b>. Citing it as a non-Lipschitz law that is nonetheless deterministic — as Revision 1 did <span class="st st-n">CORR</span> — requires saying which direction is meant. Whenever a text says "the past determines the future," check which of the two it has established.</p>
+
+<h2 id="s6"><span class="num">6</span>Chaos and predictability</h2>
+
+<p>Deterministic chaos is the most frequently misused evidence in this debate, and it is evidence for the opposite of what it is usually taken to show.</p>
+
+<p>A chaotic system exhibits sensitive dependence on initial conditions: nearby trajectories separate at a rate governed by a positive Lyapunov exponent. Every trajectory is nonetheless unique. Separation is a statement about <em>distinct</em> initial conditions diverging; non-uniqueness would be a statement about <em>one</em> initial condition admitting two futures. A map is a function; each seed has exactly one orbit however fast orbits separate.</p>
+
+<div class="callout">
+  <h4>The distinction, stated once</h4>
+  <p style="margin-bottom:0"><b>Unpredictability</b> is a relation between an agent, its measurement precision, its computational resources, and a system. <b>Non-uniqueness</b> is a property of the solution set of the laws. Chaos maximises the first and leaves the second untouched. Norton's dome does the reverse: perfectly predictable in the trivial solution, and non-unique.</p>
+</div>
+
+<p>There is a genuinely unsettling result in this vicinity that deserves more attention than chaos does, and it must be stated carefully because Revision 2 misstated it. <span class="st st-n">CORR</span> Ornstein and Weiss [23] survey a body of ergodic theory establishing that a wide class of deterministic systems from classical dynamics are measure-theoretically isomorphic to Bernoulli shifts. <b>This does not show that coarse-graining destroys determinism.</b> Their isomorphisms proceed through <em>generating</em> partitions, which preserve all dynamical information; a Bernoulli shift is itself a perfectly deterministic dynamical system. What the results establish is <em>statistical indistinguishability</em> — that the same statistics can be produced by a deterministic law or by a random mechanism — which is a claim about unpredictability, not about uniqueness.</p>
+
+<p>Werndl [28] develops the philosophical consequence and is the right citation for it: certain deterministic and indeterministic descriptions are <em>observationally equivalent</em>, giving the same predictions at every finite observation level. If that is right, determinism is not merely hard to detect; for a significant class of systems it is empirically undetectable in principle from finite-resolution statistics. A separate line — Del Santo and Gisin [8], and Landsman's work on undecidability — presses the complementary point that classical determinism presupposes an unphysical idealisation, the attribution of infinitely many predetermined digits to every physical quantity.</p>
+
+<p>It is true, separately, that coarse-graining can destroy determinism in the uniqueness sense: a partition not invariant under the dynamics produces a quotient on which distinct images meet and part. This is the standard failure of lumpability, and it is not Ornstein and Weiss's result.</p>
+
+<h2 id="s7"><span class="num">7</span>Quantum mechanics: the two rules</h2>
+
+<p>"Quantum mechanics proves the universe is indeterministic" is the single most common error in this area. The correct statement is narrower and more interesting.</p>
+
+<p>Textbook quantum mechanics contains two dynamical rules. <b>Unitary evolution</b>, <span class="m">iħ ∂<sub>t</sub>Ψ = ĤΨ</span> — linear, time-reversible, and for self-adjoint <span class="m">Ĥ</span> generating a one-parameter unitary group by Stone's theorem. And <b>collapse on measurement</b>, with Born-rule weights — stochastic, non-linear, irreversible.</p>
+
+<p>All the indeterminism sits in the second rule, and the second rule is precisely the part no one regards as fundamental, because it is stated in terms of "measurement," an undefined primitive appearing in no other fundamental law. That is the measurement problem. The determinism question is therefore <em>displaced</em> onto the question of how the measurement problem is solved, and the candidate solutions differ on the answer. Determinism is downstream of the measurement problem, not upstream of it.</p>
+
+<p><b>Decoherence does not settle it.</b> Decoherence explains why interference between macroscopically distinct branches becomes practically unobservable, through entanglement with environmental degrees of freedom. It is a consequence of unitary evolution and hence deterministic, and it does not produce a single outcome from a superposition. It explains why we do not see interference; it does not explain why we see one result.</p>
+
+<p><b>Is Ψ the complete state?</b> Contested. The Pusey–Barrett–Rudolph theorem [24] constrains ψ-epistemic models: under an assumption of preparation independence, models on which the quantum state represents mere information about an underlying physical state make predictions contradicting quantum theory. <span class="st st-s">SOURCED</span> The relevance is that "complete state" cannot be read off the formalism; it is fixed by the interpretation.</p>
+
+<h2 id="s8"><span class="num">8</span>Self-adjointness: the correction this survey exists for <span class="fmode">F4</span></h2>
+
+<p>A familiar thought: the classical pathologies arise because the equations are non-linear, the Schrödinger equation is linear, so quantum mechanics is free of them. Revision 2 asserted exactly this, and it is false. <span class="st st-n">CORR</span></p>
+
+<h3>8.1 Stone's theorem needs self-adjointness</h3>
+
+<p>Stone's theorem gives a bijection between strongly continuous one-parameter unitary groups and <b>self-adjoint</b> operators. Self-adjointness is <span class="m">H = H<sup>†</sup></span> <em>including equality of domains</em>, strictly stronger than symmetry. A symmetric operator on a natural domain such as <span class="m up">C</span><sub>0</sub><sup>∞</sup> may admit many self-adjoint extensions, and each generates a <em>different</em> unitary group. Same initial state, same formal Hamiltonian, many evolutions — no collapse postulate, no interpretation. Uniqueness fails inside the part of the formalism everyone agrees is fundamental. <span class="st st-s">SOURCED</span> [25]</p>
+
+<p>This is Earman's point, developed at length in two 2008 papers [12,13] and in his handbook survey [11]. The reader who wants the full treatment should go there rather than here.</p>
+
+<h3>8.2 The classical threshold, and that it is sharp</h3>
+
+<p>The correspondence, due to Wightman and discussed by Earman [12], is that essential self-adjointness fails where the classical particle escapes to infinity in finite time. The classical half is elementary and worth computing, because it makes the threshold visible. For <span class="m">V(x) = −x<sup>n</sup></span> at energy zero, conservation gives <span class="m">ẋ = x<sup>n/2</sup>√(2/m)</span>, so</p>
+
+<div class="disp">
+  τ(x₀) = √(m/2) ∫<sub>x₀</sub><sup>∞</sup> x<sup>−n/2</sup> dx &nbsp;&lt;&nbsp; ∞ &nbsp;⟺&nbsp; n &gt; 2
+  <span class="lbl">verified at n = 1, 2, 3, 4, 6 — finite exactly at 3, 4, 6; for n = 4, τ = √(m/2)/x₀</span>
+</div>
+
+<p>The threshold is <b>sharp at the harmonic case</b>. At <span class="m">n = 2</span> the integral diverges and the particle never arrives; at any <span class="m">n &gt; 2</span> it arrives in finite time. <span class="st st-m">CHECKED</span> So the inverted harmonic oscillator sits precisely on the boundary, which is why <span class="m">−x⁴</span> is the textbook case and <span class="m">−x²</span> is not. The matching quantum statement — that <span class="m">−d²/dx² − x⁴</span> is not essentially self-adjoint, by the Weyl limit-point/limit-circle criterion — I have not verified and take from Reed and Simon [25]. <span class="st st-d">NOT OPENED</span></p>
+
+<h3>8.3 Same threshold, different failures</h3>
+
+<div class="scroll">
+<table>
+<colgroup><col style="width:20%"><col style="width:40%"><col style="width:40%"></colgroup>
+<thead><tr><th></th><th>Classical, V = −x⁴</th><th>Quantum, −d²/dx² − x⁴</th></tr></thead>
+<tbody>
+<tr><th>What runs out</th><td>The solution's interval of <em>time</em></td><td>Nothing. Every extension gives a group on all of <span class="m up">ℝ</span></td></tr>
+<tr><th>Mode</th><td class="n">F2 — non-existence</td><td class="n">F4 — underdetermination of the model</td></tr>
+<tr><th>Repaired by</th><td>A convention: total vs. maximal solutions</td><td>A physical decision: which self-adjoint extension</td></tr>
+<tr><th>Residue</th><td>No history past the singular time</td><td>Many histories, all total, all unitary</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Revision 2 said the classical and quantum failures are "the same failure," and classified both as questions about the temporal domain. That is wrong twice. The quantum failure does not touch the temporal domain at all — the histories are total — and it is not F2 but F4: what is underdetermined is which operator the theory is about. The word doing the illicit work is <em>domain</em>: an interval of time in one case, an operator domain in a Hilbert space in the other. <span class="st st-n">CORR</span></p>
+
+<p>What is true, and is the entire content of the correspondence, is that the same classical incompleteness is <em>diagnostic</em> of both. A potential steep enough to let a particle escape in finite time is steep enough to leave the quantum dynamics underdetermined at infinity. Correlated at a shared and sharp threshold — not identical.</p>
+
+<h2 id="s9"><span class="num">9</span>Bell's theorem</h2>
+
+<p>The short answer: <b>Bell's theorem does not rule out determinism, and never did.</b></p>
+
+<h3>9.1 What is assumed and what is derived</h3>
+
+<p>A point of history almost universally reversed in secondary accounts: in the 1964 argument determinism is not an assumption but a <em>conclusion</em>. Bell takes the EPR argument — locality plus the perfect anticorrelations for the singlet state — to establish that outcomes are predetermined, and then shows that predetermined local values cannot reproduce the quantum statistics at other angles. <span class="st st-s">SOURCED</span> [2]</p>
+
+<p>The mature version does not need determinism as a premise at all. Bell's 1971 lecture notes already observe that the formalism is appropriate for indeterminism of a suitably local character, and the 1976 "theory of local beables" replaces outcome determinism with a condition of <em>local causality</em> formulated directly in spacetime terms and probabilistic from the outset. Factorization is then derived rather than posited, and the inequality follows without touching a deterministic value. <span class="st st-s">SOURCED · QUOTATIONS NOT RE-VERIFIED</span> [3]</p>
+
+<p>So the logical situation is the opposite of the folklore. Determinism entered the original reasoning as something <em>derived from locality</em>.</p>
+
+<h3>9.2 What the theorem does constrain</h3>
+
+<p>The derivation requires, at minimum, <b>local causality</b> (a complete specification of beables in the overlap of the backward light cones screens off correlations) and <b>statistical independence</b> (the hidden-variable distribution is independent of the settings). Experimental violation, including in loophole-closing experiments, refutes the conjunction. Each disjunct survives individually:</p>
+
+<ul class="tight">
+  <li>Deny local causality → <b>Bohmian mechanics</b> (deterministic, explicitly non-local).</li>
+  <li>Deny statistical independence → <b>superdeterminism</b> (deterministic).</li>
+  <li>Deny single outcomes → <b>Everett</b> (deterministic).</li>
+</ul>
+
+<p>Three of the live responses to Bell are deterministic theories. <b>Objective collapse is not a fourth way out of Bell</b>, and Revision 1 listed it as one. <span class="st st-n">CORR</span> Since determinism is not a premise of the mature theorem, denying determinism does not evade it; GRW evades Bell by violating local causality, as collapse theories are non-local too. The correct statement is that Bell constrains deterministic theories — they must be non-local or violate statistical independence — which is informative, and which Revision 2's abstract denied while its own §10 asserted. <span class="st st-n">CORR</span></p>
+
+<h3>9.3 Conway–Kochen</h3>
+
+<p>The "free will theorem" [6] is frequently cited as establishing indeterminism and does not. From SPIN, TWIN and MIN it concludes that the response of a spin-1 particle to a triple experiment is not a function of properties of the earlier universe — where MIN grants the experimenters free choice of settings. The authors gloss it themselves: if experimenters have a certain freedom, particles have the same kind of freedom. <span class="st st-s">SOURCED</span></p>
+
+<p>This is a conditional whose antecedent is the thesis under investigation. If <span class="m">|ℋ| = 1</span>, the antecedent is false and the theorem is silent. Read as an argument for indeterminism it is question-begging; read as a constraint on deterministic theories it is informative — they must be non-local or violate statistical independence.</p>
+
+<h2 id="s10"><span class="num">10</span>The interpretations</h2>
+
+<h3>10.1 Bohmian mechanics — deterministic</h3>
+
+<p>The complete state is a pair: the universal wavefunction and the actual particle configuration. The dynamics is the Schrödinger equation plus a guiding equation, first-order in configuration, both deterministic. There is no collapse postulate and no stochastic element in the fundamental dynamics. Quantum randomness is epistemic: it arises because the initial configuration is unknown and <span class="m">|Ψ|²</span>-distributed — quantum equilibrium, developed by Dürr, Goldstein and Zanghì as a <em>typicality</em> claim about the universal configuration rather than a dynamical postulate, with <span class="m">|Ψ₀|²</span> singled out as the natural measure because it is equivariant. <span class="st st-s">SOURCED</span> [10]</p>
+
+<p><b>Does uniqueness hold globally?</b> With a real qualification. Berndl, Dürr, Goldstein, Peruzzi and Zanghì [4] show that for a large class of potentials the singularities of the velocity field and infinity are not reached in finite time <em>for typical initial values</em> — global existence up to a set of measure zero in the equilibrium measure. The potential class is wide enough to matter: it covers <span class="m">N</span>-particle Coulomb interaction with arbitrary charges and masses, plus harmonic, anharmonic and arbitrarily strong repulsive potentials. And the nodes of <span class="m">Ψ</span> are not the only danger points; singularities comparable to those of Newtonian mechanics recur here, escape to infinity among them. So Bohmian determinism is <b>almost-everywhere, not unconditional</b> — which is the strongest statement available and is worth stating precisely rather than as a flat yes.</p>
+
+<p>The costs: the theory is explicitly non-local, which is the required response to Bell rather than a defect, and its relativistic extension remains the principal open problem, since configurations — simultaneous positions — are load-bearing. A foliation is hard to avoid, though it need not break Lorentz invariance if dynamically determined by a Lorentz-invariant structure.</p>
+
+<h3>10.2 Everett — deterministic, with a scope ambiguity</h3>
+
+<p>One dynamical law, the Schrödinger equation, applied universally with no collapse. That was Everett's framing in 1957: the orthodox theory's two processes are set out, and the special postulates dealing with observation are <em>omitted</em> in the new theory, from which the conventional interpretation is to be deduced. <span class="st st-s">QUOTED ANCHOR VERIFIED</span> [14] The universal wavefunction evolves deterministically and uniquely; branching is not a further postulate but the emergence, via decoherence, of effectively non-interfering components.</p>
+
+<p>So "is there exactly one possible history?" has two answers at two levels: one universal history, many branch histories. Both are true, and the question is under-specified until the level is fixed. <b>This is a scope ambiguity, not a unification of the hole argument with branching</b> — Revision 2 claimed the latter and it is false (§16). <span class="st st-n">CORR</span></p>
+
+<p><b>Are branches alternative possibilities?</b> Arguably not: a possibility is something that may or may not obtain, and an Everettian branch does obtain — all of them do. The multiverse is not a space of possible worlds but a single actual world with richer structure. Wilson's <em>The Nature of Contingency</em> takes the opposite tack deliberately, developing an account on which branches <em>are</em> the possible worlds. <span class="st st-d">NOT OPENED</span></p>
+
+<p><b>The unresolved cost is probability.</b> If every outcome occurs, what does a Born weight mean? Deutsch and Wallace argue the weights are recoverable as the unique rational credences for an agent facing branching, via decision theory. The derivation is contested on two fronts: the early objection was circularity, and as the programme produced more explicit proofs criticism turned to the decision-theoretic assumptions. Greaves and Myrvold pursue a third route from empirical confirmation, and set the bar explicitly: the Everettian must make sense of probability, or find a substitute on which the usual statistical analysis still counts as evidence — and must do so without presupposing Everettian quantum mechanics. <span class="st st-s">SOURCED</span> The determinism verdict does not depend on this; what depends on it is empirical adequacy.</p>
+
+<h3>10.3 Objective collapse — genuinely indeterministic <span class="fmode">F1</span></h3>
+
+<p>Ghirardi, Rimini and Weber [16] modify the dynamics so that the wavefunction evolves by the Schrödinger equation until a random time, at which it is multiplied by a narrow Gaussian centred on a random location, with Born weights built into the jump law rather than triggered by "measurement." The cut is dynamical rather than definitional, which is what dissolves the measurement problem. <span class="st st-s">SOURCED</span></p>
+
+<p>Here <span class="m">|ℋ| &gt; 1</span> straightforwardly, and this is the one clean case of F1 at the fundamental level. A tempting error: the Lindblad evolution of the density matrix <em>is</em> deterministic, so one might infer nothing modal has changed. The inference fails — a deterministic law for the evolution of a probability distribution is a law about the ensemble, not the trajectory, and is compatible with many possible histories.</p>
+
+<p>Collapse theories are also the only candidates here <em>experimentally distinguishable</em> from standard quantum mechanics in principle, since spontaneous localisation predicts small deviations from unitarity. The parameters have been progressively bounded by opto-mechanics, cold atoms and nuclear physics — bounded, not excluded. <span class="st st-s">SOURCED</span></p>
+
+<h3>10.4 Superdeterminism — coherent, undeveloped</h3>
+
+<p>Denying statistical independence blocks Bell's derivation and permits a local deterministic theory. Hossenfelder and Palmer [19] argue the standard dismissals rest on intuitions from classical and linear systems, and that whether a violation of statistical independence is explanatorily acceptable cannot be settled without examining concrete models. Bell himself named the assumption and declined to give it up, remarking that without the freedom to set instruments he would not know how to formulate any idea of local causality. <span class="st st-s">SOURCED</span> 't Hooft's cellular-automaton interpretation is the most developed programme in this direction. <span class="st st-d">NOT OPENED</span></p>
+
+<p><b>The case against, at its strongest.</b> Statistical independence is what licenses controlled experiment in general. If apparatus settings can be correlated with the properties of the system measured, randomised controlled experiment — not merely Bell tests — loses its warrant. The objection is not that superdeterminism is strange but that it is self-undermining as a scientific hypothesis, since the evidence for any theory is gathered by procedures it impugns.</p>
+
+<p><b>The honest verdict.</b> Logically coherent; provides a deterministic description compatible with the correlations; and there is no superdeterministic model reproducing the full quantum predictions across the range of experiments while making novel testable predictions. Until one exists it is a research programme and a proof that Bell does not refute determinism — not a theory supporting <span class="m">|ℋ| = 1</span>.</p>
+
+<h3>10.5 Comparison</h3>
+
+</div>
+
+<div class="wide">
+<div class="scroll">
+<table>
+<colgroup><col style="width:16%"><col style="width:19%"><col style="width:19%"><col style="width:15%"><col style="width:31%"></colgroup>
+<thead><tr><th>Theory</th><th>Complete state well-defined?</th><th>Evolution unique?</th><th>Fundamental chance?</th><th>Deterministic?</th></tr></thead>
+<tbody>
+<tr><th>Newtonian</th><td class="y">Yes — positions and momenta, given a force law</td><td class="q">Not in general — needs Lipschitz forces</td><td class="n">No</td><td class="q">Conditional — on a restricted model class, and the restriction is F4</td></tr>
+<tr><th>Hamiltonian</th><td class="y">Yes — a point of a symplectic manifold</td><td class="q">Locally yes for locally Lipschitz <span class="m">X<sub>H</sub></span>; globally only if the flow is complete</td><td class="n">No</td><td class="q">Conditional. Note the dome is a conservative constrained system, so F1 is available here too</td></tr>
+<tr><th>Classical GR</th><td class="q">Problematic — constrained data, no preferred foliation, state is a diffeomorphism class</td><td class="y">Yes, up to isometry, inside the maximal globally hyperbolic development</td><td class="n">No</td><td class="q">Conditional and formulation-sensitive</td></tr>
+<tr><th>Textbook QM</th><td class="q">Contested — the system/apparatus cut is undefined</td><td class="q">Unitary part yes; collapse no</td><td class="y">Yes — Born-rule collapse</td><td class="n">No — though the theory is not consistent as stated</td></tr>
+<tr><th>Bohmian</th><td class="y">Yes — the pair (Ψ, Q)</td><td class="y">Yes — global existence for typical initial configurations</td><td class="n">No — randomness is epistemic</td><td class="y">Yes — almost everywhere, at the cost of explicit non-locality</td></tr>
+<tr><th>Everett</th><td class="y">Yes — the universal wavefunction</td><td class="y">Yes — unitary throughout</td><td class="n">No — probability is derived, and the derivation is contested</td><td class="y">Yes at the universal level; "one history" is level-relative</td></tr>
+<tr><th>GRW</th><td class="y">Yes — Ψ plus a primitive ontology</td><td class="n">No — stochastic jumps</td><td class="y">Yes — in the dynamical law</td><td class="n">No — the clean case of F1</td></tr>
+<tr><th>Superdeterministic</th><td class="q">Contested — typically unspecified</td><td class="y">Yes by construction</td><td class="n">No</td><td class="y">Yes by construction — but no model reproduces the full predictions</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="wrap">
+
+<h2 id="s11"><span class="num">11</span>General relativity</h2>
+
+<h3>11.1 The initial-value formulation</h3>
+
+<p>General relativity has a genuine initial-value formulation, and it is the strongest determinism result in physics — with three qualifications, each of which matters. Initial data is a triple <span class="m">(Σ, h<sub>ab</sub>, K<sub>ab</sub>)</span> subject to the Hamiltonian and momentum <em>constraint</em> equations. Choquet-Bruhat and Geroch [5] prove that an initial data set has a development extending every other, unique up to isometry. <span class="st st-s">SOURCED</span></p>
+
+<p>The force of that depends on a definition given earlier in their paper: a <em>development</em> requires the data surface to be a Cauchy surface, so "every other development" already means every other <em>globally hyperbolic</em> one. As Sbierski [26] observes, restricting to globally hyperbolic developments is unavoidable if one wants any global uniqueness result at all — consider Kerr. The theorem is not vacuum-only; it applies to any system whose solutions define a spacetime and satisfy their conditions.</p>
+
+<p>The qualifications: <b>(i)</b> uniqueness is only up to isometry, so the theorem delivers a unique isometry class, not a unique spacetime — which is the hole-argument question (§12); <b>(ii)</b> it holds only within the maximal globally hyperbolic development, and global hyperbolicity is precisely the condition that a Cauchy surface exists, so determinism is partly assumed as a restriction rather than derived; <b>(iii)</b> the data is not freely specifiable, since the constraints relate values across the whole slice.</p>
+
+<h3>11.2 Where general relativity is genuinely indeterministic</h3>
+
+<p><b>Beyond Cauchy horizons <span class="fmode">F1</span>.</b> In the Kerr and Reissner–Nordström interiors the maximal globally hyperbolic development ends at a Cauchy horizon past which the metric can be extended in more than one way — the field equations no longer fix the continuation. Two total extensions, agreeing before and differing after: F1, not a domain convention. <span class="st st-n">CORR</span></p>
+
+<p>Strong cosmic censorship is the conjecture that this is non-generic, and its status is delicate. Dafermos and Luk [7] prove that for data on a spacelike hypersurface already inside the black hole, representing a dynamical black hole settling down to Kerr, the maximal future development has a non-trivial Cauchy horizon across which the metric is continuously extendible. The step from there to "the <span class="m">C⁰</span>-inextendibility formulation of strong cosmic censorship is false" runs through a further theorem retrieving interior data from event-horizon data, labelled in the paper as to appear, <em>and</em> through the Kerr stability conjecture. The repaired formulation is Christodoulou's and is expected rather than proved: the resulting Cauchy horizons are suggested to be generically singular in a weaker sense, so that a revised censorship holds. <span class="st st-s">SOURCED</span> General relativity's determinism is therefore conjectural and formulation-sensitive, not established.</p>
+
+<p><b>Closed timelike curves.</b> Gödel's solution admits CTCs through every point and has no global Cauchy surface, so the initial-value formulation does not apply at all. <b>Singularities <span class="fmode">F2</span>.</b> Geodesic incompleteness means histories that cannot be continued — again non-existence rather than a proliferation of futures.</p>
+
+<h3>11.3 Block universe, eternalism, determinism</h3>
+
+<p>Three different things, and conflating them produces a fallacy that appears constantly in popular treatments. <b>Determinism</b> is a modal claim about the size of <span class="m">ℋ</span>. <b>Eternalism</b> is an ontological claim about what exists. <b>Block universe</b> is a representational claim.</p>
+
+<p>Determinism does not imply eternalism: a presentist can hold that only the present is real while the laws fix a unique successor. And eternalism does not imply determinism — the decisive case is a GRW world, which has a perfectly good four-dimensional history, every event laid out, in which the transitions were stochastic. A block universe is a record of what happened; determinism is a claim about what could have. A block can be a block without being the only possible one.</p>
+
+<h2 id="s12"><span class="num">12</span>The hole argument <span class="fmode">F4</span></h2>
+
+<p>Take a solution, choose a compact region, and apply a diffeomorphism that is the identity outside it and non-trivial inside. By general covariance the result is another solution, agreeing outside the hole and differing within. If those count as distinct physical possibilities, general relativity is indeterministic — and Earman and Norton's own statement of how badly is stronger than usually reported: their term is <em>radical local indeterminism</em>, and the failure holds no matter how small the neighbourhood. Their conclusion is a dilemma rather than a refutation: this is a heavy price for a doctrine that adds no predictive power. <span class="st st-s">SOURCED</span></p>
+
+<p>The standard resolution denies that the two count as distinct possibilities: the physical state is the isometry class, not the metric-on-a-manifold. That is a choice about individuation, and the formalism does not force it — which is why this is F4 and not F1.</p>
+
+<p>The debate is active and this survey should not present it as settled. Weatherall [27] argued that the hole argument rests on comparing isometric models by a map that is not an isometry, which mathematical practice does not license. Halvorson and Manchak [17] pressed further with a rigidity result: isometries agreeing on any non-empty open set agree everywhere, so there are no hole isometries, and the mathematical claim supporting the argument is false. <span class="st st-s">SOURCED</span></p>
+
+<p>Revision 2 reported that as settling the matter. It does not. <span class="st st-n">CORR</span> Dewar [9] argues that Halvorson and Manchak engage a modified argument rather than the traditional one, and — the load-bearing point — that <b>rigidity does not entail determinism</b>. That is the right objection: rigidity is a fact about automorphism structure at a fixed individuation, and the dispute is about which individuation to fix. A theorem proved inside one setting cannot adjudicate between settings.</p>
+
+<p>That a 2025 paper is still fixing the <em>definition</em> of determinism for general relativity is the relevant datum. It is not a sign the field is confused; it is what F4 looks like from the inside.</p>
+
+<h2 id="s13"><span class="num">13</span>The complete state problem</h2>
+
+<p>This is the deepest difficulty in the whole investigation, and it attacks the premise rather than the inference. The thesis presupposes that "the complete physical state of the universe at time <span class="m">t</span>" denotes something. In classical mechanics it does: a point in phase space. Past that, the notion degrades at every step.</p>
+
+<p><b>There is no preferred <span class="m">t</span>.</b> Special relativity removes absolute simultaneity, so the state at <span class="m">t</span> is frame-relative. General relativity worsens it: a generic spacetime admits no preferred foliation, many admit no global Cauchy surface, and in a spacetime with closed timelike curves a global instantaneous state is not merely unnatural but unavailable. The initial-value formulation works by <em>restricting</em> attention to globally hyperbolic spacetimes — that is, by assuming a well-posed notion of "state at a time" rather than showing there is one.</p>
+
+<p><b>The state is not freely specifiable.</b> The constraints mean data on a slice is not an unconstrained list of local values; it satisfies elliptic equations relating values across the slice. Gauge redundancy compounds this: the mathematical object is not the state, the equivalence class is. A "complete state" is already a global, quotiented object — not a complete list of local facts at an instant.</p>
+
+<p><b>In canonical quantum gravity there may be no state-at-a-time at all.</b> Quantising the constraints yields the Wheeler–DeWitt equation, with no time parameter in it. This "problem of time" is not a technicality of one approach: it follows from the Hamiltonian being a constraint annihilating physical states, which follows from general covariance. Kuchař [20] surveys ten major attempts to circumvent it and their shortcomings; Isham and Anderson give the standard taxonomies. <span class="st st-d">NOT OPENED</span></p>
+
+<p>If the fundamental description has no time evolution, then "given the state at <span class="m">t</span>, how many continuations are there?" does not have a false answer. It has no answer, because it does not parse. <b>This is the strongest single objection to the whole project, and it comes not from quantum indeterminacy but from general covariance.</b></p>
+
+<p>Can the thesis be reformulated without it? Yes: replace "the state at <span class="m">t</span> plus the laws fix the rest" with "the laws admit exactly one total history." This is well defined with no instantaneous state, no foliation and no evolution operator, and it is what Wheeler–DeWitt-style laws would have to satisfy to be deterministic at all. Adlam's constraint-based framework develops this. <span class="st st-d">NOT OPENED</span> The reformulated thesis is <em>stronger</em> than the original, and further from anything current physics establishes.</p>
+
+<h2 id="s14"><span class="num">14</span>Modality</h2>
+
+<p>Writing <span class="m">◇A</span> for "some possible history through the state satisfies <span class="m">A</span>" and <span class="m">□A</span> for "every one does," indexed to laws, time and state:</p>
+
+<div class="box pos">
+  <div class="hd">Modal collapse, and what it needs</div>
+  <p>If <span class="m">|ℋ| = 1</span> then <span class="m">◇A ↔ □A</span> for every <span class="m">A</span>: possibility and necessity coincide, and nothing about the future is contingent.</p>
+  <p>Uniqueness alone gives only <span class="m">◇ → □</span>. The converse needs <em>existence</em>: with no possible history, <span class="m">□</span> is vacuously true and <span class="m">◇</span> is false. So the full collapse is exactly <span class="m">|ℋ| = 1</span> and never <span class="m">|ℋ| ≤ 1</span> — which is F2's modal signature, and one more reason not to lump it with F1.</p>
+</div>
+
+<p><b>"Could the universe have evolved differently?"</b> has three readings, and determinism forecloses only one. <b>A — same prior state, same laws:</b> foreclosed, this is exactly what <span class="m">|ℋ| = 1</span> denies. <b>B — different prior state, same laws:</b> survives; a fully deterministic law can admit many histories through <em>different</em> states, since determinism restricts how histories may relate to one another and not how many there are. <b>C — same prior state, different laws:</b> survives.</p>
+
+<p>Ordinary "could have done otherwise" talk is not usually a claim that the exact microphysical state permitted two continuations. "I could have caught the train" is a claim about what would have happened had I left earlier. Whether that is reading B or, as Lewis's counterfactual semantics has it, a small divergence miracle closer to reading C, is a question about the semantics and not about physics — and Revision 2 asserted flatly that it was reading B, which overstates a contested matter. <span class="st st-n">CORR</span> What is safe is that reading A is the philosopher's reading, and it is the only one <span class="m">|ℋ| = 1</span> touches.</p>
+
+<h2 id="s15"><span class="num">15</span>Agency</h2>
+
+<p>Treating agents abstractly as physical systems embedded in the universe, with no appeal to neuroscience.</p>
+
+<p><b>The argument has three premises, not two.</b> From <span class="m">|ℋ| = 1</span> to "no alternative history" is a definitional unfolding. From there to "no alternative <em>action</em>" requires that the action be a function of the physical history — the supervenience of action on physical history, equivalently causal closure of the physical. If the action depends on any further parameter not fixed by the physical history, a unique physical history is compatible with distinct actions. This is not an endorsement of dualism, which is independently poorly supported; it is an accounting correction, and the premise should be stated.</p>
+
+<p><b>The conditional is analytic.</b> If libertarian free will requires the genuine possibility of an alternative outcome under identical prior conditions, then it is incompatible with <span class="m">|ℋ| = 1</span> in one line. The physics contributes nothing to that inference; it contributes only to whether the antecedent holds, which §§7–13 find unsettled.</p>
+
+<p><b>Indeterminism rescues nothing.</b> Suppose <span class="m">|ℋ| &gt; 1</span> — a GRW world. Rewind and let it run again; sometimes the agent does <span class="m">A</span>, sometimes <span class="m">B</span>. The difference is not settled by anything about the agent — that is what it means for the transition to be chancy — so the agent has no more control than in the deterministic case, only less predictability. This is the rollback or luck objection, and leeway-libertarian free will is threatened by determinism and indeterminism alike, structurally rather than physically.</p>
+
+<p><b>The Consequence Argument and its cost.</b> Van Inwagen: if determinism is true, our acts are consequences of the laws and the remote past; neither is up to us; so the consequences are not up to us. Lewis replies by distinguishing the ability to do something such that, if one did it, a law would be broken, from the ability to break a law — accepting the first and rejecting the second as no part of soft determinism. <span class="st st-s">SOURCED</span> The dispute is entirely about the modal semantics of "up to us"; no physical result bears on it.</p>
+
+<p><b>Alternative possibilities may not be required anyway.</b> Frankfurt's cases aim to show an agent can be responsible while unable to do otherwise. If sound, the principle of alternate possibilities is false and the debate has been fought over the wrong requirement. Source incompatibilists relocate the incompatibility from leeway to <em>sourcehood</em>: what matters is whether the agent is the ultimate origin. Determinism threatens that too, by a different route, and one on which the physics is again not decisive.</p>
+
+<div class="callout">
+  <h4>What the physics settles about free will</h4>
+  <p style="margin-bottom:0">Very little, and less than either side usually claims. It settles a conditional whose consequent was built into a definition. It does not settle the antecedent. And on the two questions that would matter — whether alternative possibilities are required for responsibility, and whether sourcehood survives determinism or chance — physics is silent, because these are questions about the analysis of agency and not about the size of <span class="m">ℋ</span>.</p>
+</div>
+
+<h2 id="s16"><span class="num">16</span>Retraction in full</h2>
+
+<p>Revision 2 claimed determinism is a predicate of a law plus three independent coordinates: <b>σ</b> (individuation), <b>δ</b> (temporal domain), <b>μ</b> (admissibility). A referee refuted it with counter-theorems stated against its own definitions; I compiled all of them, and they are in the repository as <code>retracted/Referee.lean</code>.</p>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 1 · Two coordinates are eliminable</div>
+  <p>Folding the admissibility class into the law gives <code>DetIn L C ↔ DetIn (restrict L C) triv</code>, axiom-free, where <code>restrict L C := ⟨fun h => L.Possible h ∧ C h⟩</code>. The same move eliminates μ. And σ was never a separate slot, since <code>push L r</code> is itself a law. Composing, every indexed verdict is an <em>unindexed</em> verdict about one constructed law. There is one slot — which set of histories you mean — and σ, δ, μ are three motivations for filling it. The claim that "no definition of determinism that suppresses any of them is well-formed" is false.</p>
+</div>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 2 · The independence theorem conflated two predicates</div>
+  <p>Its δ conjunct was about existence; its σ and μ conjuncts about determinism. On its own δ witness the determinism verdict does not move — the paper proved this itself and never reconciled it with its abstract. <em>This one is repairable and I repaired it:</em> a law with two mutually non-extending partial histories meeting at one instant, plus a total history meeting neither, is deterministic under the total convention and indeterministic under the maximal one. The repair does not rescue Withdrawn 1.</p>
+</div>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 3 · Everettian branching is not a σ-shift</div>
+  <p>The pushforward of a singleton law is a singleton law, so that Everett model is deterministic at <em>every</em> individuation: the branch multiplicity the theorem existed to explain never arises in it. And the law whose possible histories are the branch histories is not the pushforward of the universal law along <em>any</em> redescription — pushing along one map cannot turn one history into many. Branching needs the image under a <em>family</em> of maps, a different operation.</p>
+</div>
+
+<p>Two further defects are defects of method. The theorem named <code>sigma_delta_interact</code>, which Revision 2 called the sharpest form of its thesis, <b>contained no σ in its statement</b>; the claim lived in a code comment. And four of its seventeen symbolic checks verified nothing: one had the literal <code>True</code> as its predicate, and the "tent map" check only ever differentiated <span class="m">2x</span> — the identical check passes for <span class="m">x ↦ 2x + 7</span>, which is not chaotic. Both are the exact defect class Revision 2's own corrigenda claimed to have purged from Revision 1. The verification file accompanying this revision audits its own source and fails if any predicate is a literal constant.</p>
+
+<h2 id="s17"><span class="num">17</span>What is and is not mine</h2>
+
+<p>Nothing in this survey is a novel contribution, and the boundary should be explicit rather than left to a reader's charity.</p>
+
+<p><b>Other people's, and where to read them properly.</b> That <span class="m">|ℋ| = 1</span> factors into existence and uniqueness, and that physics fails existence: Earman [11], whose handbook chapter covers most of the territory of §§4–13 and should be the first stop for any reader. The self-adjointness point of §8: Earman again [12,13]. That determinism admits several inequivalent definitions: Montague, Lewis, Belot, Müller and Placek [22], Halvorson, Manchak and Weatherall [18]. That the model class is not fixed by the formalism: Fletcher [15], Antoszek [1]. That coarse-grained deterministic systems are statistically indistinguishable from stochastic ones: Ornstein and Weiss [23], Werndl [28]. The hole-argument material: Earman and Norton, Weatherall [27], Halvorson and Manchak, Dewar. Everything in §§9–10 belongs to the authors cited there.</p>
+
+<p><b>Mine, such as it is.</b> The four-way taxonomy of §3 is an organising device, not a result; I have not found it stated this way, and I would not be surprised to learn it is somewhere. The sharpness observation of §8.2 — that the classical escape threshold sits exactly at the harmonic case — is undergraduate mechanics and is probably also somewhere. The corrections registered in §19 are corrections to my own earlier drafts, not to the literature. That is the whole list.</p>
+
+<p><b>What this is for.</b> The claims corrected in §§4, 5.5, 6, 8, 9.2 and 11.2 are repeated often enough — including by me, twice — that a survey which separates the failure modes and shows the checks seems worth having, even though every ingredient is somebody else's.</p>
+
+<h2 id="s18"><span class="num">18</span>Status register</h2>
+
+</div>
+
+<div class="wide">
+<div class="scroll">
+<table>
+<colgroup><col style="width:38%"><col style="width:18%"><col style="width:44%"></colgroup>
+<thead><tr><th>Claim</th><th>Status</th><th>Basis</th></tr></thead>
+<tbody>
+<tr><th>Uniqueness ⟹ no alternative history</th><td class="y">PROVEN</td><td>Definitional unfolding of "exactly one"; carries no physical content</td></tr>
+<tr><th>Modal collapse holds iff |ℋ| = 1</th><td class="y">PROVEN</td><td>Both failure directions checked: |ℋ|=0 gives □ true, ◇ false</td></tr>
+<tr><th>Local uniqueness ⟹ global uniqueness on a connected interval</th><td class="y">PROVEN</td><td>Clopen agreement set; standard</td></tr>
+<tr><th>Dome: r̈ = √r, family (t−T)⁴/144, join exactly C³</th><td class="y">PROVEN</td><td>Verified symbolically here</td></tr>
+<tr><th>V = −xⁿ classical escape finite iff n &gt; 2, sharp at n = 2</th><td class="y">PROVEN</td><td>Verified symbolically here at n = 1,2,3,4,6</td></tr>
+<tr><th>x′ = −x^(1/3) is forward-unique and not two-directionally deterministic</th><td class="y">PROVEN</td><td>Verified symbolically here</td></tr>
+<tr><th>Linearity does not immunise the Schrödinger equation</th><td class="q">STRONGLY SUPPORTED</td><td>Correct physics, correct sources; Reed–Simon not opened by me</td></tr>
+<tr><th>GR: uniqueness up to isometry within the MGHD</th><td class="q">STRONGLY SUPPORTED</td><td>Choquet-Bruhat–Geroch, correctly qualified</td></tr>
+<tr><th>Bohmian determinism holds almost everywhere</th><td class="q">STRONGLY SUPPORTED</td><td>Berndl et al., with the typicality qualification</td></tr>
+<tr><th>Bell does not assume or refute determinism</th><td class="q">STRONGLY SUPPORTED</td><td>Standard modern reading; two quotations not re-verified by me</td></tr>
+<tr><th>The complete-state problem defeats the question at the fundamental level</th><td class="q">STRONGLY SUPPORTED</td><td>Follows from general covariance; the strongest objection here</td></tr>
+<tr><th>Norton's dome is an F4 dispute</th><td class="q">PLAUSIBLE</td><td>Malament's own conclusion; Fletcher and Antoszek corroborate</td></tr>
+<tr><th>The four-way taxonomy carves at a joint</th><td class="q">PLAUSIBLE</td><td>An organising device; its value is whether it prevents the confusions in §3</td></tr>
+<tr><th>Whether the actual world is deterministic</th><td class="n">UNSETTLED</td><td>Bohm, Everett and GRW are not discriminated by any experiment performed to date</td></tr>
+<tr><th>σ, δ, μ are independent coordinates of a predicate</th><td class="n">FALSE</td><td>Refuted, axiom-free, against its own definitions (§16)</td></tr>
+<tr><th>Everettian branching is a redescription shift</th><td class="n">FALSE</td><td>Refuted (§16)</td></tr>
+<tr><th>The classical and quantum failures are the same failure</th><td class="n">FALSE</td><td>F2 and F4 respectively (§8.3)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="wrap">
+
+<h2 id="s19"><span class="num">19</span>Corrections register</h2>
+
+<p>Across three revisions. Each is marked <span class="st st-n">CORR</span> where it occurs.</p>
+
+<ol class="tight">
+  <li><b>Linearity and self-adjointness</b> (R2, false) — §8.</li>
+  <li><b>Local → global uniqueness</b> (R1, false) — §4.1.</li>
+  <li><b>Existence failure as a finding rather than a convention</b> (R2, unjustified) — §4.2.</li>
+  <li><b>x′ = −x^(1/3) called deterministic</b> (R1, inconsistent with its own definition) — §5.5.</li>
+  <li><b>Space invaders classified with blow-up</b> (R2, wrong mode) — §5.4.</li>
+  <li><b>Ornstein–Weiss cited for coarse-graining destroying determinism</b> (R2, misuse) — §6.</li>
+  <li><b>Objective collapse listed as a way out of Bell</b> (R1, incoherent) — §9.2.</li>
+  <li><b>Bell "constrains none of this"</b> (R2 abstract, contradicted its own §10) — §9.2.</li>
+  <li><b>Halvorson–Manchak reported as settling the hole argument</b> (R2) — §12.</li>
+  <li><b>Cauchy-horizon extension classified as a domain convention</b> (R2, wrong mode) — §11.2.</li>
+  <li><b>Ordinary counterfactuals asserted to be reading B</b> (R2, contested) — §14.</li>
+  <li><b>Axiom-audit figures transposed</b> (R2, against its own output) — the development now under <code>retracted/</code>.</li>
+  <li><b>Two theorems whose names exceeded their statements</b> (R2) — §16.</li>
+  <li><b>Four symbolic checks that verified nothing</b> (R2) — §16; the file now audits its own source.</li>
+  <li><b>The indexed-predicate framework</b> (R2, refuted) — §16.</li>
+</ol>
+
+<p class="foot">Two of these — 13 and 14 — are defects Revision 2's own corrections section claimed to have eliminated from Revision 1 and then reproduced. That is the failure most worth recording, because it means a self-correction apparatus operated by its own author caught the previous draft's version of a defect and not its own.</p>
+
+<hr>
+
+<h2 id="refs" style="border:none;padding-top:0"><span class="num">—</span>References</h2>
+
+<p class="foot" style="margin-bottom:14px"><span class="tag">CHECKED</span> the bibliographic record was confirmed against the publisher or an equivalent index while preparing this revision. <span class="tag">INHERITED</span> the record was verified in an earlier revision's source pass and not re-checked by me. <span class="tag">NOT OPENED</span> the full text was not consulted and the characterisation of content is mine, unchecked. Where a quotation's wording was verified by me or by the referee, the sentence says so; where it was not, it says that too.</p>
+
+<ol class="refs">
+<li>Antoszek, A. (2026). Why the definition of determinism fails and how it can be corrected. <em>Synthese</em> 207, art.&nbsp;247. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Bell, J.&nbsp;S. (1964). On the Einstein–Podolsky–Rosen paradox. <em>Physics</em> 1(3), 195–200. <span class="tag">INHERITED</span></li>
+<li>Bell, J.&nbsp;S. (1976). The theory of local beables. <em>Epistemological Letters</em> 9, 11–24. Together with the 1971 lecture notes, CERN TH-1220. <span class="tag">INHERITED · quotations not re-verified</span></li>
+<li>Berndl, K., Dürr, D., Goldstein, S., Peruzzi, G., &amp; Zanghì, N. (1995). On the global existence of Bohmian mechanics. <em>Communications in Mathematical Physics</em> 173(3), 647–673. <span class="tag">INHERITED</span></li>
+<li>Choquet-Bruhat, Y., &amp; Geroch, R. (1969). Global aspects of the Cauchy problem in general relativity. <em>Communications in Mathematical Physics</em> 14(4), 329–335. <span class="tag">INHERITED</span></li>
+<li>Conway, J.&nbsp;H., &amp; Kochen, S. (2009). The strong free will theorem. <em>Notices of the AMS</em> 56(2), 226–232. <span class="tag">INHERITED</span></li>
+<li>Dafermos, M., &amp; Luk, J. (2025). The interior of dynamical vacuum black holes I: the <span class="m">C⁰</span>-stability of the Kerr Cauchy horizon. <em>Annals of Mathematics</em> 202(2), 309–630. <span class="tag">CHECKED</span></li>
+<li>Del Santo, F., &amp; Gisin, N. (2019). Physics without determinism: alternative interpretations of classical physics. <em>Physical Review A</em> 100(6), 062107. <span class="tag">INHERITED</span></li>
+<li>Dewar, N. (2025). The hole argument and determinism(s). <em>Philosophy of Physics</em> 3(1). DOI 10.31389/pop.132. <span class="tag">CHECKED</span></li>
+<li>Dürr, D., Goldstein, S., &amp; Zanghì, N. (1992). Quantum equilibrium and the origin of absolute uncertainty. <em>Journal of Statistical Physics</em> 67(5–6), 843–907. <span class="tag">INHERITED</span></li>
+<li>Earman, J. (2007). Aspects of determinism in modern physics. In J.&nbsp;Butterfield &amp; J.&nbsp;Earman (eds.), <em>Handbook of the Philosophy of Science: Philosophy of Physics, Part&nbsp;B</em>, Elsevier, 1369–1434. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Earman, J. (2008a). Essential self-adjointness: implications for determinism and the classical–quantum correspondence. <em>Synthese</em> 169(1), 27–50. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Earman, J. (2008b). How determinism can fail in classical physics and how quantum physics can (sometimes) provide a cure. <em>Philosophy of Science</em> 75(5), 817–829. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Everett, H., III (1957). "Relative state" formulation of quantum mechanics. <em>Reviews of Modern Physics</em> 29(3), 454–462. <span class="tag">INHERITED · quotation verified by the referee</span></li>
+<li>Fletcher, S.&nbsp;C. (2012). What counts as a Newtonian system? The view from Norton's dome. <em>European Journal for Philosophy of Science</em> 2(3), 275–297. <span class="tag">CHECKED</span></li>
+<li>Ghirardi, G.&nbsp;C., Rimini, A., &amp; Weber, T. (1986). Unified dynamics for microscopic and macroscopic systems. <em>Physical Review D</em> 34(2), 470–491. <span class="tag">INHERITED</span></li>
+<li>Halvorson, H., &amp; Manchak, J.&nbsp;B. (2025). Closing the hole argument. <em>British Journal for the Philosophy of Science</em> 76(2), 295–318. DOI 10.1086/719193. <span class="tag">CHECKED</span></li>
+<li>Halvorson, H., Manchak, J.&nbsp;B., &amp; Weatherall, J.&nbsp;O. (2026). Deterministic theories. arXiv:2503.05681v2. <span class="tag">CHECKED</span></li>
+<li>Hossenfelder, S., &amp; Palmer, T. (2020). Rethinking superdeterminism. <em>Frontiers in Physics</em> 8, art.&nbsp;139. <span class="tag">INHERITED</span></li>
+<li>Kuchař, K. (2011). Time and interpretations of quantum gravity. <em>International Journal of Modern Physics D</em> 20(supp01), 3–86. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Malament, D.&nbsp;B. (2008). Norton's slippery slope. <em>Philosophy of Science</em> 75(5), 799–816. <span class="tag">CHECKED · quotation anchor verified by the referee, p.&nbsp;816</span></li>
+<li>Müller, T., &amp; Placek, T. (2018). Defining determinism. <em>British Journal for the Philosophy of Science</em> 69(1), 215–252. DOI 10.1093/bjps/axv049. <span class="tag">CHECKED</span></li>
+<li>Ornstein, D.&nbsp;S., &amp; Weiss, B. (1991). Statistical properties of chaotic systems. <em>Bulletin of the AMS</em> 24(1), 11–116. Cited only for what it establishes: statistical indistinguishability via generating partitions, which preserve determinism. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Pusey, M.&nbsp;F., Barrett, J., &amp; Rudolph, T. (2012). On the reality of the quantum state. <em>Nature Physics</em> 8(6), 475–478. <span class="tag">INHERITED</span></li>
+<li>Reed, M., &amp; Simon, B. (1975). <em>Methods of Modern Mathematical Physics II: Fourier Analysis, Self-Adjointness</em>. Academic Press. <span class="tag">NOT OPENED</span></li>
+<li>Sbierski, J. (2016). On the existence of a maximal Cauchy development for the Einstein equations — a dezornification. <em>Annales Henri Poincaré</em> 17(2), 301–329. <span class="tag">INHERITED</span></li>
+<li>Weatherall, J.&nbsp;O. (2018). Regarding the "hole argument". <em>British Journal for the Philosophy of Science</em> 69(2), 329–350. <span class="tag">CHECKED</span></li>
+<li>Werndl, C. (2009). Are deterministic descriptions and indeterministic descriptions observationally equivalent? <em>Studies in History and Philosophy of Modern Physics</em> 40(3), 232–242. <span class="tag">CHECKED</span></li>
+<li>Xia, Z. (1992). The existence of noncollision singularities in Newtonian systems. <em>Annals of Mathematics</em> 135(3), 411–468. <span class="tag">INHERITED</span></li>
+<li>Xue, J. (2020). Non-collision singularities in a planar 4-body problem. <em>Acta Mathematica</em> 224(2), 253–388. <span class="tag">CHECKED</span></li>
+</ol>
+
+<h2 id="appA"><span class="num">A</span>Appendix — symbolic checks</h2>
+
+<p>Source: <code>verification/note_checks.py</code>, SymPy, <b>14 checks, all passing</b>, exit code 0. Covering the dome identity and its exactly-<span class="m up">C³</span> join; the Lipschitz failure; the blow-up solution under both the total and maximal conventions; non-uniqueness for <span class="m">x′ = x<sup>2/3</sup></span>; the backward non-uniqueness of <span class="m">x′ = −x<sup>1/3</sup></span>; and the classical escape threshold for <span class="m">V = −x<sup>n</sup></span>, including sharpness at <span class="m">n = 2</span>.</p>
+
+<p>The file audits its own source. A value-level guard is not enough — a genuine computation may legitimately evaluate to <code>True</code> — so the audit walks the file's AST and fails the run if any <code>check()</code> call has a literal constant in its predicate position:</p>
+
+<pre><code><span class="kw">def</span> audit_own_source():
+    tree = ast.parse(open(__file__).read())
+    bad, n = [], 0
+    <span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
+        <span class="kw">if</span> isinstance(node, ast.Call) <span class="kw">and</span> getattr(node.func, <span class="cmt">"id"</span>, None) == <span class="cmt">"check"</span>:
+            n += 1
+            <span class="kw">if</span> isinstance(node.args[1], ast.Constant):
+                bad.append((node.lineno, ast.unparse(node.args[1])))
+    <span class="kw">return</span> n, bad
+
+<span class="cmt"># AUDIT    14 check() calls; no predicate is a literal constant</span></code></pre>
+
+<p class="foot"><b>Reproduction.</b> <code>python3 verification/note_checks.py</code> prints a pass/fail table, the source audit, and exits non-zero on any failure. The withdrawn formal development and the counter-development that refutes it are retained as <code>retracted/Indexed.lean</code> and <code>retracted/Referee.lean</code>; both compile under Lean 4.24.0 core.</p>
+
+</div>
