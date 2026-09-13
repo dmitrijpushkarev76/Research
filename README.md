@@ -1,69 +1,44 @@
 # Research
 
-Two notes on determinism, plus the retracted development that preceded them.
+An expository note and a critical survey on determinism, plus the retracted development that preceded them.
 
 | Path | What it is |
 |---|---|
-| `paper/global-maximal-gap.html` | **The Global–Maximal Gap** — a theorem and an explicit witness |
+| `paper/one-state-many-futures.html` | **One State, Many Maximal Futures** — an expository note |
 | `paper/ways-determinism-fails.html` | **The Ways Determinism Fails** — a critical survey, including the retraction |
-| `verification/gap_checks.py` | 40 symbolic/numerical checks for the first note |
+| `verification/gap_checks.py` | 49 symbolic/numerical checks for the first note |
 | `verification/note_checks.py` | 14 symbolic checks for the second |
 | `retracted/Indexed.lean` | The withdrawn paper's development (39 theorems) |
 | `retracted/Referee.lean` | The counter-development that refutes it (7 theorems) |
 
-## The Global–Maximal Gap
+## One State, Many Maximal Futures
 
-For the scalar autonomous problem `x' = f(x)`, `x(0) = 0` with `f` continuous,
-`f(0) = 0` and `f > 0` off the origin, the convergence of one integral
+An expository note. For `x' = f(x)`, `x(0) = 0` with `f` continuous, `f(0) = 0` and
+`f > 0` off the origin, take
 
 ```
-T* = ∫₀^∞ du/f(u) < ∞
+f(x) = |x|^(2/3) + x²
 ```
 
-is **necessary and sufficient** for a configuration in which all three of the
-following hold at once:
+Substituting `x = u³` turns `dx/f(x)` into `3 du/(1+u⁴)`, so both endpoint integrals
+converge and `T* = ∫₀^∞ dx/f(x) = 3√2·π/4 ≈ 3.3321622036` exactly.
 
-- uniqueness fails at the origin — a solution may rest at `0` for any waiting
-  time `T ≥ 0` and then depart;
-- every departing branch is non-continuable with a bounded maximal interval,
-  blowing up at `T + T*`;
-- exactly one solution is defined for all forward time, namely `x ≡ 0`.
+The consequence: the origin has **exactly one** solution defined for all `t ≥ 0`
+(namely `x ≡ 0`), and **continuum-many** solutions that cannot be extended forward —
+one for each waiting time `T ≥ 0`, resting at the origin until `T` and reaching `+∞`
+at `T + T*`. Convergence near the origin populates the second set; convergence at
+infinity empties the first of everything but the zero solution. Both are needed.
 
-So `|ℋ_glob(0)| = 1` while `|ℋ_max(0)| = 𝔠`. Uniqueness among globally defined
-histories and uniqueness among maximal histories are different properties of
-the same law, and here they disagree.
+**The mathematics is classical and the note says so throughout.** The solution set of
+this equation was characterised by Wallach (1948) and treated in general by Binding
+(1979) — his Lemma 7.5 is the structure theorem, his §6 case (6.5) is exactly the
+hypothesis here. The conceptual distinction is likewise familiar: Earman (2007 §6.4)
+and Smeenk & Wüthrich (2020) for general relativity, Wilson (2009) for Newtonian
+blow-up, Azhar & Namjoo (2021) for termination as a failure of determination.
 
-The two hypotheses are the two ends of one integral: `∫₀¹ du/f < ∞` is what
-lets a branch leave the equilibrium, `∫₁^∞ du/f < ∞` is what makes it blow up.
-Both are convergence conditions, **not** statements about the growth ratio
-`f(u)/u` — Proposition 8 gives counterexamples in both directions, so the
-tempting "sublinear at 0, superlinear at ∞" formulation is false as stated and
-the note does not use it.
-
-**Witness.** `f(x) = |x|^(2/3) + x²`, with `T* = 3√2·π/4 ≈ 3.3321622036` in
-closed form via the substitution `x = u³`.
-
-Two further results, both proved in §11:
-
-- **No surface of revolution supports it.** Arc-length parametrisation forces
-  `|h'(r)| ≤ 1`, hence `|r̈| ≤ g`, hence at most quadratic growth. A Norton-style
-  dome can produce spontaneous departure but never finite-time escape. *(This is
-  why the obvious candidate `h(r) = (1/g)(⅔r^{3/2} + ⅓r³)` fails: it needs
-  `√r + r² ≤ g`, which breaks at `r ≈ 2.85` for `g = 9.8`.)*
-- **A potential does.** A unit-mass particle in `V(x) = −(⅔x^{3/2} + ⅓x³)`
-  reduces at zero energy to `ẋ = G(x)`, which satisfies the hypotheses, with
-  `T*_mech = (2/3)√(3/2)·2^(−1/3)·B(⅙,⅓) ≈ 5.4521363617`.
-
-**On novelty.** The note claims only what a bounded search supports: *in the
-literature searched for this project, no example was found satisfying all four
-tested conditions simultaneously*. That is not a priority claim. The ingredients
-are classical — Osgood's uniqueness criterion dates from 1898 — and the standard
-textbooks were searched by keyword, not read.
-
-**On interpretation.** §9 sets out three readings of whether this is
-indeterminism and endorses none as established. Whether it is depends on a prior
-question the mathematics does not settle: whether a history that ceases to exist
-at a finite time counts as a complete physical history.
+What the note contributes is a minimal worked example: scalar, autonomous,
+elementary integrals, exact blow-up time, explicit solution family, no idealisation
+to argue about. Section 6 attributes every classical ingredient to a page.
 
 ## The Ways Determinism Fails
 
@@ -117,7 +92,7 @@ second refutes the first.
 ## Reproducing
 
 ```bash
-python3 verification/gap_checks.py     # 40/40, plus an AST audit of itself
+python3 verification/gap_checks.py     # 49/49, plus an AST audit of itself
 python3 verification/note_checks.py    # 14/14, same guard
 lean retracted/Indexed.lean            # the withdrawn development
 lean retracted/Referee.lean            # the refutation

@@ -1,0 +1,450 @@
+<title>One State, Many Maximal Futures</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root{
+  --paper:#F7F8FA; --raise:#FFFFFF; --sunk:#EEF0F4;
+  --ink:#12151C; --ink-2:#333A48; --muted:#59616F; --faint:#89909D;
+  --rule:#DCE0E7; --rule-2:#C2C8D2;
+  --accent:#3A3D8F; --accent-soft:#E5E6F3;
+  --verify:#1B6B52; --verify-soft:#DEEDE7;
+  --errata:#96591A; --errata-soft:#F4EADB;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans Condensed",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --col:65ch;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:17.5px; line-height:1.62;
+  margin:0; padding-block:0 96px; padding-left:20px; padding-right:20px;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:var(--col); margin-inline:auto}
+.wide{max-width:1060px; margin-inline:auto}
+
+.mast{border-bottom:2px solid var(--accent); padding-block:50px 22px; margin-bottom:28px}
+.kicker{font-family:var(--sans); font-size:11.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
+  display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px}
+.kicker span:not(:first-child){color:var(--muted)}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(1.95rem,5.4vw,2.85rem);
+  line-height:1.05; letter-spacing:-.021em; margin:0 0 12px; text-wrap:balance}
+.dek{font-size:1.08rem; color:var(--ink-2); margin:0; text-wrap:balance}
+
+h2{font-family:var(--serif); font-weight:600; font-size:1.5rem; line-height:1.18;
+  letter-spacing:-.011em; margin:54px 0 6px; text-wrap:balance;
+  padding-top:20px; border-top:1px solid var(--rule)}
+h2 .num{font-family:var(--mono); font-size:.64em; font-weight:500; color:var(--accent); margin-right:.6em}
+h3{font-family:var(--sans); font-weight:600; font-size:1.04rem; margin:30px 0 2px; color:var(--ink)}
+h4{font-family:var(--sans); font-weight:600; font-size:.8rem; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin:22px 0 2px}
+p{margin:13px 0}
+a{color:inherit; text-decoration:underline; text-decoration-color:var(--rule-2); text-underline-offset:3px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+strong{font-weight:600}
+
+.m{font-family:var(--serif); font-style:italic; white-space:nowrap}
+.m.up{font-style:normal}
+.disp{font-family:var(--serif); font-size:1.04rem; text-align:center;
+  margin:20px auto; padding:14px 12px; border-block:1px solid var(--rule); overflow-x:auto}
+.disp .lbl{font-family:var(--mono); font-size:.68rem; color:var(--faint);
+  display:block; margin-top:7px; font-style:normal}
+sub,sup{font-size:.72em; line-height:0}
+
+/* theorem environments */
+.thm{border-left:3px solid var(--accent); background:var(--raise); padding:15px 17px; margin:24px 0}
+.thm .hd{font-family:var(--sans); font-weight:700; font-size:.79rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+.thm p{margin:8px 0 0} .thm p:first-of-type{margin-top:0}
+.thm.defn{border-left-color:var(--ink-2)} .thm.defn .hd{color:var(--ink-2)}
+.thm.neg{border-left-color:var(--errata)} .thm.neg .hd{color:var(--errata)}
+.proof{margin:16px 0 24px; padding-left:16px; border-left:2px solid var(--rule);
+  font-size:.97rem; color:var(--ink-2)}
+.proof .lab{font-family:var(--sans); font-weight:600; font-size:.78rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-right:.5em}
+.qed{float:right; color:var(--accent); font-weight:600}
+
+.callout{background:var(--sunk); border:1px solid var(--rule); padding:16px 18px; margin:24px 0}
+.callout h4{margin-top:0}
+blockquote{margin:18px 0; padding-left:16px; border-left:2px solid var(--rule-2);
+  color:var(--ink-2); font-style:italic}
+ul,ol{margin:13px 0; padding-left:1.3em}
+li{margin:6px 0} li::marker{color:var(--faint)}
+.tight li{margin:3px 0}
+
+code{font-family:var(--mono); font-size:.84em; background:var(--sunk); padding:1px 5px; border:1px solid var(--rule)}
+.scroll{overflow-x:auto; margin:22px 0; border:1px solid var(--rule)}
+table{border-collapse:collapse; width:100%; min-width:640px; table-layout:fixed;
+  font-family:var(--sans); font-size:13px}
+th,td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
+thead th{background:var(--sunk); font-weight:600; font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:normal}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+.y{color:var(--verify); font-weight:600}
+.n{color:var(--errata); font-weight:600}
+
+.toc{background:var(--raise); border:1px solid var(--rule); padding:18px 20px; margin:26px 0}
+.toc ol{list-style:none; padding:0; margin:0; columns:2; column-gap:30px}
+.toc li{margin:0; break-inside:avoid; font-family:var(--sans); font-size:13px; line-height:1.85}
+.toc a{text-decoration:none; color:var(--ink-2); display:flex; gap:8px}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--mono); color:var(--faint); font-size:11px; min-width:1.5em; font-weight:400}
+@media (max-width:560px){ .toc ol{columns:1} }
+
+.refs{font-size:14px; color:var(--ink-2)} .refs li{margin:8px 0}
+.tag{font-family:var(--mono); font-size:9.5px; color:var(--faint); letter-spacing:.04em}
+hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
+.foot{font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+<style>
+.fig{margin:26px 0 10px}
+.fig svg{display:block; width:100%; height:auto; max-width:100%;
+  font-family:var(--sans)}
+.fig .cap{font-family:var(--sans); font-size:.82rem; line-height:1.5; color:var(--muted);
+  margin-top:10px; max-width:var(--col); margin-inline:auto}
+.attrib{font-family:var(--sans); font-size:.84rem; line-height:1.55;
+  border-collapse:collapse; width:100%}
+.attrib td,.attrib th{padding:9px 14px 9px 0; vertical-align:top; text-align:left;
+  border-bottom:1px solid var(--rule)}
+.attrib th{font-weight:600; color:var(--muted); font-size:.72rem;
+  letter-spacing:.08em; text-transform:uppercase}
+.attrib td:first-child{color:var(--accent); font-weight:500}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kicker"><span>Expository note</span><span>Ordinary differential equations</span><span>Foundations of physics</span><span>13 September 2026</span></div>
+  <h1>One State, Many Maximal Futures</h1>
+  <p class="dek">A scalar autonomous equation whose origin admits exactly one solution defined for all future time, and continuum-many that cannot be extended any further.</p>
+</header>
+
+<h4>Abstract</h4>
+<p>For the initial-value problem <span class="m">ẋ = f(x)</span>, <span class="m">x(0) = 0</span> with <span class="m">f</span> continuous, <span class="m">f(0) = 0</span> and <span class="m">f &gt; 0</span> off the origin, the structure of the solution set is classical: it was characterised by Wallach [<a href="#r14">14</a>] in 1948 and treated in general form by Binding [<a href="#r4">4</a>] in 1979. This note takes one concrete member of that class, <span class="m">f(x) = |x|<sup>2/3</sup> + x²</span>, and works it out completely.</p>
+<p>The example has exactly one solution defined on all of <span class="m">[0,∞)</span>, namely <span class="m">x ≡ 0</span>. It also has continuum-many solutions that admit no forward extension: for each waiting time <span class="m">T ≥ 0</span> there is a solution that rests at the origin until <span class="m">T</span>, departs, and reaches <span class="m">+∞</span> at <span class="m">T + 3√2π/4</span>. Every non-trivial branch terminates in finite time, which is exactly why the first count is one and the second is <span class="m up">𝔠</span>.</p>
+<p>The distinction this illustrates — between uniqueness among globally defined solutions and uniqueness among solutions that merely cannot be extended — is not introduced here. It is discussed for general relativity by Earman [<a href="#r7">7</a>] and by Smeenk and Wüthrich [<a href="#r13">13</a>], for Newtonian blow-up by Wilson [<a href="#r15">15</a>], and within a broader formulation of indeterminism by Azhar and Namjoo [<a href="#r2">2</a>]. The contribution here is a minimal worked example in which every quantity is available in closed form.</p>
+
+<nav class="toc" aria-label="Contents">
+  <h4>Contents</h4>
+  <ol>
+    <li><a href="#s1">Introduction</a></li>
+    <li><a href="#s2">The example</a></li>
+    <li><a href="#s3">The solution family</a></li>
+    <li><a href="#s4">Globally defined versus forward-maximal</a></li>
+    <li><a href="#s5">Three senses of “maximal”</a></li>
+    <li><a href="#s6">What is classical, and where</a></li>
+    <li><a href="#s7">Bearing on determinism</a></li>
+    <li><a href="#s8">What this note contributes</a></li>
+    <li><a href="#sA">Appendix A · Two-sided time</a></li>
+    <li><a href="#sB">Appendix B · A mechanical realisation</a></li>
+    <li><a href="#refs">References</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1</span>Introduction</h2>
+
+<p>Here is a question with a less obvious answer than it looks.</p>
+
+<div class="callout">
+  <p style="margin:0"><b>If an initial state admits exactly one solution that exists for all future times, does it follow that the state has a unique possible future history?</b></p>
+</div>
+
+<p>Not necessarily — not if histories are taken to be solutions that cannot be extended any further, rather than solutions defined at every future time. The two classes can differ, and where they do, the uniqueness verdict can differ with them. That is the whole content of this note, and none of it is new.</p>
+
+<p>The mathematics is classical. For scalar autonomous equations the solution set through an equilibrium was characterised by Wallach [<a href="#r14">14</a>] in 1948, and the general theory — the exact conditions for departure from an equilibrium, for escape to infinity in finite time, and for the structure of the solution set — is given by Binding [<a href="#r4">4</a>]. The conceptual point is also familiar. In general relativity the maximal globally hyperbolic development of initial data is unique while extensions past a Cauchy horizon are not, and whether to restrict attention to the well-behaved class is a live question rather than a settled one [<a href="#r7">7</a>, <a href="#r13">13</a>]. In Newtonian mechanics Wilson [<a href="#r15">15</a>] argues that failures of global existence are descriptive gaps rather than failures of determinism, in explicit opposition to Earman and Norton. Azhar and Namjoo [<a href="#r2">2</a>] argue that a uniqueness-based criterion misses the sense in which a terminating history is itself a failure of determination.</p>
+
+<p>What follows is therefore expository. Its purpose is to put the distinction into the smallest explicit example we could construct and work it out in full: a single scalar equation, elementary integrals, a blow-up time in closed form, an explicit solution family. No general relativity, no <span class="m">N</span>-body mechanics, no partial differential equations, no geometry.</p>
+
+<h2 id="s2"><span class="num">2</span>The example</h2>
+
+<p>Throughout we study</p>
+<div class="disp">ẋ = f(x), &nbsp; x(0) = 0,<span class="lbl">(IVP)</span></div>
+<p>for a continuous <span class="m">f : ℝ → ℝ</span>. A <b>solution</b> is a differentiable <span class="m">x : I → ℝ</span> on an interval <span class="m">I</span> with non-empty interior satisfying <span class="m">ẋ(t) = f(x(t))</span> throughout (one-sided derivatives at endpoints belonging to <span class="m">I</span>). We work forward from <span class="m">0</span> until Appendix A.</p>
+
+<p>The example is</p>
+<div class="disp"><b>f(x) = |x|<sup>2/3</sup> + x²</b>.</div>
+
+<p>Four properties matter, and all four are elementary.</p>
+
+<div class="thm">
+  <div class="hd">Properties of the example</div>
+  <p><b>(i) Continuity and the equilibrium.</b> <span class="m">|x|<sup>2/3</sup></span> is the composition of <span class="m">x ↦ |x|</span> with <span class="m">s ↦ s<sup>2/3</sup></span> on <span class="m">[0,∞)</span>, so <span class="m">f</span> is continuous on <span class="m">ℝ</span>; <span class="m">f(0) = 0</span>; and <span class="m">f(x) &gt; 0</span> for <span class="m">x ≠ 0</span>, since <span class="m">|x|<sup>2/3</sup> &gt; 0</span> and <span class="m">x² ≥ 0</span>.</p>
+  <p><b>(ii) Not locally Lipschitz at the origin.</b> <span class="m">|f(x) − f(0)|/|x| = |x|<sup>−1/3</sup> + |x| → +∞</span> as <span class="m">x → 0</span>, so no Lipschitz constant works on any neighbourhood of the origin. Away from it, <span class="m">f′(x) = ⅔·sgn(x)|x|<sup>−1/3</sup> + 2x</span> is continuous, so <span class="m">f</span> is <span class="m up">C</span><sup>1</sup> on <span class="m">ℝ∖{0}</span> and the failure sits at exactly one point.</p>
+  <p><b>(iii) The substitution.</b> For <span class="m">x &gt; 0</span> put <span class="m">x = u³</span>, a <span class="m up">C</span><sup>1</sup> increasing bijection of <span class="m">(0,∞)</span>. Then <span class="m">dx = 3u² du</span>, <span class="m">x<sup>2/3</sup> = u²</span>, <span class="m">x² = u<sup>6</sup></span>, and</p>
+  <p class="disp" style="border:none;margin:8px 0">dx / (x<sup>2/3</sup> + x²) = 3u² du / (u²(1 + u⁴)) = 3 du/(1 + u⁴).</p>
+  <p><b>(iv) Both integrals converge.</b> Near the origin, <span class="m">∫<sub>0</sub><sup>1</sup> 3 du/(1+u⁴) ≤ 3</span>. At infinity, <span class="m">∫<sub>1</sub><sup>∞</sup> 3 du/(1+u⁴) ≤ ∫<sub>1</sub><sup>∞</sup> 3u<sup>−4</sup> du = 1</span>.</p>
+</div>
+
+<p>The two halves of (iv) do different work, and it is worth naming which. Convergence <em>near the origin</em> is what allows a solution to leave the equilibrium at all; convergence <em>at infinity</em> is what makes the departing solution reach <span class="m">+∞</span> in finite time. Both facts are classical, and §<a href="#s6">6</a> says whose they are.</p>
+
+<p>Because the substitution rationalises the integrand completely, the total is available in closed form:</p>
+
+<div class="thm">
+  <div class="hd">The blow-up time</div>
+  <p class="disp" style="border:none;margin:4px 0">T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> dx/(x<sup>2/3</sup> + x²) = 3∫<sub>0</sub><sup>∞</sup> du/(1 + u⁴) = 3 · (π/4)/sin(π/4) = <b>3√2 π / 4</b> ≈ 3.3321622036.</p>
+</div>
+
+<p>The last step is the standard evaluation <span class="m">∫<sub>0</sub><sup>∞</sup> du/(1+u<sup>n</sup>) = (π/n)/sin(π/n)</span> at <span class="m">n = 4</span>. This closed form is the practical reason to prefer this <span class="m">f</span> to other members of the class: every number in the note can be written down exactly.</p>
+
+<h2 id="s3"><span class="num">3</span>The solution family</h2>
+
+<p>Define, for <span class="m">x &gt; 0</span>,</p>
+<div class="disp">F(x) = ∫<sub>0</sub><sup>x</sup> du/f(u),</div>
+<p>which by (iii)–(iv) is a <span class="m up">C</span><sup>1</sup> strictly increasing bijection from <span class="m">(0,∞)</span> onto <span class="m">(0, T<sub>∗</sub>)</span> with <span class="m">F(0<sup>+</sup>) = 0</span>. Let <span class="m">φ = F<sup>−1</sup></span>, extended by <span class="m">φ(0) = 0</span>. Then <span class="m">φ</span> is defined on <span class="m">[0, T<sub>∗</sub>)</span>, satisfies <span class="m">φ′ = f(φ)</span> there, and <span class="m">φ(t) → +∞</span> as <span class="m">t → T<sub>∗</sub><sup>−</sup></span>.</p>
+
+<p>One detail deserves a line, because it is what lets the pieces glue. Since <span class="m">φ(t) → 0</span> as <span class="m">t → 0<sup>+</sup></span> and <span class="m">f</span> is continuous with <span class="m">f(0) = 0</span>, we have <span class="m">φ′(t) = f(φ(t)) → 0</span>; by the mean value theorem the right derivative of <span class="m">φ</span> at <span class="m">0</span> exists and equals <span class="m">0 = f(φ(0))</span>. So <span class="m">φ</span> is <span class="m up">C</span><sup>1</sup> up to and including the origin, and leaves it with zero slope.</p>
+
+<p>Now for each waiting time <span class="m">T ∈ [0, ∞)</span> set</p>
+<div class="disp">x<sub>T</sub>(t) = 0 for 0 ≤ t ≤ T, &nbsp;&nbsp; x<sub>T</sub>(t) = φ(t − T) for T &lt; t &lt; T + T<sub>∗</sub>,</div>
+<p>and let <span class="m">x<sub>∞</sub> ≡ 0</span> on <span class="m">[0,∞)</span>. Each <span class="m">x<sub>T</sub></span> solves (IVP): on the two open pieces by construction, and at <span class="m">t = T</span> because the left derivative is <span class="m">0</span>, the right derivative is <span class="m">φ′(0<sup>+</sup>) = 0</span>, and <span class="m">f(x<sub>T</sub>(T)) = f(0) = 0</span>. The join is <span class="m up">C</span><sup>1</sup>, not merely continuous.</p>
+
+<p>In words: the solution sits at the equilibrium for as long as it likes, leaves with zero slope at a time of its choosing, and then — after exactly <span class="m">T<sub>∗</sub> = 3√2π/4</span> further units of time, the same for every branch — runs off to <span class="m">+∞</span> and stops existing.</p>
+</div>
+
+<div class="wide fig">
+  <svg viewBox="0 0 760 300" role="img" aria-label="Four solutions of the initial value problem, each resting at zero for a different waiting time before departing and reaching infinity in finite time.">
+    <line x1="46" y1="20" x2="742" y2="20" stroke="var(--rule)" stroke-width="1" stroke-dasharray="3 4"/>
+    <text x="740" y="34" text-anchor="end" font-size="11" fill="var(--muted)">x → +∞</text>
+    <line x1="46" y1="266" x2="46" y2="14" stroke="var(--rule-2)" stroke-width="1"/>
+    <text x="38" y="270" text-anchor="end" font-size="11" fill="var(--muted)">0</text>
+    <text x="20" y="140" text-anchor="middle" font-size="11" fill="var(--muted)" transform="rotate(-90 20 140)">x</text>
+    <text x="740" y="288" text-anchor="end" font-size="11" fill="var(--muted)">t</text>
+    <g stroke="var(--rule-2)" stroke-width="1">
+      <line x1="169.7" y1="263" x2="169.7" y2="269"/>
+      <line x1="293.3" y1="263" x2="293.3" y2="269"/>
+      <line x1="417" y1="263" x2="417" y2="269"/>
+    </g>
+    <g font-size="10.5" fill="var(--muted)">
+      <text x="46" y="284" text-anchor="middle">T = 0</text>
+      <text x="169.7" y="284" text-anchor="middle">1.6</text>
+      <text x="293.3" y="284" text-anchor="middle">3.2</text>
+      <text x="417" y="284" text-anchor="middle">4.8</text>
+    </g>
+    <g>
+      <path d="M 46.0,266.0 L 46.0,266.0 L 47.3,266.0 L 48.6,266.0 L 49.9,266.0 L 51.2,266.0 L 52.4,266.0 L 53.7,266.0 L 55.0,266.0 L 56.3,266.0 L 57.6,266.0 L 58.9,266.0 L 60.2,266.0 L 61.5,266.0 L 62.7,266.0 L 64.0,266.0 L 65.3,266.0 L 66.6,266.0 L 67.9,266.0 L 69.2,266.0 L 70.5,266.0 L 71.8,265.9 L 73.1,265.9 L 74.3,265.9 L 75.6,265.9 L 76.9,265.9 L 78.2,265.9 L 79.5,265.9 L 80.8,265.9 L 82.1,265.8 L 83.4,265.8 L 84.7,265.8 L 85.9,265.8 L 87.2,265.8 L 88.5,265.7 L 89.8,265.7 L 91.1,265.7 L 92.4,265.7 L 93.7,265.6 L 95.0,265.6 L 96.2,265.6 L 97.5,265.5 L 98.8,265.5 L 100.1,265.5 L 101.4,265.4 L 102.7,265.4 L 104.0,265.3 L 105.3,265.3 L 106.6,265.3 L 107.8,265.2 L 109.1,265.2 L 110.4,265.1 L 111.7,265.0 L 113.0,265.0 L 114.3,264.9 L 115.6,264.9 L 116.9,264.8 L 118.2,264.7 L 119.4,264.7 L 120.7,264.6 L 122.0,264.5 L 123.3,264.4 L 124.6,264.4 L 125.9,264.3 L 127.2,264.2 L 128.5,264.1 L 129.7,264.0 L 131.0,263.9 L 132.3,263.8 L 133.6,263.7 L 134.9,263.6 L 136.2,263.5 L 137.5,263.4 L 138.8,263.3 L 140.1,263.2 L 141.3,263.0 L 142.6,262.9 L 143.9,262.8 L 145.2,262.6 L 146.5,262.5 L 147.8,262.4 L 149.1,262.2 L 150.4,262.1 L 151.7,261.9 L 152.9,261.8 L 154.2,261.6 L 155.5,261.4 L 156.8,261.3 L 158.1,261.1 L 159.4,260.9 L 160.7,260.7 L 162.0,260.6 L 163.2,260.4 L 164.5,260.2 L 165.8,260.0 L 167.1,259.7 L 168.4,259.5 L 169.7,259.3 L 171.0,259.1 L 172.3,258.9 L 173.6,258.6 L 174.8,258.4 L 176.1,258.1 L 177.4,257.9 L 178.7,257.6 L 180.0,257.3 L 181.3,257.0 L 182.6,256.8 L 183.9,256.5 L 185.2,256.2 L 186.4,255.9 L 187.7,255.5 L 189.0,255.2 L 190.3,254.9 L 191.6,254.5 L 192.9,254.2 L 194.2,253.8 L 195.5,253.5 L 196.7,253.1 L 198.0,252.7 L 199.3,252.3 L 200.6,251.9 L 201.9,251.5 L 203.2,251.0 L 204.5,250.6 L 205.8,250.1 L 207.1,249.6 L 208.3,249.2 L 209.6,248.7 L 210.9,248.1 L 212.2,247.6 L 213.5,247.1 L 214.8,246.5 L 216.1,245.9 L 217.4,245.3 L 218.7,244.7 L 219.9,244.1 L 221.2,243.4 L 222.5,242.8 L 223.8,242.1 L 225.1,241.3 L 226.4,240.6 L 227.7,239.8 L 229.0,239.0 L 230.2,238.2 L 231.5,237.4 L 232.8,236.5 L 234.1,235.6 L 235.4,234.6 L 236.7,233.6 L 238.0,232.6 L 239.3,231.5 L 240.6,230.4 L 241.8,229.3 L 243.1,228.1 L 244.4,226.8 L 245.7,225.5 L 247.0,224.2 L 248.3,222.7 L 249.6,221.2 L 250.9,219.7 L 252.1,218.0 L 253.4,216.3 L 254.7,214.5 L 256.0,212.6 L 257.3,210.6 L 258.6,208.5 L 259.9,206.3 L 261.2,203.9 L 262.5,201.4 L 263.7,198.7 L 265.0,195.9 L 266.3,192.8 L 267.6,189.6 L 268.9,186.1 L 270.2,182.4 L 271.5,178.3 L 272.8,174.0 L 274.1,169.2 L 275.3,164.1 L 276.6,158.4 L 277.9,152.2 L 279.2,145.4 L 280.5,137.8 L 281.8,129.4 L 283.1,119.9 L 284.4,109.2 L 285.6,96.9 L 286.9,82.8 L 288.2,66.4 L 289.5,47.0 L 290.8,23.8 L 303.7,14.0" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" opacity="1"/>
+      <path d="M 46.0,266.0 L 169.7,266.0 L 171.0,266.0 L 172.3,266.0 L 173.6,266.0 L 174.9,266.0 L 176.2,266.0 L 177.5,266.0 L 178.8,266.0 L 180.0,266.0 L 181.3,266.0 L 182.6,266.0 L 183.9,266.0 L 185.2,266.0 L 186.5,266.0 L 187.8,266.0 L 189.1,266.0 L 190.3,266.0 L 191.6,266.0 L 192.9,266.0 L 194.2,266.0 L 195.5,265.9 L 196.8,265.9 L 198.1,265.9 L 199.4,265.9 L 200.7,265.9 L 201.9,265.9 L 203.2,265.9 L 204.5,265.9 L 205.8,265.8 L 207.1,265.8 L 208.4,265.8 L 209.7,265.8 L 211.0,265.8 L 212.3,265.7 L 213.5,265.7 L 214.8,265.7 L 216.1,265.7 L 217.4,265.6 L 218.7,265.6 L 220.0,265.6 L 221.3,265.5 L 222.6,265.5 L 223.8,265.5 L 225.1,265.4 L 226.4,265.4 L 227.7,265.3 L 229.0,265.3 L 230.3,265.3 L 231.6,265.2 L 232.9,265.2 L 234.2,265.1 L 235.4,265.0 L 236.7,265.0 L 238.0,264.9 L 239.3,264.9 L 240.6,264.8 L 241.9,264.7 L 243.2,264.7 L 244.5,264.6 L 245.8,264.5 L 247.0,264.4 L 248.3,264.4 L 249.6,264.3 L 250.9,264.2 L 252.2,264.1 L 253.5,264.0 L 254.8,263.9 L 256.1,263.8 L 257.3,263.7 L 258.6,263.6 L 259.9,263.5 L 261.2,263.4 L 262.5,263.3 L 263.8,263.2 L 265.1,263.0 L 266.4,262.9 L 267.7,262.8 L 268.9,262.6 L 270.2,262.5 L 271.5,262.4 L 272.8,262.2 L 274.1,262.1 L 275.4,261.9 L 276.7,261.8 L 278.0,261.6 L 279.3,261.4 L 280.5,261.3 L 281.8,261.1 L 283.1,260.9 L 284.4,260.7 L 285.7,260.6 L 287.0,260.4 L 288.3,260.2 L 289.6,260.0 L 290.8,259.7 L 292.1,259.5 L 293.4,259.3 L 294.7,259.1 L 296.0,258.9 L 297.3,258.6 L 298.6,258.4 L 299.9,258.1 L 301.2,257.9 L 302.4,257.6 L 303.7,257.3 L 305.0,257.0 L 306.3,256.8 L 307.6,256.5 L 308.9,256.2 L 310.2,255.9 L 311.5,255.5 L 312.7,255.2 L 314.0,254.9 L 315.3,254.5 L 316.6,254.2 L 317.9,253.8 L 319.2,253.5 L 320.5,253.1 L 321.8,252.7 L 323.1,252.3 L 324.3,251.9 L 325.6,251.5 L 326.9,251.0 L 328.2,250.6 L 329.5,250.1 L 330.8,249.6 L 332.1,249.2 L 333.4,248.7 L 334.7,248.1 L 335.9,247.6 L 337.2,247.1 L 338.5,246.5 L 339.8,245.9 L 341.1,245.3 L 342.4,244.7 L 343.7,244.1 L 345.0,243.4 L 346.2,242.8 L 347.5,242.1 L 348.8,241.3 L 350.1,240.6 L 351.4,239.8 L 352.7,239.0 L 354.0,238.2 L 355.3,237.4 L 356.6,236.5 L 357.8,235.6 L 359.1,234.6 L 360.4,233.6 L 361.7,232.6 L 363.0,231.5 L 364.3,230.4 L 365.6,229.3 L 366.9,228.1 L 368.2,226.8 L 369.4,225.5 L 370.7,224.2 L 372.0,222.7 L 373.3,221.2 L 374.6,219.7 L 375.9,218.0 L 377.2,216.3 L 378.5,214.5 L 379.7,212.6 L 381.0,210.6 L 382.3,208.5 L 383.6,206.3 L 384.9,203.9 L 386.2,201.4 L 387.5,198.7 L 388.8,195.9 L 390.1,192.8 L 391.3,189.6 L 392.6,186.1 L 393.9,182.4 L 395.2,178.3 L 396.5,174.0 L 397.8,169.2 L 399.1,164.1 L 400.4,158.4 L 401.7,152.2 L 402.9,145.4 L 404.2,137.8 L 405.5,129.4 L 406.8,119.9 L 408.1,109.2 L 409.4,96.9 L 410.7,82.8 L 412.0,66.4 L 413.2,47.0 L 414.5,23.8 L 427.4,14.0" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" opacity="0.8"/>
+      <path d="M 46.0,266.0 L 293.5,266.0 L 294.8,266.0 L 296.0,266.0 L 297.3,266.0 L 298.6,266.0 L 299.9,266.0 L 301.2,266.0 L 302.5,266.0 L 303.8,266.0 L 305.1,266.0 L 306.4,266.0 L 307.6,266.0 L 308.9,266.0 L 310.2,266.0 L 311.5,266.0 L 312.8,266.0 L 314.1,266.0 L 315.4,266.0 L 316.7,266.0 L 317.9,266.0 L 319.2,265.9 L 320.5,265.9 L 321.8,265.9 L 323.1,265.9 L 324.4,265.9 L 325.7,265.9 L 327.0,265.9 L 328.3,265.9 L 329.5,265.8 L 330.8,265.8 L 332.1,265.8 L 333.4,265.8 L 334.7,265.8 L 336.0,265.7 L 337.3,265.7 L 338.6,265.7 L 339.9,265.7 L 341.1,265.6 L 342.4,265.6 L 343.7,265.6 L 345.0,265.5 L 346.3,265.5 L 347.6,265.5 L 348.9,265.4 L 350.2,265.4 L 351.4,265.3 L 352.7,265.3 L 354.0,265.3 L 355.3,265.2 L 356.6,265.2 L 357.9,265.1 L 359.2,265.0 L 360.5,265.0 L 361.8,264.9 L 363.0,264.9 L 364.3,264.8 L 365.6,264.7 L 366.9,264.7 L 368.2,264.6 L 369.5,264.5 L 370.8,264.4 L 372.1,264.4 L 373.3,264.3 L 374.6,264.2 L 375.9,264.1 L 377.2,264.0 L 378.5,263.9 L 379.8,263.8 L 381.1,263.7 L 382.4,263.6 L 383.7,263.5 L 384.9,263.4 L 386.2,263.3 L 387.5,263.2 L 388.8,263.0 L 390.1,262.9 L 391.4,262.8 L 392.7,262.6 L 394.0,262.5 L 395.3,262.4 L 396.5,262.2 L 397.8,262.1 L 399.1,261.9 L 400.4,261.8 L 401.7,261.6 L 403.0,261.4 L 404.3,261.3 L 405.6,261.1 L 406.8,260.9 L 408.1,260.7 L 409.4,260.6 L 410.7,260.4 L 412.0,260.2 L 413.3,260.0 L 414.6,259.7 L 415.9,259.5 L 417.2,259.3 L 418.4,259.1 L 419.7,258.9 L 421.0,258.6 L 422.3,258.4 L 423.6,258.1 L 424.9,257.9 L 426.2,257.6 L 427.5,257.3 L 428.8,257.0 L 430.0,256.8 L 431.3,256.5 L 432.6,256.2 L 433.9,255.9 L 435.2,255.5 L 436.5,255.2 L 437.8,254.9 L 439.1,254.5 L 440.3,254.2 L 441.6,253.8 L 442.9,253.5 L 444.2,253.1 L 445.5,252.7 L 446.8,252.3 L 448.1,251.9 L 449.4,251.5 L 450.7,251.0 L 451.9,250.6 L 453.2,250.1 L 454.5,249.6 L 455.8,249.2 L 457.1,248.7 L 458.4,248.1 L 459.7,247.6 L 461.0,247.1 L 462.3,246.5 L 463.5,245.9 L 464.8,245.3 L 466.1,244.7 L 467.4,244.1 L 468.7,243.4 L 470.0,242.8 L 471.3,242.1 L 472.6,241.3 L 473.8,240.6 L 475.1,239.8 L 476.4,239.0 L 477.7,238.2 L 479.0,237.4 L 480.3,236.5 L 481.6,235.6 L 482.9,234.6 L 484.2,233.6 L 485.4,232.6 L 486.7,231.5 L 488.0,230.4 L 489.3,229.3 L 490.6,228.1 L 491.9,226.8 L 493.2,225.5 L 494.5,224.2 L 495.8,222.7 L 497.0,221.2 L 498.3,219.7 L 499.6,218.0 L 500.9,216.3 L 502.2,214.5 L 503.5,212.6 L 504.8,210.6 L 506.1,208.5 L 507.3,206.3 L 508.6,203.9 L 509.9,201.4 L 511.2,198.7 L 512.5,195.9 L 513.8,192.8 L 515.1,189.6 L 516.4,186.1 L 517.7,182.4 L 518.9,178.3 L 520.2,174.0 L 521.5,169.2 L 522.8,164.1 L 524.1,158.4 L 525.4,152.2 L 526.7,145.4 L 528.0,137.8 L 529.3,129.4 L 530.5,119.9 L 531.8,109.2 L 533.1,96.9 L 534.4,82.8 L 535.7,66.4 L 537.0,47.0 L 538.3,23.8 L 551.2,14.0" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" opacity="0.62"/>
+      <path d="M 46.0,266.0 L 417.2,266.0 L 418.5,266.0 L 419.8,266.0 L 421.1,266.0 L 422.4,266.0 L 423.6,266.0 L 424.9,266.0 L 426.2,266.0 L 427.5,266.0 L 428.8,266.0 L 430.1,266.0 L 431.4,266.0 L 432.7,266.0 L 433.9,266.0 L 435.2,266.0 L 436.5,266.0 L 437.8,266.0 L 439.1,266.0 L 440.4,266.0 L 441.7,266.0 L 443.0,265.9 L 444.3,265.9 L 445.5,265.9 L 446.8,265.9 L 448.1,265.9 L 449.4,265.9 L 450.7,265.9 L 452.0,265.9 L 453.3,265.8 L 454.6,265.8 L 455.9,265.8 L 457.1,265.8 L 458.4,265.8 L 459.7,265.7 L 461.0,265.7 L 462.3,265.7 L 463.6,265.7 L 464.9,265.6 L 466.2,265.6 L 467.4,265.6 L 468.7,265.5 L 470.0,265.5 L 471.3,265.5 L 472.6,265.4 L 473.9,265.4 L 475.2,265.3 L 476.5,265.3 L 477.8,265.3 L 479.0,265.2 L 480.3,265.2 L 481.6,265.1 L 482.9,265.0 L 484.2,265.0 L 485.5,264.9 L 486.8,264.9 L 488.1,264.8 L 489.4,264.7 L 490.6,264.7 L 491.9,264.6 L 493.2,264.5 L 494.5,264.4 L 495.8,264.4 L 497.1,264.3 L 498.4,264.2 L 499.7,264.1 L 500.9,264.0 L 502.2,263.9 L 503.5,263.8 L 504.8,263.7 L 506.1,263.6 L 507.4,263.5 L 508.7,263.4 L 510.0,263.3 L 511.3,263.2 L 512.5,263.0 L 513.8,262.9 L 515.1,262.8 L 516.4,262.6 L 517.7,262.5 L 519.0,262.4 L 520.3,262.2 L 521.6,262.1 L 522.9,261.9 L 524.1,261.8 L 525.4,261.6 L 526.7,261.4 L 528.0,261.3 L 529.3,261.1 L 530.6,260.9 L 531.9,260.7 L 533.2,260.6 L 534.4,260.4 L 535.7,260.2 L 537.0,260.0 L 538.3,259.7 L 539.6,259.5 L 540.9,259.3 L 542.2,259.1 L 543.5,258.9 L 544.8,258.6 L 546.0,258.4 L 547.3,258.1 L 548.6,257.9 L 549.9,257.6 L 551.2,257.3 L 552.5,257.0 L 553.8,256.8 L 555.1,256.5 L 556.4,256.2 L 557.6,255.9 L 558.9,255.5 L 560.2,255.2 L 561.5,254.9 L 562.8,254.5 L 564.1,254.2 L 565.4,253.8 L 566.7,253.5 L 567.9,253.1 L 569.2,252.7 L 570.5,252.3 L 571.8,251.9 L 573.1,251.5 L 574.4,251.0 L 575.7,250.6 L 577.0,250.1 L 578.3,249.6 L 579.5,249.2 L 580.8,248.7 L 582.1,248.1 L 583.4,247.6 L 584.7,247.1 L 586.0,246.5 L 587.3,245.9 L 588.6,245.3 L 589.9,244.7 L 591.1,244.1 L 592.4,243.4 L 593.7,242.8 L 595.0,242.1 L 596.3,241.3 L 597.6,240.6 L 598.9,239.8 L 600.2,239.0 L 601.4,238.2 L 602.7,237.4 L 604.0,236.5 L 605.3,235.6 L 606.6,234.6 L 607.9,233.6 L 609.2,232.6 L 610.5,231.5 L 611.8,230.4 L 613.0,229.3 L 614.3,228.1 L 615.6,226.8 L 616.9,225.5 L 618.2,224.2 L 619.5,222.7 L 620.8,221.2 L 622.1,219.7 L 623.3,218.0 L 624.6,216.3 L 625.9,214.5 L 627.2,212.6 L 628.5,210.6 L 629.8,208.5 L 631.1,206.3 L 632.4,203.9 L 633.7,201.4 L 634.9,198.7 L 636.2,195.9 L 637.5,192.8 L 638.8,189.6 L 640.1,186.1 L 641.4,182.4 L 642.7,178.3 L 644.0,174.0 L 645.3,169.2 L 646.5,164.1 L 647.8,158.4 L 649.1,152.2 L 650.4,145.4 L 651.7,137.8 L 653.0,129.4 L 654.3,119.9 L 655.6,109.2 L 656.8,96.9 L 658.1,82.8 L 659.4,66.4 L 660.7,47.0 L 662.0,23.8 L 674.9,14.0" fill="none" stroke="var(--accent)" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round" opacity="0.44"/>
+      
+    </g>
+    <line x1="46" y1="266" x2="742" y2="266" stroke="var(--accent)" stroke-width="2.6"/>
+    <line x1="62" y1="48" x2="86" y2="48" stroke="var(--accent)" stroke-width="2.6"/>
+    <text x="94" y="52" font-size="11.5" font-weight="600" fill="var(--accent)">x∞ ≡ 0 — the only solution defined for every t ≥ 0</text>
+  </svg>
+  <p class="cap">Four members of the family, departing at <span class="m">T = 0, 1.6, 3.2, 4.8</span>. Each curve is the true <span class="m">φ</span>, obtained by inverting <span class="m">F</span> numerically; each reaches <span class="m">+∞</span> exactly <span class="m">3√2π/4 ≈ 3.332</span> after it departs. Along the axis is <span class="m">x<sub>∞</sub></span>, which alone survives to the right edge — and to every later time.</p>
+</div>
+
+<div class="wrap">
+
+<h2 id="s4"><span class="num">4</span>Globally defined versus forward-maximal</h2>
+
+<p>Two classes of forward solution, kept apart.</p>
+
+<div class="thm defn">
+  <div class="hd">The two classes</div>
+  <p><span class="m">ℋ<sub>glob</sub><sup>+</sup>(0)</span> is the set of solutions of (IVP) defined at <em>every</em> <span class="m">t ≥ 0</span>.</p>
+  <p><span class="m">ℋ<sub>max</sub><sup>+</sup>(0)</span> is the set of solutions of (IVP) on intervals <span class="m">I ⊆ [0,∞)</span> with <span class="m">min I = 0</span> admitting no extension to a solution on a strictly larger <span class="m">J ⊆ [0,∞)</span>. We call these <b>forward-maximal</b>; §<a href="#s5">5</a> explains why the prefix is not optional.</p>
+  <p>Plainly <span class="m">ℋ<sub>glob</sub><sup>+</sup>(0) ⊆ ℋ<sub>max</sub><sup>+</sup>(0)</span>: a solution on <span class="m">[0,∞)</span> has nowhere further to go inside <span class="m">[0,∞)</span>.</p>
+</div>
+
+<p>In this example the classical classification recalled in §<a href="#s6">6</a> takes a particularly transparent form.</p>
+
+<div class="thm">
+  <div class="hd">The two counts</div>
+  <p class="disp" style="border:none;margin:4px 0"><b>ℋ<sub>glob</sub><sup>+</sup>(0) = { x<sub>∞</sub> }</b>,&nbsp;&nbsp;&nbsp; <b>ℋ<sub>max</sub><sup>+</sup>(0) = { x<sub>T</sub> : T ∈ [0,∞) } ∪ { x<sub>∞</sub> }</b>,</p>
+  <p>so <span class="m">|ℋ<sub>glob</sub><sup>+</sup>(0)| = 1</span> while <span class="m">|ℋ<sub>max</sub><sup>+</sup>(0)| = 𝔠</span>.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Why</span>
+  <p>Since <span class="m">f ≥ 0</span> everywhere, every solution is non-decreasing, so its zero set is a closed subinterval of its domain containing <span class="m">0</span> — say the part of the domain in <span class="m">[0,T]</span>, with <span class="m">T</span> the supremum of that set. If <span class="m">T = ∞</span> the solution is <span class="m">x<sub>∞</sub></span>. If <span class="m">T &lt; ∞</span> then <span class="m">T</span> lies in the domain (otherwise the solution is identically <span class="m">0</span> on <span class="m">[0,T)</span> and extends by <span class="m">0</span>, so is not forward-maximal), and beyond <span class="m">T</span> the solution is strictly positive — it cannot be negative, being non-decreasing and zero at <span class="m">T</span>. There <span class="m">ẋ/f(x) = 1</span>; integrating from <span class="m">s</span> to <span class="m">t</span> and substituting <span class="m">u = x(σ)</span> gives <span class="m">F(x(t)) − F(x(s)) = t − s</span>, and letting <span class="m">s ↓ T</span>, using continuity and the convergence of <span class="m">F</span> at <span class="m">0</span>, gives <span class="m">F(x(t)) = t − T</span>, i.e. <span class="m">x(t) = φ(t − T)</span>. So the domain lies in <span class="m">[0, T + T<sub>∗</sub>)</span>, and forward-maximality makes it equal. Distinct <span class="m">T</span> give distinct solutions because <span class="m">T<sub>∗</sub> &gt; 0</span>, so the two differ on an interval of positive length. Finally every <span class="m">x<sub>T</sub></span> with <span class="m">T &lt; ∞</span> has bounded domain and so is not globally defined, leaving <span class="m">x<sub>∞</sub></span> alone in the first class; and <span class="m">|[0,∞]| = 𝔠</span>. <span class="qed">∎</span></p>
+</div>
+
+<p>Note where the two hypotheses enter. Convergence of the integral <em>at the origin</em> is what populates <span class="m">ℋ<sub>max</sub><sup>+</sup>(0)</span>: without it no branch could leave, and both counts would be <span class="m">1</span>. Convergence <em>at infinity</em> is what empties <span class="m">ℋ<sub>glob</sub><sup>+</sup>(0)</span> of everything but <span class="m">x<sub>∞</sub></span>: without it every <span class="m">x<sub>T</sub></span> would be defined for all time and both counts would be <span class="m">𝔠</span>. The gap between the counts needs both, which is why an example is worth writing down rather than merely describing.</p>
+
+<h2 id="s5"><span class="num">5</span>Three senses of “maximal”</h2>
+
+<p>The word carries at least three meanings in the surrounding literature, and conflating them produces false statements about this example. We separate them once and then keep the prefix.</p>
+
+<div class="wide scroll">
+<table class="attrib">
+  <thead><tr><th style="width:22%">Sense</th><th style="width:30%">Meaning</th><th style="width:48%">In this example</th></tr></thead>
+  <tbody>
+    <tr><td>Forward-maximal</td><td>No extension within <span class="m">[0,∞)</span>.</td><td>The <span class="m">x<sub>T</sub></span>, on <span class="m">[0, T + T<sub>∗</sub>)</span>. This is the class counted in §<a href="#s4">4</a>.</td></tr>
+    <tr><td>Maximal (standard)</td><td>No extension to any larger interval of <span class="m">ℝ</span>.</td><td><b>No <span class="m">x<sub>T</sub></span> is maximal in this sense.</b> Setting <span class="m">x(t) = 0</span> for <span class="m">t &lt; 0</span> always extends it, since <span class="m">f(0) = 0</span>. Appendix A classifies the genuinely maximal solutions.</td></tr>
+    <tr><td>Maximal (extremal)</td><td>The pointwise <em>largest</em> solution.</td><td><span class="m">x<sub>0</sub></span>, which departs immediately; the pointwise smallest is <span class="m">x<sub>∞</sub></span>. Hartman [<a href="#r10">10</a>, ch. III §2] uses the word in this sense.</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>So <span class="m">[0, T + T<sub>∗</sub>)</span> is a forward-maximal interval and not a maximal interval, and <span class="m">ℋ<sub>max</sub><sup>+</sup>(0)</span> is not a set of maximal solutions.</p>
+
+<h2 id="s6"><span class="num">6</span>What is classical, and where</h2>
+
+<p>None of the mathematics above is new. The attributions below are specific rather than general, because a general gesture at “the classical theory” would leave a reader unable to check them.</p>
+
+<div class="wide scroll">
+<table class="attrib">
+  <thead><tr><th style="width:28%">Source</th><th style="width:72%">Result</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Wallach [<a href="#r14">14</a>], 1948</td>
+      <td>Characterised <em>all</em> solutions of <span class="m">ẋ = f∘x</span>, <span class="m">x(0) = 0</span> for continuous <span class="m">f</span>. Binding reports this at [<a href="#r4">4</a>, p. 184] — “Wallach characterized all solutions of (1.1)” — and credits the monotonicity lemma to [<a href="#r14">14</a>, §2] and the structure theorem to [<a href="#r14">14</a>, §7]. <em>We know this paper only through Binding; we have not read it.</em></td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], Lemma 3.2 (p. 186)</td>
+      <td>Every solution is monotonic — the step that makes the zero set an interval, and the first move in §<a href="#s4">4</a>.</td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], Thm 3.3 (p. 187)</td>
+      <td>The separation identity in measure-theoretic form. The computation in §<a href="#s4">4</a> is its elementary special case.</td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], Thm 3.5 (p. 188); Thm 5.3 (p. 190)</td>
+      <td>Necessary and sufficient conditions for local existence and for uniqueness. For continuous <span class="m">f</span> with <span class="m">x &gt; 0</span> these reduce, in Binding’s words, to “<span class="m">f &gt; 0</span> and <span class="m">1/f</span> integrable, as given by Wallach.” The uniqueness criterion is Osgood’s [<a href="#r12">12</a>] and Kamke’s; see Hartman [<a href="#r10">10</a>, ch. III §6], and Fjordholm [<a href="#r8">8</a>] for a modern restatement citing Binding.</td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], §6 case (6.5) (p. 192)</td>
+      <td>Exactly our hypothesis. When <span class="m">∫<sub>0</sub><sup>∞</sup> 1/f &lt; ∞</span>, Binding writes, “we have the phenomenon of escape to infinity for at least one solution.” His case (6.2), where the integral diverges, is the complementary situation in which the branch is a solution on the whole half-line.</td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], Lemma 6.3 (p. 193)</td>
+      <td>A duality: the inversion <span class="m">f̂(α) = α²f(1/α)</span> turns escape to infinity into non-uniqueness at the origin. The observation that our two conditions are the two ends of one integral is this duality; Binding credits awareness of it to Wintner and to Brauer and Sternberg.</td>
+    </tr>
+    <tr>
+      <td>Binding [<a href="#r4">4</a>], Lemma 7.5 (p. 194)</td>
+      <td>The structure theorem: every solution is obtained from the extremal one by inserting constant segments at zeros of <span class="m">f</span>. With <span class="m">f<sup>−1</sup>(0) = {0}</span> that is precisely the waiting-time family of §<a href="#s3">3</a>. Binding notes that Wallach’s proof for continuous <span class="m">f</span> carries over.</td>
+    </tr>
+    <tr>
+      <td>Hartman [<a href="#r10">10</a>], ch. III §5 Thm 5.1 (p. 30)</td>
+      <td>A theorem of Wintner: if <span class="m">∫<sup>∞</sup> du/ψ = ∞</span> and <span class="m">|f| ≤ ψ</span>, solutions exist on the whole strip; finite-time escape requires the negation. Exercise 6.4 (p. 33), attributed in the chapter Notes to Wallach, states the departure criterion as an exact dichotomy.</td>
+    </tr>
+    <tr>
+      <td>Drivas and Mailybaev [<a href="#r6">6</a>], 2018</td>
+      <td>State the continuum-many waiting-time solutions explicitly for <span class="m">ẋ = x<sup>1/3</sup></span>: “a continuum infinity of solutions, which stay at the origin until an arbitrary time <span class="m">t<sub>1</sub></span> and peel off.” There the branches are global, so no gap between the two counts arises.</td>
+    </tr>
+    <tr>
+      <td>Berndl et al. [<a href="#r3">3</a>], 1995</td>
+      <td>Use “maximal (non-extendible) solution” against “global existence” as basic vocabulary in a foundational setting, and list escape to infinity in finite time among the ways a solution may cease to exist.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>Given Lemma 7.5 and case (6.5) together, the two counts of §<a href="#s4">4</a> follow in two lines. The short self-contained argument given there is written out because it is short, not because it is new. A survey of the wider uniqueness and non-uniqueness literature is in Agarwal and Lakshmikantham [<a href="#r1">1</a>].</p>
+
+<p>On the particular choice of <span class="m">f</span>: we have not found a prior publication using <span class="m">|x|<sup>2/3</sup> + x²</span> to illustrate this point, though the search behind that remark is bounded and we make no priority claim. What can be said without qualification is that the choice gives a compact closed-form illustration, which is its only advantage over any other member of the class.</p>
+
+<h2 id="s7"><span class="num">7</span>Bearing on determinism</h2>
+
+<p>The example admits at least three readings. <b>None of them is introduced here.</b> We set them out with attributions and do not adjudicate between them.</p>
+
+<h3>Reading 1 · The global-solution criterion</h3>
+<p>If a physical history must be defined at every time, the branches <span class="m">x<sub>T</sub></span> are not histories at all. The state <span class="m">x = 0</span> then has exactly one future, and the example tells us something about an initial-value problem and nothing about determinism. This is close to the position Wilson [<a href="#r15">15</a>, p. 182] defends for Newtonian mechanics: failures of global existence are “descriptive holes”, and “it is as descriptive holes such issues should be addressed, <em>not as failures of determinism</em>.” He names Earman and Norton as holding the contrary view and calls their classification “terminologically unfortunate”.</p>
+
+<h3>Reading 2 · The maximal-history criterion</h3>
+<p>If a solution that cannot be extended counts as a history even though it ends, the same state has continuum-many futures, and requiring totality looks like a stipulation that secures determinism rather than a discovery that it holds. The structure of this objection is familiar from general relativity, where the maximal globally hyperbolic development of initial data is unique but, in Earman’s phrase [<a href="#r7">7</a>, §6.4], often “not maximal simpliciter”, and the larger extensions are not unique. Smeenk and Wüthrich [<a href="#r13">13</a>] organise their treatment around whether global hyperbolicity should be imposed by fiat, established from weaker assumptions, or justified from outside the theory — their §5 is titled “Global Hyperbolicity by Fiat” — and note that their analysis “runs parallel to recent discussions of determinism in Newtonian particle mechanics.”</p>
+
+<h3>Reading 3 · Termination as its own failure</h3>
+<p>A third position holds that the uniqueness-based formulation is the wrong test in the first place. Azhar and Namjoo [<a href="#r2">2</a>] propose that indeterminism arises when future states are “(i) not unique …; (ii) not specified; or (iii) ‘incoherent’”, and argue that a Laplacian criterion based on non-uniqueness alone “does not comprehensively capture the relevant sense of a lack of determination”. On such a view the branches here witness a failure of determination by ending, independently of how many of them there are. See also Doboszewski [<a href="#r5">5</a>] on the plurality of precise definitions in the relativistic setting.</p>
+
+<div class="callout">
+  <h4>What the example adds to this debate</h4>
+  <p style="margin-bottom:0">As to the positions, nothing. What it adds is a test case in which the three readings give visibly different verdicts about one state of one system, with no idealisation to argue over: the equation is scalar and autonomous, <span class="m">f</span> is continuous everywhere and <span class="m up">C</span><sup>1</sup> away from a single point, and every quantity is exact. A reader who wants to see what turns on the choice of history class, without first settling questions about point masses, infinitely deep wells or Cauchy horizons, can see it here.</p>
+</div>
+
+<p>One observation seems robust across the three readings. The distinction cannot be dissolved by demanding more regularity of <span class="m">f</span> or more physics. The failure of local Lipschitz continuity occurs only at the equilibrium; the branches terminate because the equation is superlinear at infinity, which is ordinary behaviour. Whatever the right verdict, it is not reached by ruling out pathology.</p>
+
+<h2 id="s8"><span class="num">8</span>What this note contributes</h2>
+
+<p>The mathematical phenomenon is classical, and the distinction between global existence, maximality and determinism has substantial precedent. The purpose of the example is therefore not to establish a new theorem or a new criterion of determinism. It is to provide a minimal scalar model in which the distinction becomes completely explicit: one initial state with a unique globally defined future and continuum-many forward-maximal futures, every non-trivial branch ending in finite-time escape.</p>
+
+<p>The case for writing it down is that it is cheap. It needs only a scalar autonomous equation; the integrals are elementary; the blow-up time is exact; the solution family is explicit and can be drawn; and a reader needs no general relativity, no <span class="m">N</span>-body mechanics and no partial differential equations to check every step. Where the standard illustrations of the two failure modes are Norton’s dome [<a href="#r11">11</a>] for non-uniqueness and the non-collision singularities of Xia [<a href="#r16">16</a>] for finite-time escape, here both occur in one equation that fits on a line.</p>
+
+<p><b>Limitations.</b> Everything above concerns a scalar autonomous equation; the monotonicity argument uses the scalar order structure and does not survive to systems without new work. Nothing here is a theorem about Newtonian <span class="m">N</span>-body dynamics. Appendix B gives a one-dimensional mechanical system exhibiting the mechanism, but it realises the mechanism, not this <span class="m">f</span>. The interpretive question of §<a href="#s7">7</a> is left open, as it is in the literature cited there.</p>
+
+<h2 id="s9"><span class="num">9</span>Conclusion</h2>
+
+<p>The example shows, in the simplest setting we could find, why a statement about uniqueness must specify the class of solutions being quantified over. Uniqueness among globally defined solutions and uniqueness among solutions that cannot be extended are different properties of the same law, and here they disagree at the same state, by the largest margin available.</p>
+
+<p>That lesson is already present in the broader literature, in both the mathematical and the foundational strands cited above. The contribution here is its explicit scalar illustration.</p>
+
+<h2 id="sA"><span class="num">A</span>Appendix · Two-sided time</h2>
+
+<p>The forward account says nothing about <span class="m">x &lt; 0</span>, and for this <span class="m">f</span>, which is even, the negative half-line is populated: solutions can also arrive at the origin from below in finite time. Accounting for them identifies the solutions maximal in the standard sense and confirms that they are not the objects counted in §<a href="#s4">4</a>.</p>
+
+<p>Write <span class="m">S<sub>∗</sub> = ∫<sub>−∞</sub><sup>0</sup> du/f(u)</span>. Two conditions are involved, and they are logically separate:</p>
+<p><b>(a)</b> <span class="m">∫<sub>−1</sub><sup>0</sup> du/f &lt; ∞</span> — finite-time access to the equilibrium from below;<br>
+<b>(b)</b> <span class="m">∫<sub>−∞</sub><sup>−1</sup> du/f &lt; ∞</span> — finite-time escape to <span class="m">−∞</span> in backward time.</p>
+
+<p>For an even <span class="m">f</span> both follow from the two forward conditions, but in general neither follows from anything on the positive side. Taking <span class="m">f(u) = u<sup>2/3</sup></span> for <span class="m">u &gt; 0</span> and <span class="m">f(u) = |u|</span> for <span class="m">u &lt; 0</span> gives a continuous <span class="m">f</span> satisfying the near-origin forward condition while <span class="m">∫<sub>−1</sub><sup>0</sup> du/f = ∫<sub>0</sub><sup>1</sup> dv/v = ∞</span>, so (a) fails. Taking instead <span class="m">f(x) = x<sup>2/3</sup> + x²</span> for <span class="m">x ≥ 0</span> and <span class="m">f(x) = |x| + x²</span> for <span class="m">x &lt; 0</span> gives a continuous <span class="m">f</span> for which both forward conditions and (b) hold — since <span class="m">1/(v+v²) = 1/v − 1/(1+v)</span> has antiderivative <span class="m">log(v/(1+v))</span>, so <span class="m">∫<sub>1</sub><sup>∞</sup> dv/(v+v²) = log 2</span> — while <span class="m">∫<sub>0</sub><sup>1</sup> dv/(v+v²) = ∞</span>, so (a) fails in isolation.</p>
+
+<p>When <span class="m">T<sub>∗</sub></span> and <span class="m">S<sub>∗</sub></span> are both finite, the same classical mechanism applied to <span class="m">f̃(y) = f(−y)</span> in reversed time gives a two-parameter family: for <span class="m">(S,T) ∈ [0,∞]²</span> there is a solution whose zero set is <span class="m">[−S, T]</span>, defined on <span class="m">(−S − S<sub>∗</sub>, T + T<sub>∗</sub>)</span>, with the convention that an infinite parameter removes the corresponding bound. These are the maximal solutions in the standard sense, and <span class="m">x ≡ 0</span> is the only one defined on all of <span class="m">ℝ</span>.</p>
+
+<p>The point relevant to §<a href="#s5">5</a> falls out. For every <span class="m">S</span>, the restriction to <span class="m">[0,∞)</span> of the solution indexed by <span class="m">(S,T)</span> is the same <span class="m">x<sub>T</sub></span> — the zero set meets <span class="m">[0,∞)</span> in <span class="m">[0,T]</span> whatever <span class="m">S</span> is. So each forward-maximal solution extends backward in continuum-many ways, and none of them is maximal.</p>
+
+<h2 id="sB"><span class="num">B</span>Appendix · A mechanical realisation</h2>
+
+<p>It is natural to ask whether a Newtonian particle can exhibit the mechanism. It can, though not in the way one first tries.</p>
+
+<h3>B.1 Not by steepening a dome</h3>
+<p>Norton’s construction [<a href="#r11">11</a>] places a particle on a frictionless surface of revolution, with <span class="m">r</span> the arc length along a meridian from the apex and <span class="m">h(r)</span> the depth below it, giving <span class="m">r̈ = g h′(r)</span>. The obvious candidate here, <span class="m">h(r) = (1/g)(⅔r<sup>3/2</sup> + ⅓r³)</span>, does give <span class="m">r̈ = √r + r²</span>, but it cannot be realised: parametrising the meridian by arc length forces <span class="m">ρ′² + z′² = 1</span> and hence <span class="m">|h′| ≤ 1</span>, so <span class="m">|r̈| ≤ g</span>, so <span class="m">r</span> grows at most quadratically and cannot reach <span class="m">+∞</span> in finite time. With <span class="m">g = 9.8</span> the candidate already violates the constraint at <span class="m">r ≈ 2.85</span>.</p>
+<p>The argument uses the whole Norton-type model — frictionless, uniform gravity, arc-length meridional coordinate, purely meridional motion with zero angular momentum, and the particle remaining on the surface. With angular momentum the equation acquires a centrifugal term <span class="m">(p<sub>θ</sub>²/m²)·ρ′(r)/ρ(r)³</span>, unbounded as <span class="m">ρ → 0</span>, and we claim nothing about that case. Nothing here says that constraint surfaces in general, or mechanical systems in general, cannot produce finite-time escape; §B.2 gives one that does.</p>
+
+<h3>B.2 In a potential</h3>
+<p>Let <span class="m">V(x) = −(⅔x<sup>3/2</sup> + ⅓x³)</span> for <span class="m">x ≥ 0</span>, so <span class="m">ẍ = −V′(x) = √x + x²</span>, with <span class="m">x(0) = ẋ(0) = 0</span>. Energy conservation from rest at the origin gives <span class="m">½ẋ² = −V(x)</span>, that is <span class="m">ẋ = G(x)</span> with</p>
+<div class="disp">G(x) = (4/3·x<sup>3/2</sup> + 2/3·x³)<sup>1/2</sup>,</div>
+<p>and conversely <span class="m">G G′ = d/dx(½G²) = √x + x²</span>, so solutions of the first-order equation solve the second-order one. The even extension <span class="m">Ĝ(x) = G(|x|)</span> is continuous with <span class="m">Ĝ(0) = 0</span> and <span class="m">Ĝ &gt; 0</span> off the origin; <span class="m">G(x) ≍ x<sup>3/4</sup></span> as <span class="m">x → 0<sup>+</sup></span> and <span class="m">≍ x<sup>3/2</sup></span> as <span class="m">x → ∞</span>, so both integrals converge. Everything in §<a href="#s3">3</a> and §<a href="#s4">4</a> therefore applies, with</p>
+<div class="disp">T<sub>∗</sub><sup>mech</sup> = ∫<sub>0</sub><sup>∞</sup> dx/G(x) = (2/3)·√(3/2)·2<sup>−1/3</sup>·B(⅙, ⅓) ≈ 5.4521363617.</div>
+
+<div class="thm neg">
+  <div class="hd">What this realises</div>
+  <p style="margin-bottom:0">The <em>mechanism</em> of §<a href="#s4">4</a>, in a Newtonian system — not the example of §<a href="#s2">2</a>. The reduced right-hand side is <span class="m">G</span>, which is not <span class="m">|x|<sup>2/3</sup> + x²</span>, and accordingly <span class="m">T<sub>∗</sub><sup>mech</sup> ≠ T<sub>∗</sub></span>. It is a different member of the same class, and we do not claim that <span class="m">|x|<sup>2/3</sup> + x²</span> itself arises from a mechanical system. Two further caveats: the potential is unbounded below, the idealisation that attracts the standard objection to escape solutions [<a href="#r7">7</a>]; and <span class="m">V</span> is <span class="m up">C</span><sup>1</sup> but not <span class="m up">C</span><sup>2</sup> at the origin, the force <span class="m">√x + x²</span> being continuous and not locally Lipschitz there. Whether such a force law counts as a legitimate Newtonian system is the question the dome literature asks about <span class="m">√r</span> [<a href="#r9">9</a>, <a href="#r11">11</a>], and we take no position on it.</p>
+</div>
+
+<h2 id="refs" style="border:none;padding-top:0"><span class="num">—</span>References</h2>
+
+<p class="foot"><span class="tag">READ</span> the full text was consulted for the claims attributed here. <span class="tag">METADATA</span> the record was confirmed but the full text was not read; characterisations are ours and unchecked, or are reported from a source that did read it.</p>
+
+<ol class="refs">
+<li id="r1">Agarwal, R. P., &amp; Lakshmikantham, V. (1993). <em>Uniqueness and Nonuniqueness Criteria for Ordinary Differential Equations</em>. Series in Real Analysis 6. World Scientific. <span class="tag">METADATA</span></li>
+<li id="r2">Azhar, F., &amp; Namjoo, M. H. (2021). Spacetime singularities and a novel formulation of indeterminism. arXiv:2101.10887. <span class="tag">READ</span></li>
+<li id="r3">Berndl, K., Dürr, D., Goldstein, S., Peruzzi, G., &amp; Zanghì, N. (1995). On the global existence of Bohmian mechanics. <em>Communications in Mathematical Physics</em> 173(3), 647–673. <span class="tag">READ</span></li>
+<li id="r4">Binding, P. (1979). The differential equation <span class="m">ẋ = f∘x</span>. <em>Journal of Differential Equations</em> 31(2), 183–199. <span class="tag">READ</span></li>
+<li id="r5">Doboszewski, J. (2019). Relativistic spacetimes and definitions of determinism. <em>European Journal for Philosophy of Science</em>. <span class="tag">METADATA</span></li>
+<li id="r6">Drivas, T. D., &amp; Mailybaev, A. A. (2018). “Life after death” in ordinary differential equations with a non-Lipschitz singularity. arXiv:1806.09001; published in <em>Nonlinearity</em>, doi:10.1088/1361-6544/abbe60. <span class="tag">READ</span></li>
+<li id="r7">Earman, J. (2007). Aspects of determinism in modern physics. In J. Butterfield &amp; J. Earman (eds), <em>Handbook of the Philosophy of Science: Philosophy of Physics</em>, 1369–1434. Amsterdam: North-Holland. <span class="tag">READ</span></li>
+<li id="r8">Fjordholm, U. S. (2018). Sharp uniqueness conditions for one-dimensional, autonomous ordinary differential equations. arXiv:1804.08377. <span class="tag">READ</span></li>
+<li id="r9">Fletcher, S. C. (2012). What counts as a Newtonian system? The view from Norton’s dome. <em>European Journal for Philosophy of Science</em> 2(3), 275–297. <span class="tag">READ</span></li>
+<li id="r10">Hartman, P. (1964). <em>Ordinary Differential Equations</em>. Wiley. Chapter III (pp. 24–44) read in full from a page scan; the rest of the book not read. <span class="tag">READ</span></li>
+<li id="r11">Norton, J. D. (2008). The dome: an unexpectedly simple failure of determinism. <em>Philosophy of Science</em> 75(5), 786–798. <span class="tag">READ</span></li>
+<li id="r12">Osgood, W. F. (1898). Beweis der Existenz einer Lösung der Differentialgleichung dy/dx = f(x,y) ohne Hinzunahme der Cauchy–Lipschitz’schen Bedingung. <em>Monatshefte für Mathematik und Physik</em> 9, 331–345. <span class="tag">METADATA</span></li>
+<li id="r13">Smeenk, C., &amp; Wüthrich, C. (2020). Determinism and general relativity. arXiv:2009.07555. <span class="tag">READ</span></li>
+<li id="r14">Wallach, S. (1948). The differential equation <span class="m">y′ = f(y)</span>. <em>American Journal of Mathematics</em> 70, 345–350. <span class="tag">METADATA</span></li>
+<li id="r15">Wilson, M. (2009). Determinism and the mystery of the missing physics. <em>British Journal for the Philosophy of Science</em> 60(1), 173–193. <span class="tag">READ</span></li>
+<li id="r16">Xia, Z. (1992). The existence of noncollision singularities in Newtonian systems. <em>Annals of Mathematics</em> 135(3), 411–468. <span class="tag">READ</span></li>
+</ol>
+
+<p class="foot"><b>Computational checks.</b> The substitution of §2, the closed form <span class="m">3√2π/4</span>, the exponent thresholds, the divergences of Appendix A, the acceleration bound and centrifugal term of Appendix B.1, and the Beta-function evaluation of Appendix B.2 were each confirmed independently by computer algebra; the blow-up was confirmed by Runge–Kutta integration and by quadrature, and the curves in the figure were produced by numerically inverting <span class="m">F</span>. The script is <code>verification/gap_checks.py</code> in the accompanying repository. All arguments in the note are analytic and do not depend on those checks.</p>
+
+</div>
