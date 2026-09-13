@@ -316,6 +316,37 @@ check("(H4a) does NOT follow from (H2): f(u) = u^(2/3) for u>0 and f(u) = |u| fo
       and sp.integrate(1 / u, (u, 0, 1)) == sp.oo,
       "(H2) side = 3 < oo; negative side = int_0^1 dv/v = oo")
 
+# The sec. 7 counterexample isolating (H4a): f(x) = x^(2/3)+x^2 on x>=0 (the sec. 6
+# witness, so (H2) and (H3) hold) and f(x) = |x|+x^2 on x<0.  Everything analytic:
+# 1/(v+v^2) = 1/v - 1/(1+v) has antiderivative log(v/(1+v)).
+v = sp.Symbol('v', positive=True)
+anti = sp.simplify(sp.integrate(1 / (v + v**2), v))
+check("sec. 7 (H4a) counterexample: 1/(v+v^2) has elementary antiderivative "
+      "log(v/(1+v)), so both endpoint behaviours are exact, not numerical",
+      sp.simplify(sp.diff(sp.log(v / (1 + v)), v) - 1 / (v + v**2)) == 0
+      and sp.simplify(anti - sp.log(v / (1 + v))) == 0,
+      f"antiderivative = {anti}")
+
+H4a_ce = sp.integrate(1 / (v + v**2), (v, 0, 1))
+H4b_ce = sp.simplify(sp.integrate(1 / (v + v**2), (v, 1, sp.oo)))
+check("sec. 7 (H4a) counterexample: (H4a) FAILS -- int_(-1)^0 dx/f = "
+      "int_0^1 dv/(v+v^2) = oo, since log(v/(1+v)) -> -oo at 0+",
+      (H4a_ce == sp.oo or H4a_ce.has(sp.oo))
+      and sp.limit(sp.log(v / (1 + v)), v, 0, '+') == -sp.oo,
+      f"int = {H4a_ce}")
+
+check("sec. 7 (H4a) counterexample: (H4b) HOLDS for the same f -- "
+      "int_(-oo)^(-1) dx/f = int_1^oo dv/(v+v^2) = log 2 -- so (H4a) is independent "
+      "of (H4b) as well as of (H2) and (H3)",
+      sp.simplify(H4b_ce - sp.log(2)) == 0,
+      f"int_1^oo dv/(v+v^2) = {H4b_ce} = {sp.N(H4b_ce, 12)}")
+
+check("sec. 7 (H4a) counterexample: f is continuous at 0 from both sides, so (H1) "
+      "holds and the example is legitimate",
+      sp.limit(sp.Abs(-v) + v**2, v, 0, '+') == 0
+      and sp.limit(x**sp.Rational(2, 3) + x**2, x, 0, '+') == 0,
+      "f(0-) = f(0+) = 0, and f > 0 off the origin on both sides")
+
 # ========================= 7. Proposition 11: the potential realisation, 11.2
 G = sp.sqrt(sp.Rational(4, 3) * x**sp.Rational(3, 2) + sp.Rational(2, 3) * x**3)
 check("Prop 11: G G' = sqrt(x) + x^2, so solutions of x' = G(x) solve x'' = sqrt(x) + x^2",
@@ -331,7 +362,6 @@ check("Prop 11: G(x) ~ x^(3/2) as x -> oo, exponent 3/2 > 1, so (H3) holds",
       sp.simplify(sp.limit(G / x**sp.Rational(3, 2), x, sp.oo)) == sp.sqrt(sp.Rational(2, 3)),
       f"lim G/x^(3/2) = {sp.simplify(sp.limit(G/x**sp.Rational(3,2), x, sp.oo))} (finite, nonzero)")
 
-v = sp.Symbol('v', positive=True)
 beta_int = sp.integrate(v**sp.Rational(-5, 6) * (1 + v)**sp.Rational(-1, 2), (v, 0, sp.oo))
 check("Prop 11: int_0^inf v^(-5/6)(1+v)^(-1/2) dv = B(1/6, 1/3) EXACTLY "
       "[this is the identity the closed form rests on]",
