@@ -1,0 +1,315 @@
+<title>Linearity Does Not Immunise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root{
+  --paper:#F7F8FA; --raise:#FFFFFF; --sunk:#EEF0F4;
+  --ink:#12151C; --ink-2:#333A48; --muted:#59616F; --faint:#89909D;
+  --rule:#DCE0E7; --rule-2:#C2C8D2;
+  --accent:#3A3D8F; --accent-soft:#E5E6F3;
+  --verify:#1B6B52; --verify-soft:#DEEDE7;
+  --errata:#96591A; --errata-soft:#F4EADB;
+  --src:#1F5E86; --src-soft:#E0EBF2;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans Condensed",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --col:64ch;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+  --src:#74AAD0; --src-soft:#101E28;
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+  --src:#74AAD0; --src-soft:#101E28;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:17.5px; line-height:1.6;
+  margin:0; padding-block:0 96px; padding-left:20px; padding-right:20px;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:var(--col); margin-inline:auto}
+
+.mast{border-bottom:2px solid var(--accent); padding-block:48px 20px; margin-bottom:26px}
+.kicker{font-family:var(--sans); font-size:11.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
+  display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px}
+.kicker span:not(:first-child){color:var(--muted)}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(1.9rem,5.4vw,2.8rem);
+  line-height:1.05; letter-spacing:-.021em; margin:0 0 12px; text-wrap:balance}
+.dek{font-size:1.08rem; color:var(--ink-2); margin:0; text-wrap:balance}
+
+h2{font-family:var(--serif); font-weight:600; font-size:1.5rem; line-height:1.18;
+  letter-spacing:-.011em; margin:52px 0 6px; text-wrap:balance;
+  padding-top:18px; border-top:1px solid var(--rule)}
+h2 .num{font-family:var(--mono); font-size:.64em; font-weight:500; color:var(--accent); margin-right:.6em}
+h3{font-family:var(--sans); font-weight:600; font-size:1.04rem; margin:28px 0 2px; color:var(--ink)}
+h4{font-family:var(--sans); font-weight:600; font-size:.8rem; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin:22px 0 2px}
+p{margin:13px 0}
+a{color:inherit; text-decoration:underline; text-decoration-color:var(--rule-2); text-underline-offset:3px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+strong{font-weight:600}
+
+.m{font-family:var(--serif); font-style:italic; white-space:nowrap}
+.m.up{font-style:normal}
+.disp{font-family:var(--serif); font-size:1.02rem; text-align:center;
+  margin:20px auto; padding:14px 12px; border-block:1px solid var(--rule); overflow-x:auto}
+.disp .lbl{font-family:var(--mono); font-size:.68rem; color:var(--faint);
+  display:block; margin-top:7px; font-style:normal}
+sub,sup{font-size:.72em; line-height:0}
+
+.st{font-family:var(--mono); font-size:9.5px; font-weight:700; letter-spacing:.06em;
+  padding:2px 6px; white-space:nowrap; vertical-align:2px; border:1px solid transparent}
+.st-m{background:var(--verify-soft); color:var(--verify); border-color:var(--verify)}
+.st-s{background:var(--src-soft); color:var(--src); border-color:var(--src)}
+.st-n{background:var(--errata-soft); color:var(--errata); border-color:var(--errata)}
+
+/* the retraction is the loudest thing on the page, deliberately */
+.retract{border:2px solid var(--errata); background:var(--errata-soft);
+  padding:20px 22px; margin:0 0 30px}
+.retract h4{margin-top:0; color:var(--errata); font-size:.86rem}
+.retract p{margin:10px 0 0}
+.retract p:first-of-type{margin-top:6px}
+
+.box{border-left:3px solid var(--accent); background:var(--raise); padding:15px 17px; margin:22px 0}
+.box .hd{font-family:var(--sans); font-weight:700; font-size:.79rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:5px}
+.box p{margin:7px 0 0}
+.box p:first-of-type{margin-top:0}
+.box.neg{border-left-color:var(--errata)} .box.neg .hd{color:var(--errata)}
+
+.callout{background:var(--sunk); border:1px solid var(--rule); padding:16px 18px; margin:24px 0}
+.callout h4{margin-top:0}
+ul,ol{margin:13px 0; padding-left:1.3em}
+li{margin:6px 0} li::marker{color:var(--faint)}
+.tight li{margin:3px 0}
+
+code{font-family:var(--mono); font-size:.84em; background:var(--sunk); padding:1px 5px; border:1px solid var(--rule)}
+pre{font-family:var(--mono); font-size:12px; line-height:1.6; background:var(--sunk);
+  border:1px solid var(--rule); padding:15px 17px; overflow-x:auto; margin:18px 0}
+pre code{background:none; border:none; padding:0; font-size:inherit}
+.cmt{color:var(--faint)} .kw{color:var(--accent); font-weight:500}
+
+.scroll{overflow-x:auto; margin:20px 0; border:1px solid var(--rule)}
+table{border-collapse:collapse; width:100%; min-width:520px; table-layout:fixed;
+  font-family:var(--sans); font-size:13px; font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
+thead th{background:var(--sunk); font-weight:600; font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:normal}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+.y{color:var(--verify); font-weight:600}
+.n{color:var(--errata); font-weight:600}
+
+.refs{font-size:14px; color:var(--ink-2)} .refs li{margin:8px 0}
+.tag{font-family:var(--mono); font-size:9.5px; color:var(--faint); letter-spacing:.04em}
+hr{border:none; border-top:1px solid var(--rule); margin:38px 0}
+.foot{font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kicker">
+    <span>Note</span><span>Philosophy of physics</span><span>13 September 2026</span>
+  </div>
+  <h1>Linearity Does Not Immunise</h1>
+  <p class="dek">The Schrödinger equation is linear, so it has none of the pathologies of classical mechanics. That is false, and the classical and quantum failures sit at the same threshold — but they are not the same failure.</p>
+</header>
+
+<div class="retract">
+  <h4>Retraction, and what this note replaces</h4>
+  <p>This note replaces <em>Determinism Is an Indexed Predicate</em> (Revision 2, 12 September 2026), whose central claims are <b>withdrawn</b>. That paper argued that a determinism verdict is a function of a law plus three independent, non-eliminable coordinates. A referee refuted two of its three headline claims with counter-theorems stated against its own definitions, and I have compiled all of them. §6 gives the full record; the counter-development is in the repository as <code>lean/Referee.lean</code>.</p>
+  <p>What survives is smaller, is not new, and is set out below: a correction to a claim about quantum mechanics that the withdrawn paper made and then misclassified, three corrections to claims about ordinary differential equations, and one small sharpening of the classical side of a correspondence due to Wightman and developed by Earman. <b>Nothing here is presented as a discovery.</b> The note exists because the corrected claims are common and the corrections are checkable.</p>
+</div>
+
+<h4 style="margin-top:0">Summary</h4>
+
+<p>A familiar thought: the pathologies of classical mechanics — Norton's dome, escape to infinity, finite-time blow-up — arise because the equations are non-linear, and the Schrödinger equation is linear, so quantum mechanics is free of them. The thought is wrong. Stone's theorem requires <b>self-adjointness</b>, not symmetry, and a Hamiltonian that is symmetric but not <em>essentially</em> self-adjoint generates not one unitary group but a family of them, one per self-adjoint extension. Same initial state, same formal Hamiltonian, many evolutions.</p>
+
+<p>The threshold at which this happens is the classical escape threshold. For <span class="m">V(x) = −x<sup>n</sup></span> at zero energy the classical particle reaches infinity in finite time exactly when <span class="m">n &gt; 2</span> — verified symbolically here, and sharp at the harmonic case — and it is at that same threshold that essential self-adjointness fails.</p>
+
+<p>But the two failures are not identical, and the withdrawn paper's claim that they are "the same failure" was a pun on two senses of <em>domain</em>. Classically the solution runs out of <em>time</em>: an existence failure. Quantum-mechanically every self-adjoint extension generates a unitary group defined for all <span class="m up">t ∈ ℝ</span>; what is underdetermined is the <em>operator</em>, through a boundary condition at infinity. That is a uniqueness failure, and it is resolved by deciding which operator is the theory. Correlated failures at a shared threshold, not one failure.</p>
+
+<h2 id="s1"><span class="num">1</span>The claim, and why it is tempting</h2>
+
+<p>Classical mechanics has a well-catalogued set of determinism failures. Norton's dome gives non-uniqueness from a non-Lipschitz force; <span class="m">dx/dt = x²</span> gives finite-time blow-up; the <span class="m">n</span>-body problem gives non-collision singularities, and time-reversed, space invaders. Every one of these involves a non-linearity somewhere, which makes the following inference look safe:</p>
+
+<blockquote>The Schrödinger equation is linear. Linear equations have global unique solutions. Therefore unitary quantum mechanics is deterministic in a way classical mechanics is not, and all quantum indeterminism is in the collapse postulate.</blockquote>
+
+<p>The last clause is right. The inference to it is not. The step that fails is "linear equations have global unique solutions," which is true for bounded operators and false in general for the unbounded ones that physical Hamiltonians are.</p>
+
+<h2 id="s2"><span class="num">2</span>Stone's theorem needs self-adjointness</h2>
+
+<p>Stone's theorem gives a bijection between strongly continuous one-parameter unitary groups and <em>self-adjoint</em> operators. Self-adjointness is <span class="m">H = H<sup>†</sup></span> <em>including equality of domains</em>, which is strictly stronger than symmetry (<span class="m">⟨Hψ, φ⟩ = ⟨ψ, Hφ⟩</span> on a common dense domain).</p>
+
+<p>A symmetric operator defined on a natural domain such as <span class="m up">C</span><sub>0</sub><sup>∞</sup> may have many self-adjoint extensions, or none. Where there are many, each generates a <em>different</em> unitary group, and the Schrödinger equation alone does not say which one is the dynamics. This is not an artefact of a bad domain choice; it is the statement that the formal differential expression underdetermines the operator. <span class="st st-s">SOURCED</span> [8]</p>
+
+<div class="box">
+  <div class="hd">The consequence</div>
+  <p>For such a Hamiltonian there is a one-parameter state <span class="m">Ψ(0)</span> and a family of evolutions <span class="m">{U<sub>α</sub>(t)Ψ(0)}</span>, all satisfying the Schrödinger equation, all unitary, all defined for every time. No collapse postulate is involved, and no interpretation of quantum mechanics is involved. Uniqueness fails inside the part of the formalism everyone agrees is fundamental.</p>
+</div>
+
+<p>This is Earman's point, made at length in two 2008 papers [2,3] and in his handbook survey [1]. It is not mine, and the reader who wants the full treatment should go there rather than here. What this note adds is one small sharpening of the classical half, in §3, and a correction to how the correspondence is usually described, in §4.</p>
+
+<h2 id="s3"><span class="num">3</span>The classical threshold, and that it is sharp</h2>
+
+<p>The correspondence, due to Wightman and discussed by Earman [2], is that essential self-adjointness fails where the classical particle escapes to infinity in finite time. The classical half is elementary and worth computing, because it makes the threshold visible.</p>
+
+<p>Take <span class="m">V(x) = −x<sup>n</sup></span> and energy <span class="m">E = 0</span>. Conservation gives <span class="m">½mẋ² = x<sup>n</sup></span>, so <span class="m">ẋ = x<sup>n/2</sup>√(2/m)</span>, and the time to reach infinity from <span class="m">x₀ &gt; 0</span> is</p>
+
+<div class="disp">
+  τ(x₀) &nbsp;=&nbsp; √(m/2) &nbsp;∫<sub>x₀</sub><sup>∞</sup> x<sup>−n/2</sup> dx &nbsp;&nbsp;&lt;&nbsp;∞ &nbsp;&nbsp;⟺&nbsp;&nbsp; n &gt; 2
+  <span class="lbl">verified symbolically for n = 1, 2, 3, 4, 6 · finite exactly at n = 3, 4, 6</span>
+</div>
+
+<p>The threshold is <b>sharp at the harmonic case</b>. At <span class="m">n = 2</span> the integral diverges and the particle never arrives; at any <span class="m">n &gt; 2</span> it arrives in finite time. For <span class="m">n = 4</span> the escape time is <span class="m">√(m/2)/x₀</span> exactly. <span class="st st-m">CHECKED</span></p>
+
+<p>So the inverted harmonic oscillator sits precisely on the boundary, which is the right way to see why <span class="m">−x⁴</span> is the textbook case and <span class="m">−x²</span> is not. The quantum statement matching this — that <span class="m">−d²/dx² − x⁴</span> on <span class="m up">C</span><sub>0</sub><sup>∞</sup>(<span class="m up">ℝ</span>) is not essentially self-adjoint, by the Weyl limit-point/limit-circle criterion — I have not verified and take from Reed and Simon [8]. <span class="st st-n">NOT OPENED</span></p>
+
+<h2 id="s4"><span class="num">4</span>The same threshold, two different failures</h2>
+
+<p>Here is the correction that matters, and it is a correction to the withdrawn paper as much as to anyone.</p>
+
+<div class="scroll">
+<table>
+<colgroup><col style="width:22%"><col style="width:39%"><col style="width:39%"></colgroup>
+<thead><tr><th></th><th>Classical, V = −x⁴</th><th>Quantum, H = −d²/dx² − x⁴</th></tr></thead>
+<tbody>
+<tr><th>What runs out</th><td>The solution's interval of <em>time</em></td><td>Nothing. Every extension gives a group on all of <span class="m up">ℝ</span></td></tr>
+<tr><th>Failure type</th><td class="n">Existence</td><td class="n">Uniqueness</td></tr>
+<tr><th>Repaired by</th><td>A convention: total vs. maximal solutions</td><td>A physical choice: which self-adjoint extension</td></tr>
+<tr><th>Residue</th><td>No history past the singular time</td><td>Many histories, all total, all unitary</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>The withdrawn paper said "the classical and quantum failures are the same failure," and classified both as a question about the temporal domain. That is wrong twice over. The quantum failure does not touch the temporal domain at all — the histories are total — and it is a uniqueness failure, which the same paper spent a section insisting must be held apart from existence failures. The word doing the illicit work is <em>domain</em>: an interval of time in the classical case, an operator domain in a Hilbert space in the quantum case. <span class="st st-n">CORRECTED</span></p>
+
+<p>What is true, and is the whole content of the correspondence, is that <b>the same classical incompleteness is diagnostic of both</b>. A potential steep enough to let a particle escape in finite time is a potential steep enough to leave the quantum dynamics underdetermined at infinity. Correlated, at a shared and sharp threshold — not identical.</p>
+
+<h2 id="s5"><span class="num">5</span>Three corrections about ordinary differential equations</h2>
+
+<p>These are elementary, and all three were stated wrongly in one or other draft of the withdrawn paper. They are collected because each is a claim one meets in informal discussion.</p>
+
+<h3>5.1 Local uniqueness does propagate</h3>
+
+<p>It is sometimes said that in continuous time, uniqueness holding locally at every point does not give uniqueness globally, and that Norton's dome shows this. Both halves are wrong.</p>
+
+<p>If uniqueness holds locally at every point, it holds globally on a connected interval. Let <span class="m">x₁, x₂</span> be solutions on a common interval <span class="m">I</span> agreeing at <span class="m">t₀</span>, and let <span class="m">A = {t ∈ I : x₁(t) = x₂(t)}</span>. Then <span class="m">A</span> is non-empty, closed in <span class="m">I</span> by continuity, and open in <span class="m">I</span> by local uniqueness; since <span class="m">I</span> is connected, <span class="m">A = I</span>.</p>
+
+<p>And the dome is not a counterexample to that implication, because the dome <em>fails local uniqueness</em> at the apex — it is a case where the hypothesis does not hold. The real discrete/continuous disanalogy is different: in discrete time a step function forces forward uniqueness, whereas in continuous time a well-defined right-hand side does not. What fails to propagate from local to global in continuous time is <b>existence</b>, not uniqueness.</p>
+
+<h3>5.2 "Forward-unique" is not "deterministic"</h3>
+
+<p>The equation <span class="m">dx/dt = −x<sup>1/3</sup></span> is the standard example of uniqueness without Lipschitz continuity. Forward in time it is unique: the origin attracts from both sides. Backward it is not. For every <span class="m">T</span>,</p>
+
+<div class="disp">
+  x(t) = ((2/3)(T − t))<sup>3/2</sup> for t ≤ T,&nbsp; 0 for t &gt; T
+  <span class="lbl">verified: dx/dw = x<sup>1/3</sup> with w = T − t &gt; 0; meets x ≡ 0 at T with matching slope</span>
+</div>
+
+<p>is a solution agreeing with the zero solution at every instant after <span class="m">T</span> and differing from it before. Under any definition on which agreement at one instant forces agreement at all instants — Montague's, Lewis's, and the usual possible-worlds formulations [5] — this law is <b>indeterministic</b>. So the example shows Lipschitz continuity is unnecessary for <em>forward</em> uniqueness only, and citing it as showing a non-Lipschitz law can be deterministic requires saying which direction is meant. <span class="st st-m">CHECKED</span></p>
+
+<h3>5.3 The dome's join is C³</h3>
+
+<p>Norton's dome [6] has <span class="m">h(r) = (2/3g)r<sup>3/2</sup></span>, hence <span class="m">r̈ = √r</span>, and the non-trivial solutions <span class="m">r(t) = (t−T)⁴/144</span> for <span class="m">t ≥ T</span>. The join with the rest solution is routinely described as <span class="m up">C²</span>, including by Malament [4]. Differentiating at <span class="m">T</span> gives <span class="m">[0, 0, 0, 0, 1/6]</span> for orders 0 through 4: the join is exactly <span class="m up">C³</span>, one degree smoother than usually stated, with the fourth derivative the first to survive. <span class="st st-m">CHECKED</span></p>
+
+<p>Nothing turns on this — <span class="m up">C²</span> is true, being implied by <span class="m up">C³</span> — but the sharp value is the one to quote.</p>
+
+<h2 id="s6"><span class="num">6</span>The retraction in full</h2>
+
+<p>The withdrawn paper claimed that determinism is a predicate of a law plus three independent coordinates: <b>σ</b> (how states are individuated), <b>δ</b> (whether histories must be total in time), <b>μ</b> (which models count). Three claims are withdrawn.</p>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 1 · The coordinates are not independent, and two are eliminable</div>
+  <p>Folding the admissibility class into the law gives <code>DetIn L C ↔ DetIn (restrict L C) triv</code>, where <code>restrict L C := ⟨fun h => L.Possible h ∧ C h⟩</code>. This compiles from the paper's own definitions with <b>no axioms</b>, and the same move eliminates μ. And σ was never a separate slot, since <code>push L r</code> is itself a law. Composing, every (law, σ, δ) verdict is an <em>unindexed</em> verdict about one constructed law.</p>
+  <p>There is one slot — which set of histories you are talking about — and σ, δ, μ are three motivations for filling it, not three coordinates of a predicate. The abstract's claim that "no definition of determinism that suppresses any of them is well-formed" is false.</p>
+</div>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 2 · The independence theorem conflates two predicates</div>
+  <p>Its δ conjunct is about <code>ExactlyOne</code> (an existence claim); its σ and μ conjuncts are about <code>DetIn</code>. On the paper's own δ witness the <em>determinism</em> verdict does not move — the paper proves this itself and does not reconcile it with the abstract.</p>
+  <p>This one is repairable, and I have repaired it: a law with two mutually non-extending partial histories meeting at one instant, plus a total history meeting neither, is deterministic under the total convention and indeterministic under the maximal one. So δ <em>can</em> flip a determinism verdict. The paper simply never proved it. The repair does not rescue Withdrawn 1.</p>
+</div>
+
+<div class="box neg">
+  <div class="hd">Withdrawn 3 · Everettian branching is not a σ-shift</div>
+  <p>The pushforward of a singleton law is a singleton law, so the paper's Everett model is deterministic at <em>every</em> σ setting: the branch multiplicity the theorem exists to explain never arises in it. And the law whose possible histories are the branch histories is not the pushforward of the universal law along <em>any</em> redescription — pushing forward along one map cannot turn one history into many. Branching would need the image under a <em>family</em> of maps, which is a different operation and is not the hole-argument quotient.</p>
+</div>
+
+<p>Two further defects are worth recording because they are defects of method rather than of content. The theorem named <code>sigma_delta_interact</code>, which the paper called the sharpest form of its thesis, <b>contains no σ in its statement</b>; the σ claim lived only in a code comment. And four of the paper's seventeen symbolic checks verified nothing: one had the literal <code>True</code> as its predicate, and the "tent map" check only ever differentiated <span class="m">2x</span>, never constructing the map — the identical check passes for <span class="m">x ↦ 2x + 7</span>, which is not chaotic. Both are the exact defect class the paper's own corrigenda section claimed to have purged from its predecessor.</p>
+
+<p>The verification file accompanying <em>this</em> note audits its own source and fails if any check's predicate is a literal constant.</p>
+
+<h4>What of the withdrawn paper survives</h4>
+<ul class="tight">
+  <li>The §10.1 correction on essential self-adjointness — restated here, with its classification fixed.</li>
+  <li>The local-to-global uniqueness correction — §5.1 here.</li>
+  <li>The <span class="m">−x<sup>1/3</sup></span> observation — §5.2 here.</li>
+  <li>That coarsening a state space can destroy determinism. True, but standard: it is the failure of lumpability, and requires a partition invariant under the dynamics to avoid. The paper attributed it to Ornstein and Weiss [7], which is a misuse — their isomorphism results use <em>generating</em> partitions and preserve determinism; what they establish is statistical indistinguishability, not failure of uniqueness. Werndl [9] is the right citation for the philosophical claim.</li>
+</ul>
+
+<h2 id="s7"><span class="num">7</span>What this note is not</h2>
+
+<p>It is not novel. The central point is Earman's [1,2,3]; the classical threshold computation is undergraduate mechanics; the ODE corrections are textbook. The one thing I have not found stated in the sources I could reach is the sharpness observation of §3 — that the escape criterion sits exactly at the harmonic case — and I would expect that to be somewhere in the literature too.</p>
+
+<p>It is also not a survey of determinism. Earman's handbook chapter [1] is that, covers everything here and much more, and should be read first.</p>
+
+<p>What the note is for: the claim corrected in §§2–4 is repeated often enough, including by me a day ago, that a short checkable statement of why it is wrong seems worth having.</p>
+
+<hr>
+
+<h2 id="refs" style="border:none;padding-top:0"><span class="num">—</span>References</h2>
+
+<p class="foot" style="margin-bottom:14px"><span class="tag">CHECKED</span> the bibliographic record was confirmed against the publisher or an equivalent index. <span class="tag">NOT OPENED</span> the full text was not consulted and the characterisation is mine, unchecked.</p>
+
+<ol class="refs">
+<li>Earman, J. (2007). Aspects of determinism in modern physics. In J.&nbsp;Butterfield &amp; J.&nbsp;Earman (eds.), <em>Handbook of the Philosophy of Science: Philosophy of Physics, Part&nbsp;B</em>, Elsevier, 1369–1434. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Earman, J. (2008a). Essential self-adjointness: implications for determinism and the classical–quantum correspondence. <em>Synthese</em> 169(1), 27–50. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Earman, J. (2008b). How determinism can fail in classical physics and how quantum physics can (sometimes) provide a cure. <em>Philosophy of Science</em> 75(5), 817–829. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Malament, D.&nbsp;B. (2008). Norton's slippery slope. <em>Philosophy of Science</em> 75(5), 799–816. <span class="tag">CHECKED</span></li>
+<li>Müller, T., &amp; Placek, T. (2018). Defining determinism. <em>British Journal for the Philosophy of Science</em> 69(1), 215–252. <span class="tag">CHECKED</span></li>
+<li>Norton, J.&nbsp;D. (2008). The dome: an unexpectedly simple failure of determinism. <em>Philosophy of Science</em> 75(5), 786–798. <span class="tag">CHECKED</span></li>
+<li>Ornstein, D.&nbsp;S., &amp; Weiss, B. (1991). Statistical properties of chaotic systems. <em>Bulletin of the AMS</em> 24(1), 11–116. Cited here only for what it establishes: statistical indistinguishability of deterministic systems from stochastic ones, via generating partitions that preserve determinism. <span class="tag">CHECKED · NOT OPENED</span></li>
+<li>Reed, M., &amp; Simon, B. (1975). <em>Methods of Modern Mathematical Physics II: Fourier Analysis, Self-Adjointness</em>. Academic Press. <span class="tag">NOT OPENED</span></li>
+<li>Werndl, C. (2009). Are deterministic descriptions and indeterministic descriptions observationally equivalent? <em>Studies in History and Philosophy of Modern Physics</em> 40(3), 232–242. <span class="tag">CHECKED</span></li>
+</ol>
+
+<h2 id="appA"><span class="num">A</span>Appendix — symbolic checks</h2>
+
+<p>Source: <code>verification/note_checks.py</code>, SymPy, <b>14 checks, all passing</b>, exit code 0. Covering the dome identity and its exactly-<span class="m up">C³</span> join; the Lipschitz failure; the blow-up solution under both the total and maximal conventions; non-uniqueness for <span class="m">x′ = x<sup>2/3</sup></span>; the backward non-uniqueness of <span class="m">x′ = −x<sup>1/3</sup></span>; and the classical escape threshold for <span class="m">V = −x<sup>n</sup></span> at <span class="m">n = 1, 2, 3, 4, 6</span>, including sharpness at <span class="m">n = 2</span>.</p>
+
+<p>The file audits its own source. After the previous version shipped a check whose predicate was the constant <code>True</code>, a value-level guard is not enough — a genuine computation may legitimately evaluate to <code>True</code> — so the audit walks the file's own AST and fails the run if any <code>check()</code> call has a literal constant in its predicate position:</p>
+
+<pre><code><span class="kw">def</span> audit_own_source():
+    tree = ast.parse(open(__file__).read())
+    bad, n = [], 0
+    <span class="kw">for</span> node <span class="kw">in</span> ast.walk(tree):
+        <span class="kw">if</span> isinstance(node, ast.Call) <span class="kw">and</span> getattr(node.func, <span class="cmt">"id"</span>, None) == <span class="cmt">"check"</span>:
+            n += 1
+            <span class="kw">if</span> isinstance(node.args[1], ast.Constant):
+                bad.append((node.lineno, ast.unparse(node.args[1])))
+    <span class="kw">return</span> n, bad
+
+<span class="cmt"># AUDIT    14 check() calls; no predicate is a literal constant</span></code></pre>
+
+<p class="foot"><b>Reproduction.</b> <code>python3 verification/note_checks.py</code> prints a pass/fail table, the source audit, and exits non-zero on any failure. The retracted paper's formal development and the referee's counter-theorems remain in the repository as <code>lean/Indexed.lean</code> and <code>lean/Referee.lean</code>; both compile, and the second refutes the first.</p>
+
+</div>
