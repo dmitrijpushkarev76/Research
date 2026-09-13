@@ -272,6 +272,50 @@ check("Prop 10: |r''| <= g therefore bounds growth quadratically -- integrating 
       and sp.integrate(sp.integrate(g, (t, 0, t)), (t, 0, t)) == g * t**2 / 2,
       f"double integral of the bound = {sp.integrate(sp.integrate(g, (t,0,t)), (t,0,t))}")
 
+# Prop 10, the angular-momentum caveat added in the audit: derive the centrifugal
+# term from the full Lagrangian rather than asserting it.
+tt = sp.Symbol('tt', real=True)
+m_, pth = sp.symbols('m_ pth', positive=True)
+rf = sp.Function('rf', positive=True)(tt)
+th = sp.Function('th', real=True)(tt)
+rho = sp.Function('rho', positive=True)
+hh = sp.Function('hh', real=True)
+L_full = (m_ / 2) * (sp.diff(rf, tt)**2 + rho(rf)**2 * sp.diff(th, tt)**2) + m_ * g * hh(rf)
+
+# theta is cyclic: p_theta = dL/d(thetadot) = m rho^2 thetadot is conserved
+p_theta = sp.diff(L_full, sp.diff(th, tt))
+check("Prop 10 caveat: theta is cyclic, so p_theta = m*rho(r)^2*thetadot is conserved",
+      sp.simplify(p_theta - m_ * rho(rf)**2 * sp.diff(th, tt)) == 0
+      and sp.simplify(sp.diff(L_full, th)) == 0,
+      f"p_theta = {p_theta}; dL/dtheta = {sp.diff(L_full, th)}")
+
+# Euler-Lagrange in r, then eliminate thetadot via p_theta
+EL_r = sp.diff(sp.diff(L_full, sp.diff(rf, tt)), tt) - sp.diff(L_full, rf)
+rddot = sp.solve(EL_r, sp.diff(rf, tt, 2))[0]
+rddot = rddot.subs(sp.diff(th, tt), pth / (m_ * rho(rf)**2))
+predicted = g * sp.Derivative(hh(rf), rf).doit() + (pth**2 / m_**2) * sp.diff(rho(rf), rf) / rho(rf)**3
+check("Prop 10 caveat: with angular momentum the meridional equation is "
+      "r'' = g h'(r) + (p_theta^2/m^2) * rho'(r)/rho(r)^3, NOT r'' = g h'(r)",
+      sp.simplify(rddot - predicted) == 0,
+      f"r'' = {sp.simplify(rddot)}")
+
+check("Prop 10 caveat: that centrifugal term is unbounded as rho -> 0, so the "
+      "|r''| <= g bound genuinely needs the zero-angular-momentum hypothesis",
+      sp.limit(1 / sp.Symbol('rr', positive=True)**3, sp.Symbol('rr', positive=True), 0, '+') == sp.oo,
+      "rho^-3 -> oo, and no bound in terms of g alone survives")
+
+# (H4a) in the sec. 7 counterexample, and the independence of (H4a) from (H2)
+check("sec. 7 counterexample: (H4a) HOLDS for it -- int_(-1)^0 dx/|x|^(2/3) = 3 -- "
+      "so it is (H4b) alone that fails, as the corrected text says",
+      sp.integrate(u**sp.Rational(-2, 3), (u, 0, 1)) == 3,
+      f"int_0^1 v^(-2/3) dv = {sp.integrate(u**sp.Rational(-2,3), (u, 0, 1))}")
+
+check("(H4a) does NOT follow from (H2): f(u) = u^(2/3) for u>0 and f(u) = |u| for "
+      "u<0 is continuous, satisfies (H1) and (H2), yet int_(-1)^0 du/f = oo",
+      (not sp.integrate(u**sp.Rational(-2, 3), (u, 0, 1)).has(sp.oo))
+      and sp.integrate(1 / u, (u, 0, 1)) == sp.oo,
+      "(H2) side = 3 < oo; negative side = int_0^1 dv/v = oo")
+
 # ========================= 7. Proposition 11: the potential realisation, 11.2
 G = sp.sqrt(sp.Rational(4, 3) * x**sp.Rational(3, 2) + sp.Rational(2, 3) * x**3)
 check("Prop 11: G G' = sqrt(x) + x^2, so solutions of x' = G(x) solve x'' = sqrt(x) + x^2",
