@@ -141,7 +141,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 
 <h4>Abstract</h4>
 <p>For the initial-value problem <span class="m">ẋ = f(x)</span>, <span class="m">x(0) = 0</span> with <span class="m">f</span> continuous, <span class="m">f(0) = 0</span> and <span class="m">f &gt; 0</span> off the origin, the structure of the solution set is classical: it was characterised by Wallach [<a href="#r14">14</a>] in 1948 and treated in general form by Binding [<a href="#r4">4</a>] in 1979. This note takes one concrete member of that class, <span class="m">f(x) = |x|<sup>2/3</sup> + x²</span>, and works it out completely.</p>
-<p>The example has exactly one solution defined on all of <span class="m">[0,∞)</span>, namely <span class="m">x ≡ 0</span>. It also has continuum-many solutions that admit no forward extension: for each waiting time <span class="m">T ≥ 0</span> there is a solution that rests at the origin until <span class="m">T</span>, departs, and reaches <span class="m">+∞</span> at <span class="m">T + 3√2π/4</span>. Every non-trivial branch terminates in finite time, which is exactly why the first count is one and the second is <span class="m up">𝔠</span>.</p>
+<p>The example has exactly one solution defined on all of <span class="m">[0,∞)</span>, namely <span class="m">x ≡ 0</span>. It also has continuum-many solutions that admit no forward extension: for each waiting time <span class="m">T ≥ 0</span> there is a solution that rests at the origin until <span class="m">T</span>, departs, and reaches <span class="m">+∞</span> at <span class="m">T + 3√2π/4</span>. Every non-trivial branch terminates in finite time, which is exactly why the first count is one; the second is <span class="m up">𝔠</span> for an independent reason, that the equilibrium can be left at any moment. Each hypothesis moves one count, and only their conjunction separates the two.</p>
 <p>The distinction this illustrates — between uniqueness among globally defined solutions and uniqueness among solutions that merely cannot be extended — is not introduced here either. It is discussed for general relativity by Earman [<a href="#r7">7</a>], Smeenk and Wüthrich [<a href="#r13">13</a>] and Doboszewski [<a href="#r5">5</a>], for Newtonian blow-up by Wilson [<a href="#r15">15</a>], and within a broader formulation of indeterminism by Azhar and Namjoo [<a href="#r2">2</a>]. What is offered here is a minimal worked example in which every quantity is available in closed form.</p>
 
 <nav class="toc" aria-label="Contents">
@@ -175,7 +175,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 
 <p>The mathematics is classical. For scalar autonomous equations the solution set through an equilibrium was characterised by Wallach [<a href="#r14">14</a>] in 1948, and the general theory — the exact conditions for departure from an equilibrium, for escape to infinity in finite time, and for the structure of the solution set — is given by Binding [<a href="#r4">4</a>]. The conceptual point is also familiar. In general relativity the maximal globally hyperbolic development of initial data is unique while extensions past a Cauchy horizon are not, and whether to restrict attention to the well-behaved class is a live question rather than a settled one [<a href="#r7">7</a>, <a href="#r13">13</a>]. In Newtonian mechanics Wilson [<a href="#r15">15</a>] argues that failures of global existence are descriptive gaps rather than failures of determinism, in explicit opposition to Earman and Norton. Azhar and Namjoo [<a href="#r2">2</a>] argue that a uniqueness-based criterion misses the sense in which a terminating history is itself a failure of determination.</p>
 
-<p>What follows is therefore expository. Its purpose is to put the distinction into the smallest explicit example we could construct and work it out in full: a single scalar equation, elementary integrals, a blow-up time in closed form, an explicit solution family. No general relativity, no <span class="m">N</span>-body mechanics, no partial differential equations, no geometry.</p>
+<p>What follows is therefore expository. Its purpose is to put the distinction into a small explicit example and work it out in full: a single scalar equation, elementary integrals, a blow-up time in closed form, an explicit solution family. No general relativity, no <span class="m">N</span>-body mechanics, no partial differential equations, no geometry.</p>
 
 <h2 id="s2"><span class="num">2</span>The example</h2>
 
@@ -204,7 +204,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
   <p class="disp" style="border:none;margin:4px 0">T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> dx/(x<sup>2/3</sup> + x²) = 3∫<sub>0</sub><sup>∞</sup> du/(1 + u⁴) = 3 · (π/4)/sin(π/4) = <b>3√2 π / 4</b> ≈ 3.3321622036.</p>
 </div>
 
-<p>The last step is the standard evaluation <span class="m">∫<sub>0</sub><sup>∞</sup> du/(1+u<sup>n</sup>) = (π/n)/sin(π/n)</span> at <span class="m">n = 4</span>. That closed form is the practical reason to prefer this <span class="m">f</span> to any other member of the class.</p>
+<p>The last step is the standard evaluation <span class="m">∫<sub>0</sub><sup>∞</sup> du/(1+u<sup>n</sup>) = (π/n)/sin(π/n)</span> at <span class="m">n = 4</span>. That closed form is a convenience, and not a reason to prefer this <span class="m">f</span> to other members of the class. Some of them do better. For <span class="m">f(x) = √|x|(1+|x|)</span> one has <span class="m">F(x) = 2 arctan√x</span>, so <span class="m">T<sub>∗</sub> = π</span> exactly, and every branch is elementary: <span class="m">x<sub>T</sub>(t) = tan²((t−T)/2)</span> on <span class="m">(T, T+π)</span>. The <span class="m">f</span> used here admits no such closed form for <span class="m">φ</span> itself, which is why the figure below is drawn by inverting <span class="m">F</span> numerically. Nothing in what follows depends on the choice; any member of the class would serve.</p>
 
 <h2 id="s3"><span class="num">3</span>The solution family</h2>
 
@@ -311,7 +311,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
     </tr>
     <tr>
       <td>Binding [<a href="#r4">4</a>], §3 (pp. 186–188)</td>
-      <td>The machinery of §<a href="#s4">4</a>. Lemma 3.2: every solution is monotonic — which Binding credits to Wallach [<a href="#r15">15</a>, §2] for continuous <span class="m">f</span>. Theorem 3.3: the separation identity in measure-theoretic form, of which our computation is the elementary case. Theorem 3.5: necessary conditions for local existence, reducing for continuous <span class="m">f</span> with <span class="m">x &gt; 0</span>, in his words, to “<span class="m">f &gt; 0</span> and <span class="m">1/f</span> integrable, as given by Wallach”.</td>
+      <td>The machinery of §<a href="#s4">4</a>. Lemma 3.2: every solution is monotonic — which Binding credits to Wallach [<a href="#r14">14</a>, §2] for continuous <span class="m">f</span>. Theorem 3.3: the separation identity in measure-theoretic form, of which our computation is the elementary case. Theorem 3.5: necessary conditions for local existence, reducing for continuous <span class="m">f</span> with <span class="m">x &gt; 0</span>, in his words, to “<span class="m">f &gt; 0</span> and <span class="m">1/f</span> integrable, as given by Wallach”.</td>
     </tr>
     <tr>
       <td>Binding [<a href="#r4">4</a>], §§5–6 (pp. 190–193)</td>
@@ -339,7 +339,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 
 <p>Given Lemma 7.5 and case (6.5) together, the two counts of §<a href="#s4">4</a> follow in two lines; the self-contained argument given there is written out because it is short, not because it is new. The wider uniqueness and non-uniqueness literature is surveyed in Agarwal and Lakshmikantham [<a href="#r1">1</a>].</p>
 
-<p>On the particular choice of <span class="m">f</span>: we have not found a prior publication using <span class="m">|x|<sup>2/3</sup> + x²</span> to illustrate this point, though the search behind that remark is bounded and we make no priority claim. What can be said without qualification is that the choice gives a compact closed-form illustration, which is its only advantage over any other member of the class.</p>
+<p>On the particular choice of <span class="m">f</span>: we have not found a prior publication using <span class="m">|x|<sup>2/3</sup> + x²</span> to illustrate this point, though the search behind that remark is bounded and we make no priority claim. What can be said without qualification is that the choice gives a compact closed-form blow-up time. It is not the most economical member of the class — §<a href="#s2">2</a> names one that is — and we claim no advantage for it beyond convenience.</p>
 
 <h2 id="s7"><span class="num">7</span>Bearing on determinism</h2>
 
@@ -426,7 +426,7 @@ hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
 <li id="r2">Azhar, F., &amp; Namjoo, M. H. (2021). Spacetime singularities and a novel formulation of indeterminism. arXiv:2101.10887. <span class="tag">READ</span></li>
 <li id="r3">Berndl, K., Dürr, D., Goldstein, S., Peruzzi, G., &amp; Zanghì, N. (1995). On the global existence of Bohmian mechanics. <em>Communications in Mathematical Physics</em> 173(3), 647–673. <span class="tag">READ</span></li>
 <li id="r4">Binding, P. (1979). The differential equation <span class="m">ẋ = f∘x</span>. <em>Journal of Differential Equations</em> 31(2), 183–199. <span class="tag">READ</span></li>
-<li id="r5">Doboszewski, J. (2019). Epistemic holes and determinism in classical general relativity. <em>British Journal for the Philosophy of Science</em>. doi:10.1093/bjps/axz011. <span class="tag">READ</span></li>
+<li id="r5">Doboszewski, J. (2020). Epistemic holes and determinism in classical general relativity. <em>British Journal for the Philosophy of Science</em> 71(3), 1093–1111. doi:10.1093/bjps/axz011. Page references in the text are to the preprint, whose pagination differs from the journal’s. <span class="tag">READ</span></li>
 <li id="r6">Drivas, T. D., &amp; Mailybaev, A. A. (2018). “Life after death” in ordinary differential equations with a non-Lipschitz singularity. arXiv:1806.09001; published in <em>Nonlinearity</em>, doi:10.1088/1361-6544/abbe60. <span class="tag">READ</span></li>
 <li id="r7">Earman, J. (2007). Aspects of determinism in modern physics. In J. Butterfield &amp; J. Earman (eds), <em>Handbook of the Philosophy of Science: Philosophy of Physics</em>, 1369–1434. Amsterdam: North-Holland. <span class="tag">READ</span></li>
 <li id="r8">Fjordholm, U. S. (2018). Sharp uniqueness conditions for one-dimensional, autonomous ordinary differential equations. arXiv:1804.08377. <span class="tag">READ</span></li>
