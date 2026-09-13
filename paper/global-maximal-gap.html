@@ -1,0 +1,494 @@
+<title>The Global–Maximal Gap</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,600&family=IBM+Plex+Sans+Condensed:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root{
+  --paper:#F7F8FA; --raise:#FFFFFF; --sunk:#EEF0F4;
+  --ink:#12151C; --ink-2:#333A48; --muted:#59616F; --faint:#89909D;
+  --rule:#DCE0E7; --rule-2:#C2C8D2;
+  --accent:#3A3D8F; --accent-soft:#E5E6F3;
+  --verify:#1B6B52; --verify-soft:#DEEDE7;
+  --errata:#96591A; --errata-soft:#F4EADB;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --sans:"IBM Plex Sans Condensed",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --col:65ch;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+}}
+:root[data-theme="dark"]{
+  --paper:#0D1016; --raise:#141821; --sunk:#090B10;
+  --ink:#E4E7ED; --ink-2:#C0C6D1; --muted:#8F98A6; --faint:#6B7482;
+  --rule:#232936; --rule-2:#39404E;
+  --accent:#8E92E0; --accent-soft:#1B1D33;
+  --verify:#56B694; --verify-soft:#0E2019;
+  --errata:#D2A055; --errata-soft:#241B0F;
+}
+*{box-sizing:border-box}
+body{background:var(--paper); color:var(--ink);
+  font-family:var(--serif); font-size:17.5px; line-height:1.62;
+  margin:0; padding-block:0 96px; padding-left:20px; padding-right:20px;
+  -webkit-text-size-adjust:100%}
+.wrap{max-width:var(--col); margin-inline:auto}
+.wide{max-width:1060px; margin-inline:auto}
+
+.mast{border-bottom:2px solid var(--accent); padding-block:50px 22px; margin-bottom:28px}
+.kicker{font-family:var(--sans); font-size:11.5px; font-weight:600;
+  letter-spacing:.13em; text-transform:uppercase; color:var(--accent);
+  display:flex; flex-wrap:wrap; gap:8px 16px; margin-bottom:16px}
+.kicker span:not(:first-child){color:var(--muted)}
+h1{font-family:var(--serif); font-weight:700; font-size:clamp(1.95rem,5.4vw,2.85rem);
+  line-height:1.05; letter-spacing:-.021em; margin:0 0 12px; text-wrap:balance}
+.dek{font-size:1.08rem; color:var(--ink-2); margin:0; text-wrap:balance}
+
+h2{font-family:var(--serif); font-weight:600; font-size:1.5rem; line-height:1.18;
+  letter-spacing:-.011em; margin:54px 0 6px; text-wrap:balance;
+  padding-top:20px; border-top:1px solid var(--rule)}
+h2 .num{font-family:var(--mono); font-size:.64em; font-weight:500; color:var(--accent); margin-right:.6em}
+h3{font-family:var(--sans); font-weight:600; font-size:1.04rem; margin:30px 0 2px; color:var(--ink)}
+h4{font-family:var(--sans); font-weight:600; font-size:.8rem; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin:22px 0 2px}
+p{margin:13px 0}
+a{color:inherit; text-decoration:underline; text-decoration-color:var(--rule-2); text-underline-offset:3px}
+a:hover{text-decoration-color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+strong{font-weight:600}
+
+.m{font-family:var(--serif); font-style:italic; white-space:nowrap}
+.m.up{font-style:normal}
+.disp{font-family:var(--serif); font-size:1.04rem; text-align:center;
+  margin:20px auto; padding:14px 12px; border-block:1px solid var(--rule); overflow-x:auto}
+.disp .lbl{font-family:var(--mono); font-size:.68rem; color:var(--faint);
+  display:block; margin-top:7px; font-style:normal}
+sub,sup{font-size:.72em; line-height:0}
+
+/* theorem environments */
+.thm{border-left:3px solid var(--accent); background:var(--raise); padding:15px 17px; margin:24px 0}
+.thm .hd{font-family:var(--sans); font-weight:700; font-size:.79rem; letter-spacing:.07em;
+  text-transform:uppercase; color:var(--accent); margin-bottom:6px}
+.thm p{margin:8px 0 0} .thm p:first-of-type{margin-top:0}
+.thm.defn{border-left-color:var(--ink-2)} .thm.defn .hd{color:var(--ink-2)}
+.thm.neg{border-left-color:var(--errata)} .thm.neg .hd{color:var(--errata)}
+.proof{margin:16px 0 24px; padding-left:16px; border-left:2px solid var(--rule);
+  font-size:.97rem; color:var(--ink-2)}
+.proof .lab{font-family:var(--sans); font-weight:600; font-size:.78rem;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-right:.5em}
+.qed{float:right; color:var(--accent); font-weight:600}
+
+.callout{background:var(--sunk); border:1px solid var(--rule); padding:16px 18px; margin:24px 0}
+.callout h4{margin-top:0}
+blockquote{margin:18px 0; padding-left:16px; border-left:2px solid var(--rule-2);
+  color:var(--ink-2); font-style:italic}
+ul,ol{margin:13px 0; padding-left:1.3em}
+li{margin:6px 0} li::marker{color:var(--faint)}
+.tight li{margin:3px 0}
+
+code{font-family:var(--mono); font-size:.84em; background:var(--sunk); padding:1px 5px; border:1px solid var(--rule)}
+.scroll{overflow-x:auto; margin:22px 0; border:1px solid var(--rule)}
+table{border-collapse:collapse; width:100%; min-width:640px; table-layout:fixed;
+  font-family:var(--sans); font-size:13px}
+th,td{padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid var(--rule)}
+thead th{background:var(--sunk); font-weight:600; font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted)}
+tbody th{font-weight:600; color:var(--ink); background:var(--raise); white-space:normal}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+.y{color:var(--verify); font-weight:600}
+.n{color:var(--errata); font-weight:600}
+
+.toc{background:var(--raise); border:1px solid var(--rule); padding:18px 20px; margin:26px 0}
+.toc ol{list-style:none; padding:0; margin:0; columns:2; column-gap:30px}
+.toc li{margin:0; break-inside:avoid; font-family:var(--sans); font-size:13px; line-height:1.85}
+.toc a{text-decoration:none; color:var(--ink-2); display:flex; gap:8px}
+.toc a:hover{color:var(--accent)}
+.toc .n{font-family:var(--mono); color:var(--faint); font-size:11px; min-width:1.5em; font-weight:400}
+@media (max-width:560px){ .toc ol{columns:1} }
+
+.refs{font-size:14px; color:var(--ink-2)} .refs li{margin:8px 0}
+.tag{font-family:var(--mono); font-size:9.5px; color:var(--faint); letter-spacing:.04em}
+hr{border:none; border-top:1px solid var(--rule); margin:40px 0}
+.foot{font-family:var(--sans); font-size:12.5px; color:var(--muted); line-height:1.7}
+@media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+</style>
+
+<div class="wrap">
+<header class="mast">
+  <div class="kicker">
+    <span>Research note</span><span>Ordinary differential equations · Foundations of physics</span><span>13 September 2026</span>
+  </div>
+  <h1>The Global–Maximal Gap</h1>
+  <p class="dek">A scalar autonomous initial-value problem whose solution is unique among globally defined solutions and non-unique among maximal ones — because every non-trivial branch blows up in finite time.</p>
+</header>
+
+<h4 style="margin-top:0">Abstract</h4>
+
+<p>We exhibit and analyse a class of scalar autonomous initial-value problems <span class="m">ẋ = f(x)</span>, <span class="m">x(0) = 0</span>, with <span class="m">f</span> continuous, <span class="m">f(0) = 0</span> and <span class="m">f &gt; 0</span> off the origin, in which three features occur together: uniqueness fails at the initial state, so that solutions may remain at <span class="m">0</span> for an arbitrary waiting time and then depart; every departing solution is non-continuable with bounded maximal interval, reaching <span class="m">+∞</span> in finite time; and the zero solution is defined for all time. The exact criterion for all three is a single convergence condition, <span class="m">T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> du/f(u) &lt; ∞</span>, and <span class="m">T<sub>∗</sub></span> is precisely the lifetime of a departing branch measured from its departure time.</p>
+
+<p>The consequence is that the set of forward-global solutions through the origin is a singleton while the set of maximal forward solutions has the cardinality of the continuum. The explicit witness <span class="m">f(x) = |x|<sup>2/3</sup> + x²</span> gives <span class="m">T<sub>∗</sub> = 3√2 π/4</span> in closed form.</p>
+
+<p>We keep the mathematical statement separate from its interpretation. The result concerns a scalar autonomous ordinary differential equation; no theorem about <span class="m">N</span>-body Newtonian dynamics is proved here. What it does isolate is a distinction usually left implicit in discussions of determinism — between uniqueness among <em>globally defined</em> histories and uniqueness among <em>maximal</em> histories — and we argue that whether the configuration counts as a failure of determinism turns on a prior question about which solutions are admitted as complete physical histories. We also prove a small negative result: this mechanism cannot be realised on a surface of revolution in the manner of Norton's dome, because arc-length parametrisation bounds the tangential acceleration by <span class="m">g</span>.</p>
+
+<nav class="toc">
+  <h4 style="margin:0 0 10px">Contents</h4>
+  <ol>
+    <li><a href="#s1"><span class="n">1</span> Introduction</a></li>
+    <li><a href="#s2"><span class="n">2</span> Definitions</a></li>
+    <li><a href="#s3"><span class="n">3</span> The mechanism</a></li>
+    <li><a href="#s4"><span class="n">4</span> Main theorem</a></li>
+    <li><a href="#s5"><span class="n">5</span> Power-law corollary</a></li>
+    <li><a href="#s6"><span class="n">6</span> The witness</a></li>
+    <li><a href="#s7"><span class="n">7</span> Two-sided extension</a></li>
+    <li><a href="#s8"><span class="n">8</span> Relation to known examples</a></li>
+    <li><a href="#s9"><span class="n">9</span> Is this indeterminism?</a></li>
+    <li><a href="#s10"><span class="n">10</span> Limitations</a></li>
+    <li><a href="#s11"><span class="n">11</span> Mechanical realisation</a></li>
+    <li><a href="#s12"><span class="n">12</span> Conclusion</a></li>
+    <li><a href="#refs"><span class="n">—</span> References</a></li>
+  </ol>
+</nav>
+
+<h2 id="s1"><span class="num">1</span>Introduction</h2>
+
+<p>Discussions of determinism in classical physics routinely separate two ways an initial-value problem can fail to fix the future. Uniqueness can fail, so that one state admits several continuations; Norton's dome [<a href="#r9">9</a>] is the standard example. Or existence can fail, so that a solution ceases to exist after a finite time; the non-collision singularities of Xia [<a href="#r11">11</a>] and Xue [<a href="#r12">12</a>] are the standard examples. Earman's survey treats the two in separate subsections [<a href="#r4">4</a>, §3.5, §3.6], the second of which begins by assuming a Lipschitz condition and thereby assuming uniqueness away.</p>
+
+<p>This note concerns systems in which the two occur together, and in a specific configuration: the branches that violate uniqueness are exactly the ones that cease to exist. The effect is that the two standard notions of "the possible histories through a state" come apart. Among solutions defined for all forward time there is exactly one. Among maximal solutions there are continuum-many. Neither count is wrong; they answer different questions, and the difference is not visible unless the solution concept is fixed in advance.</p>
+
+<p>Our aims are modest and we state them precisely. We prove a characterisation theorem for scalar autonomous equations (§4), give an explicit witness with a closed-form blow-up time (§6), extend to two-sided time under an additional hypothesis which we show is not removable (§7), place the construction against the examples in the literature we searched (§8), and discuss — without settling — whether the configuration should be described as indeterministic (§9). We prove no theorem about <span class="m">N</span>-body dynamics, and we say what we have and have not established about mechanical realisation (§11).</p>
+
+<h2 id="s2"><span class="num">2</span>Definitions</h2>
+
+<p>Throughout, <span class="m">f : ℝ → ℝ</span> and we study</p>
+
+<div class="disp">ẋ = f(x), &nbsp; x(0) = 0.<span class="lbl">(IVP)</span></div>
+
+<div class="thm defn">
+  <div class="hd">Definition 1 · Solutions and intervals</div>
+  <p>A <b>solution</b> is a function <span class="m">x : I → ℝ</span>, <span class="m">I ⊆ ℝ</span> an interval with non-empty interior, which is differentiable on <span class="m">I</span> and satisfies <span class="m">ẋ(t) = f(x(t))</span> for every <span class="m">t ∈ I</span> (one-sided derivatives at endpoints of <span class="m">I</span> belonging to <span class="m">I</span>).</p>
+  <p>A solution <span class="m">x : I → ℝ</span> is <b>maximal</b>, or <b>non-continuable</b>, if there is no solution <span class="m">y : J → ℝ</span> with <span class="m">I ⊊ J</span> and <span class="m">y|<sub>I</sub> = x</span>. Its <span class="m">I</span> is its <b>maximal interval</b>.</p>
+  <p><b>Warning.</b> When uniqueness fails there is no such thing as <em>the</em> maximal solution through a point. We always write "a maximal solution".</p>
+</div>
+
+<div class="thm defn">
+  <div class="hd">Definition 2 · Global, and the two conventions</div>
+  <p>The word <em>global</em> is used inconsistently in the literature. We fix two senses and never mix them.</p>
+  <p><span class="m">x</span> is <b>forward-global</b> if it is a solution on <span class="m">[0, ∞)</span>.<br>
+  <span class="m">x</span> is <b>two-sided global</b> if it is a solution on all of <span class="m">ℝ</span>.</p>
+  <p>The main theorem (§4) is stated for forward-global solutions. The two-sided version is Proposition 9 in §7 and requires a strictly stronger hypothesis.</p>
+</div>
+
+<div class="thm defn">
+  <div class="hd">Definition 3 · Finite-time blow-up</div>
+  <p>A solution <span class="m">x</span> with maximal interval <span class="m">I</span> whose supremum <span class="m">τ</span> is finite <b>blows up in finite time</b> if <span class="m">|x(t)| → ∞</span> as <span class="m">t → τ<sup>−</sup></span>.</p>
+  <p>We avoid the word <em>incomplete</em> for solutions; in dynamical systems it is standard for a <em>vector field</em> (one all of whose maximal solutions are defined on <span class="m">ℝ</span> is complete). We also avoid <em>non-unique continuation</em>, which collides with the unrelated <em>unique continuation property</em> of partial differential equations, and speak instead of <b>failure of uniqueness for the initial-value problem</b>.</p>
+</div>
+
+<div class="thm defn">
+  <div class="hd">Definition 4 · The two history sets</div>
+  <p>For (IVP), set</p>
+  <p class="disp" style="border:none;margin:8px 0">
+    ℋ<sub>glob</sub>(0) = { x : [0,∞) → ℝ &nbsp;|&nbsp; x solves (IVP) }<br>
+    ℋ<sub>max</sub>(0) = { x &nbsp;|&nbsp; x is a maximal solution of (IVP) with 0 ∈ dom x ⊆ [0,∞) }
+  </p>
+  <p>Both are sets of <em>forward</em> solutions. Note <span class="m">ℋ<sub>glob</sub>(0) ⊆ ℋ<sub>max</sub>(0)</span>, since a solution on <span class="m">[0,∞)</span> admits no forward extension.</p>
+</div>
+
+<h4>Standing hypotheses</h4>
+
+<p><b>(H1)</b> <span class="m">f</span> is continuous on <span class="m">ℝ</span>, <span class="m">f(0) = 0</span>, and <span class="m">f(x) &gt; 0</span> for every <span class="m">x ≠ 0</span>.<br>
+<b>(H2)</b> <span class="m">∫<sub>0</sub><sup>1</sup> du/f(u) &lt; ∞</span>. &nbsp;&nbsp; <b>(H3)</b> <span class="m">∫<sub>1</sub><sup>∞</sup> du/f(u) &lt; ∞</span>.<br>
+<b>(H4)</b> <span class="m">∫<sub>−∞</sub><sup>−1</sup> du/f(u) &lt; ∞</span> &nbsp;<em>(needed only in §7)</em>.</p>
+
+<p>Under (H1) the integrands are positive and continuous on the relevant open intervals, so each integral is well defined in <span class="m">(0, ∞]</span>. Write <span class="m">T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> du/f(u)</span>; then <span class="m">T<sub>∗</sub> &lt; ∞</span> iff (H2) and (H3) both hold.</p>
+
+<h2 id="s3"><span class="num">3</span>The mechanism</h2>
+
+<p>Two lemmas carry everything. The first says that under (H1) the solution structure is rigid: every solution is monotone, so a solution through the origin can only rest at <span class="m">0</span> on an interval and then leave. The second identifies the departing branch and its lifetime.</p>
+
+<div class="thm">
+  <div class="hd">Lemma 5 · Monotonicity and the zero set</div>
+  <p>Assume (H1). Then every solution <span class="m">x : I → ℝ</span> is non-decreasing, and <span class="m">Z = { t ∈ I : x(t) = 0 }</span> is a closed subinterval of <span class="m">I</span> (possibly empty).</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span> By (H1), <span class="m">f ≥ 0</span> on <span class="m">ℝ</span>, so <span class="m">ẋ(t) = f(x(t)) ≥ 0</span> for all <span class="m">t ∈ I</span> and <span class="m">x</span> is non-decreasing. <span class="m">Z = x<sup>−1</sup>({0})</span> is closed in <span class="m">I</span> because <span class="m">x</span> is continuous. If <span class="m">t<sub>1</sub>, t<sub>2</sub> ∈ Z</span> and <span class="m">t<sub>1</sub> &lt; t &lt; t<sub>2</sub></span>, monotonicity gives <span class="m">0 = x(t<sub>1</sub>) ≤ x(t) ≤ x(t<sub>2</sub>) = 0</span>, so <span class="m">t ∈ Z</span>; hence <span class="m">Z</span> is an interval. <span class="qed">∎</span>
+</div>
+
+<div class="thm">
+  <div class="hd">Lemma 6 · The departing branch</div>
+  <p>Assume (H1) and (H2). Define <span class="m">F(x) = ∫<sub>0</sub><sup>x</sup> du/f(u)</span> for <span class="m">x &gt; 0</span>. Then:</p>
+  <p>(i) <span class="m">F</span> is a <span class="m up">C</span><sup>1</sup> strictly increasing bijection from <span class="m">(0, ∞)</span> onto <span class="m">(0, T<sub>∗</sub>)</span>, with <span class="m">F(0<sup>+</sup>) = 0</span>.</p>
+  <p>(ii) Its inverse <span class="m">φ = F<sup>−1</sup></span>, extended by <span class="m">φ(0) = 0</span>, is <span class="m up">C</span><sup>1</sup> on <span class="m">[0, T<sub>∗</sub>)</span>, satisfies <span class="m">φ′ = f(φ)</span> there, and <span class="m">φ′(0) = f(0) = 0</span>.</p>
+  <p>(iii) <span class="m">φ(t) → +∞</span> as <span class="m">t → T<sub>∗</sub><sup>−</sup></span>; hence if <span class="m">T<sub>∗</sub> &lt; ∞</span> the maximal interval of <span class="m">φ</span> is <span class="m">[0, T<sub>∗</sub>)</span> and <span class="m">φ</span> blows up in finite time.</p>
+  <p>(iv) <b>Uniqueness of the branch.</b> If <span class="m">ψ</span> is any solution with <span class="m">ψ(t<sub>0</sub>) = 0</span> and <span class="m">ψ &gt; 0</span> on <span class="m">(t<sub>0</sub>, t<sub>1</sub>]</span>, then <span class="m">ψ(t) = φ(t − t<sub>0</sub>)</span> on <span class="m">[t<sub>0</sub>, t<sub>1</sub>]</span>.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span>
+  (i) On <span class="m">(0,∞)</span> the integrand <span class="m">1/f</span> is positive and continuous, so <span class="m">F</span> is <span class="m up">C</span><sup>1</sup> with <span class="m">F′ = 1/f &gt; 0</span>, hence strictly increasing. (H2) gives <span class="m">F(0<sup>+</sup>) = 0</span>, and by definition <span class="m">F(x) → T<sub>∗</sub></span> as <span class="m">x → ∞</span>. Continuity and strict monotonicity give the bijection onto <span class="m">(0, T<sub>∗</sub>)</span>.
+  <p>(ii) On <span class="m">(0, T<sub>∗</sub>)</span> the inverse function theorem gives <span class="m">φ′(t) = 1/F′(φ(t)) = f(φ(t))</span>. At <span class="m">t = 0</span>: since <span class="m">φ(t) → 0</span> as <span class="m">t → 0<sup>+</sup></span> and <span class="m">f</span> is continuous with <span class="m">f(0) = 0</span>, we get <span class="m">φ′(t) = f(φ(t)) → 0</span>. By the mean value theorem, for <span class="m">t &gt; 0</span> there is <span class="m">ξ<sub>t</sub> ∈ (0,t)</span> with <span class="m">(φ(t) − φ(0))/t = φ′(ξ<sub>t</sub>)</span>, and <span class="m">ξ<sub>t</sub> → 0</span>, so the right derivative of <span class="m">φ</span> at <span class="m">0</span> exists and equals <span class="m">0 = f(φ(0))</span>. Thus <span class="m">φ′</span> is continuous on <span class="m">[0, T<sub>∗</sub>)</span>.</p>
+  <p>(iii) Immediate from (i): <span class="m">φ = F<sup>−1</sup></span> and <span class="m">F(x) → T<sub>∗</sub></span> only as <span class="m">x → ∞</span>. No continuation past <span class="m">T<sub>∗</sub></span> is possible since <span class="m">φ</span> is unbounded near <span class="m">T<sub>∗</sub></span>.</p>
+  <p>(iv) On <span class="m">(t<sub>0</sub>, t<sub>1</sub>]</span> we have <span class="m">f(ψ) &gt; 0</span>, so <span class="m">ψ</span> is strictly increasing there and <span class="m">ψ̇/f(ψ) = 1</span>. Integrating from <span class="m">s</span> to <span class="m">t<sub>1</sub></span> and substituting <span class="m">u = ψ(σ)</span> gives <span class="m">∫<sub>ψ(s)</sub><sup>ψ(t<sub>1</sub>)</sup> du/f(u) = t<sub>1</sub> − s</span>. Letting <span class="m">s ↓ t<sub>0</sub></span> and using continuity of <span class="m">ψ</span> and (H2), <span class="m">F(ψ(t<sub>1</sub>)) = t<sub>1</sub> − t<sub>0</sub></span>. The same argument at every <span class="m">t ∈ (t<sub>0</sub>, t<sub>1</sub>]</span> gives <span class="m">F(ψ(t)) = t − t<sub>0</sub></span>, i.e. <span class="m">ψ(t) = φ(t − t<sub>0</sub>)</span>. <span class="qed">∎</span></p>
+</div>
+
+<div class="callout">
+  <h4>Why no Lipschitz hypothesis appears</h4>
+  <p style="margin-bottom:0">Lemma 6(iv) gives uniqueness of the branch <em>after</em> it has left the origin, and the proof uses only that <span class="m">f &gt; 0</span> there, which makes the solution strictly monotone and hence invertible. This is special to scalar autonomous equations. Failure of uniqueness for (IVP) is therefore located entirely at one point — the choice of departure time — and not in any ambiguity about the branch itself.</p>
+</div>
+
+<h2 id="s4"><span class="num">4</span>Main theorem</h2>
+
+<div class="thm">
+  <div class="hd">Theorem 7 · Forward time</div>
+  <p>Assume <b>(H1), (H2), (H3)</b>, and let <span class="m">T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> du/f(u) &lt; ∞</span>. For <span class="m">T ∈ [0, ∞)</span> define</p>
+  <p class="disp" style="border:none;margin:8px 0">x<sub>T</sub>(t) = 0 for 0 ≤ t ≤ T,&nbsp;&nbsp; x<sub>T</sub>(t) = φ(t − T) for T &lt; t &lt; T + T<sub>∗</sub>,</p>
+  <p>and let <span class="m">x<sub>∞</sub> ≡ 0</span> on <span class="m">[0,∞)</span>. Then:</p>
+  <p>(a) Each <span class="m">x<sub>T</sub></span>, <span class="m">T &lt; ∞</span>, is a solution of (IVP) with maximal interval <span class="m">[0, T + T<sub>∗</sub>)</span>, and <span class="m">x<sub>T</sub>(t) → +∞</span> as <span class="m">t → (T + T<sub>∗</sub>)<sup>−</sup></span>.</p>
+  <p>(b) <span class="m">x<sub>∞</sub></span> is a solution on <span class="m">[0,∞)</span>.</p>
+  <p>(c) <span class="m">ℋ<sub>max</sub>(0) = { x<sub>T</sub> : T ∈ [0, ∞] }</span>, and <span class="m">T ↦ x<sub>T</sub></span> is injective.</p>
+  <p>(d) Consequently</p>
+  <p class="disp" style="border:none;margin:8px 0"><b>| ℋ<sub>glob</sub>(0) | = 1</b> &nbsp;&nbsp;and&nbsp;&nbsp; <b>| ℋ<sub>max</sub>(0) | = 𝔠</b>,</p>
+  <p>where <span class="m up">𝔠</span> is the cardinality of the continuum.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span>
+  (a) On <span class="m">[0,T)</span> and on <span class="m">(T, T+T<sub>∗</sub>)</span>, <span class="m">x<sub>T</sub></span> solves the equation by construction and Lemma 6(ii). At <span class="m">t = T</span> the left derivative is <span class="m">0</span> and the right derivative is <span class="m">φ′(0) = 0</span> by Lemma 6(ii); since <span class="m">f(x<sub>T</sub>(T)) = f(0) = 0</span>, the equation holds at <span class="m">T</span> and <span class="m">x<sub>T</sub> ∈ C<sup>1</sup></span>. Blow-up and maximality are Lemma 6(iii).
+  <p>(b) <span class="m">f(0) = 0</span>.</p>
+  <p>(c) Let <span class="m">x</span> be a maximal solution of (IVP) with domain <span class="m">I ⊆ [0,∞)</span>, <span class="m">0 ∈ I</span>. By Lemma 5 its zero set is a closed subinterval of <span class="m">I</span> containing <span class="m">0</span>, hence of the form <span class="m">I ∩ [0, T]</span> for some <span class="m">T ∈ [0, ∞]</span>. If <span class="m">T = ∞</span> then <span class="m">x ≡ 0</span> on <span class="m">I</span>; maximality forces <span class="m">I = [0,∞)</span>, so <span class="m">x = x<sub>∞</sub></span>. If <span class="m">T &lt; ∞</span> then <span class="m">x(T) = 0</span> and, by Lemma 5 again, <span class="m">x &gt; 0</span> on <span class="m">I ∩ (T, ∞)</span> — it cannot be negative, since <span class="m">x</span> is non-decreasing and vanishes at <span class="m">T</span>. Lemma 6(iv) gives <span class="m">x(t) = φ(t − T)</span> there, and maximality gives <span class="m">I = [0, T + T<sub>∗</sub>)</span>. So <span class="m">x = x<sub>T</sub></span>. Injectivity: for <span class="m">T &lt; T′</span> the zero sets differ, since <span class="m">x<sub>T</sub>(t) &gt; 0 = x<sub>T′</sub>(t)</span> for <span class="m">T &lt; t &lt; min(T′, T + T<sub>∗</sub>)</span>, an interval of positive length.</p>
+  <p>(d) By (a), every <span class="m">x<sub>T</sub></span> with <span class="m">T &lt; ∞</span> has bounded domain, so is not forward-global; by (b) and (c), <span class="m">ℋ<sub>glob</sub>(0) = { x<sub>∞</sub> }</span>. By (c) the map <span class="m">[0,∞] → ℋ<sub>max</sub>(0)</span> is a bijection, and <span class="m">|[0,∞]| = 𝔠</span>. <span class="qed">∎</span></p>
+</div>
+
+<p>Two remarks on sharpness. If (H2) fails, Lemma 6 is unavailable and one checks directly from Lemma 5 and the separation argument that <span class="m">x ≡ 0</span> is the only solution, so <span class="m">|ℋ<sub>max</sub>(0)| = 1</span>. If (H2) holds but (H3) fails, <span class="m">T<sub>∗</sub> = ∞</span>, every <span class="m">x<sub>T</sub></span> is forward-global, and <span class="m">|ℋ<sub>glob</sub>(0)| = 𝔠</span>. So both hypotheses are doing work, and the phenomenon is exactly the conjunction.</p>
+
+<h2 id="s5"><span class="num">5</span>Power-law corollary — and a warning</h2>
+
+<p>The hypotheses (H2) and (H3) are convergence conditions on <span class="m">1/f</span> at the two ends. They are <em>not</em> equivalent to any statement about the growth ratio <span class="m">f(u)/u</span>, and we record this explicitly because the ratio formulation is tempting and false.</p>
+
+<div class="thm neg">
+  <div class="hd">Proposition 8 · The ratio conditions are strictly weaker</div>
+  <p>(i) (H2) implies <span class="m">limsup<sub>u→0<sup>+</sup></sub> f(u)/u = +∞</span>, and the converse fails.</p>
+  <p>(ii) (H3) implies <span class="m">limsup<sub>u→∞</sub> f(u)/u = +∞</span>, and the converse fails.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span>
+  (i) If <span class="m">f(u) ≤ Cu</span> on <span class="m">(0, δ)</span> then <span class="m">∫<sub>0</sub><sup>δ</sup> du/f(u) ≥ C<sup>−1</sup>∫<sub>0</sub><sup>δ</sup> du/u = ∞</span>, contradicting (H2). For the converse, take <span class="m">f(u) = u/log(1/u)</span> on <span class="m">(0, 1/2)</span>. Then <span class="m">f(u)/u = 1/log(1/u) → 0</span>, yet with <span class="m">s = log(1/u)</span>,
+  <p class="disp" style="border:none;margin:6px 0">∫<sub>0</sub><sup>1/2</sup> du/f(u) = ∫<sub>0</sub><sup>1/2</sup> log(1/u)·u<sup>−1</sup> du = ∫<sub>log 2</sub><sup>∞</sup> s ds = ∞.</p>
+  <p>(ii) If <span class="m">f(u) ≤ Cu</span> for large <span class="m">u</span> then <span class="m">∫<sup>∞</sup> du/f = ∞</span>. For the converse, take <span class="m">f(u) = u log u</span> on <span class="m">(2, ∞)</span>: <span class="m">f(u)/u → ∞</span>, yet <span class="m">∫<sub>2</sub><sup>∞</sup> du/(u log u) = [log log u]<sub>2</sub><sup>∞</sup> = ∞</span>. <span class="qed">∎</span></p>
+</div>
+
+<p>What <em>is</em> available is a corollary under power-law asymptotics. Write <span class="m">g ≍ h</span> for <span class="m">0 &lt; liminf g/h ≤ limsup g/h &lt; ∞</span>.</p>
+
+<div class="thm">
+  <div class="hd">Corollary (power laws only)</div>
+  <p>If <span class="m">f(u) ≍ u<sup>p</sup></span> as <span class="m">u → 0<sup>+</sup></span> with <span class="m">p &gt; 0</span>, then (H2) holds iff <span class="m">p &lt; 1</span>.<br>
+  If <span class="m">f(u) ≍ u<sup>q</sup></span> as <span class="m">u → ∞</span> with <span class="m">q &gt; 0</span>, then (H3) holds iff <span class="m">q &gt; 1</span>.</p>
+</div>
+
+<p>A terminological caution: the exponent <span class="m">p = 2/3</span> is smaller than <span class="m">1</span>, but <span class="m">u<sup>2/3</sup> &gt; u</span> for <span class="m">0 &lt; u &lt; 1</span>. Calling this "sublinear" is standard for the exponent and misleading for the function. We therefore state hypotheses as integrals throughout and use exponents only inside this corollary.</p>
+
+<h2 id="s6"><span class="num">6</span>The witness</h2>
+
+<div class="disp" style="font-size:1.12rem">f(x) = |x|<sup>2/3</sup> + x<sup>2</sup></div>
+
+<div class="scroll">
+<table>
+<colgroup><col style="width:30%"><col style="width:70%"></colgroup>
+<thead><tr><th>Property</th><th>Verification</th></tr></thead>
+<tbody>
+<tr><th>Continuity</th><td><span class="m">|x|<sup>2/3</sup></span> is the composition of <span class="m">x ↦ |x|</span> with <span class="m">s ↦ s<sup>2/3</sup></span> on <span class="m">[0,∞)</span>, both continuous; <span class="m">x²</span> is continuous.</td></tr>
+<tr><th><span class="m">f(0)=0</span>, <span class="m">f&gt;0</span> off <span class="m">0</span></th><td>Both terms vanish at <span class="m">0</span>; for <span class="m">x ≠ 0</span>, <span class="m">|x|<sup>2/3</sup> &gt; 0</span> and <span class="m">x² ≥ 0</span>. So <b>(H1)</b> holds.</td></tr>
+<tr><th>Not locally Lipschitz at <span class="m">0</span></th><td><span class="m">|f(x) − f(0)| / |x| = |x|<sup>−1/3</sup> + |x| → +∞</span> as <span class="m">x → 0</span>, so no constant works on any neighbourhood of <span class="m">0</span>.</td></tr>
+<tr><th>Locally Lipschitz off <span class="m">0</span></th><td><span class="m">f′(x) = (2/3)·sgn(x)|x|<sup>−1/3</sup> + 2x</span> is continuous on <span class="m">ℝ∖{0}</span>, so <span class="m">f</span> is <span class="m up">C</span><sup>1</sup> there.</td></tr>
+<tr><th>The substitution</th><td>For <span class="m">x &gt; 0</span> put <span class="m">x = u³</span>, a <span class="m up">C</span><sup>1</sup> increasing bijection of <span class="m">(0,∞)</span>. Then <span class="m">dx = 3u² du</span>, <span class="m">x<sup>2/3</sup> = u²</span>, <span class="m">x² = u<sup>6</sup></span>, so<br><span class="m">dx/(x<sup>2/3</sup>+x²) = 3u² du / (u²(1+u⁴)) = 3 du/(1+u⁴)</span>.</td></tr>
+<tr><th><b>(H2)</b></th><td><span class="m">∫<sub>0</sub><sup>1</sup> 3 du/(1+u⁴) ≤ 3 &lt; ∞</span>.</td></tr>
+<tr><th><b>(H3)</b></th><td><span class="m">∫<sub>1</sub><sup>∞</sup> 3 du/(1+u⁴) ≤ ∫<sub>1</sub><sup>∞</sup> 3u<sup>−4</sup> du = 1 &lt; ∞</span>.</td></tr>
+<tr><th><b>(H4)</b></th><td><span class="m">f</span> is even, so <span class="m">∫<sub>−∞</sub><sup>−1</sup> dx/f(x) = ∫<sub>1</sub><sup>∞</sup> dy/(y<sup>2/3</sup>+y²) &lt; ∞</span> by (H3).</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="thm">
+  <div class="hd">Blow-up time</div>
+  <p class="disp" style="border:none;margin:8px 0">
+    T<sub>∗</sub> = ∫<sub>0</sub><sup>∞</sup> dx/(x<sup>2/3</sup> + x²) = 3∫<sub>0</sub><sup>∞</sup> du/(1+u⁴) = 3 · (π/4)/sin(π/4) = <b>3√2 π / 4</b> ≈ 3.3321622036.
+  </p>
+</div>
+
+<p>The middle equality is the substitution above; the last uses the standard evaluation <span class="m">∫<sub>0</sub><sup>∞</sup> du/(1+u<sup>n</sup>) = (π/n)/sin(π/n)</span> at <span class="m">n = 4</span>. Both the substitution and the closed form were also checked by computer algebra, and a fourth-order Runge–Kutta integration from <span class="m">x = 10<sup>−12</sup></span> reaches <span class="m">x = 10<sup>7</sup></span> at <span class="m">t = 3.3319</span>. These are sanity checks only; the proof above is analytic. Every mechanically checkable claim in this note — the substitution, both closed forms, the counterexamples of Proposition 8, the exponent thresholds, the acceleration bound of Proposition 10 and the Beta-function identity behind Proposition 11 — is re-derived in <code>verification/gap_checks.py</code> in the accompanying repository (40 checks, all passing).</p>
+
+<p>By Theorem 7, therefore: the initial-value problem <span class="m">ẋ = |x|<sup>2/3</sup> + x²</span>, <span class="m">x(0) = 0</span> has exactly one forward-global solution, namely <span class="m">x ≡ 0</span>, and continuum-many maximal forward solutions, one departing at each time <span class="m">T ≥ 0</span> and blowing up at <span class="m">T + 3√2π/4</span>.</p>
+
+<h2 id="s7"><span class="num">7</span>Two-sided extension</h2>
+
+<p>The forward theorem says nothing about <span class="m">x &lt; 0</span>, and for the witness the negative half-line is genuinely populated: since <span class="m">f</span> is even and (H2) holds, solutions can also arrive at the origin from below in finite time. These are additional maximal solutions, and they must be accounted for.</p>
+
+<div class="thm">
+  <div class="hd">Proposition 9 · Two-sided classification</div>
+  <p>Assume <b>(H1)–(H4)</b> and set <span class="m">S<sub>∗</sub> = ∫<sub>−∞</sub><sup>0</sup> du/f(u)</span>. Then every maximal solution of (IVP) on an interval of <span class="m">ℝ</span> is determined by the endpoints <span class="m">(S,T) ∈ [0,∞]²</span> of its zero interval <span class="m">[−S, T]</span>, is defined on <span class="m">(−S − S<sub>∗</sub>, T + T<sub>∗</sub>)</span> with the convention that an infinite endpoint removes the corresponding bound, and this correspondence is a bijection. Consequently the unique two-sided global solution is <span class="m">x ≡ 0</span>, and the set of maximal solutions has cardinality <span class="m">𝔠</span>.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof sketch</span> Lemma 5 gives the zero interval <span class="m">[−S,T]</span>. Forward of <span class="m">T</span>, Lemma 6 applies verbatim. Backward of <span class="m">−S</span>, apply Lemma 6 to <span class="m">y(t) = −x(−t)</span>, which solves <span class="m">ẏ = f̃(y)</span> with <span class="m">f̃(y) = f(−y)</span>, again satisfying (H1); (H2) on the negative side supplies the branch and (H4) supplies its finite backward lifetime <span class="m">S<sub>∗</sub></span>. A solution is two-sided global iff <span class="m">S = T = ∞</span>, i.e. iff <span class="m">x ≡ 0</span>. <span class="qed">∎</span>
+</div>
+
+<div class="thm neg">
+  <div class="hd">(H4) is not removable</div>
+  <p>Let <span class="m">f(x) = |x|<sup>2/3</sup></span> for <span class="m">x ≤ 0</span> and <span class="m">f(x) = x<sup>2/3</sup> + x²</span> for <span class="m">x &gt; 0</span>. This <span class="m">f</span> is continuous and satisfies (H1), (H2), (H3), but <span class="m">∫<sub>−∞</sub><sup>−1</sup> dx/|x|<sup>2/3</sup> = ∞</span>, so (H4) fails. Then <span class="m">S<sub>∗</sub> = ∞</span>, and the solution with <span class="m">(S,T) = (0,∞)</span> — negative for <span class="m">t &lt; 0</span>, identically zero for <span class="m">t ≥ 0</span> — is defined on all of <span class="m">ℝ</span>. Hence there are at least two two-sided global solutions and Proposition 9 fails.</p>
+</div>
+
+<p><b>On lifetimes.</b> <span class="m">T<sub>∗</sub></span> is the lifetime of a forward branch measured from its departure time, not the lifetime of a two-sided solution. A maximal solution with finite <span class="m">S</span> and <span class="m">T</span> exists for a total time <span class="m">S<sub>∗</sub> + (S + T) + T<sub>∗</sub></span>, comprising a backward branch, a waiting interval, and a forward branch. Departure time, arrival time, waiting length and blow-up time are four distinct quantities and we keep them distinct.</p>
+
+<h2 id="s8"><span class="num">8</span>Relation to known examples</h2>
+
+<p>We compare against the examples we examined, using four conditions:</p>
+
+<p class="disp" style="text-align:left; font-size:.99rem">
+<b>(C1)</b> several solutions of the same initial-value problem through one state;<br>
+<b>(C2)</b> every non-trivial branch is non-continuable with bounded maximal interval;<br>
+<b>(C3)</b> at least one global solution through that same state;<br>
+<b>(C4)</b> the non-uniqueness is genuine for solutions of the same problem, not produced by enlarging the solution concept.
+</p>
+
+</div>
+
+<div class="wide">
+<div class="scroll">
+<table>
+<colgroup><col style="width:22%"><col style="width:17%"><col style="width:61%"></colgroup>
+<thead><tr><th>Example</th><th>Conditions met</th><th>Comment</th></tr></thead>
+<tbody>
+<tr><th>Norton's dome [<a href="#r9">9</a>]</th><td><span class="y">C1&#10003;</span> <span class="n">C2&#10007;</span> <span class="y">C3&#10003;</span> <span class="y">C4&#10003;</span></td><td>Departure at an arbitrary time is exactly our mechanism at the origin, but the departing solutions <span class="m">r(t) = (t−T)⁴/144</span> are polynomial and hence defined for all time. C2 fails.</td></tr>
+<tr><th>Earman [<a href="#r4">4</a>] §3.5, <span class="m">V = −(9/2)|x|<sup>4/3</sup></span></th><td><span class="y">C1&#10003;</span> <span class="n">C2&#10007;</span> <span class="y">C3&#10003;</span> <span class="y">C4&#10003;</span></td><td>The branches <span class="m">±(t−k)³</span> are cubic, hence global. C2 fails.</td></tr>
+<tr><th>Earman [<a href="#r4">4</a>] §3.6, escape solutions</th><td><span class="n">C1&#10007;</span> <span class="y">C2&#10003;</span> — <span class="y">C4&#10003;</span></td><td>The section explicitly assumes a Lipschitz condition, which secures local uniqueness. C1 fails by hypothesis.</td></tr>
+<tr><th>Mather–McGehee [<a href="#r8">8</a>], Xia [<a href="#r11">11</a>], Xue [<a href="#r12">12</a>]</th><td><span class="n">C1&#10007;</span> <span class="y">C2&#10003;</span> — <span class="y">C4&#10003;</span></td><td>Newtonian gravitation is analytic away from collisions, hence locally Lipschitz, so solutions are unique up to the singular time. These establish finite-time escape, not branching.</td></tr>
+<tr><th>Lanford infinite billiards, in [<a href="#r4">4</a>] §9</th><td><span class="y">C1&#10003;</span> <span class="n">C2&#10007;</span> <span class="y">C3&#10003;</span> <span class="y">C4&#10003;</span></td><td>A "normal" solution at rest and an anomalous solution with infinitely many balls in motion. The anomalous branch is not reported as ceasing to exist in finite time. C2 not established.</td></tr>
+<tr><th>Tychonoff null solutions, heat equation, in [<a href="#r4">4</a>] §10</th><td><span class="y">C1&#10003;</span> <span class="n">C2&#10007;</span> <span class="y">C3&#10003;</span> <span class="y">C4&#10003;</span></td><td>Earman records that the null solutions are <span class="m up">C</span><sup>∞</sup>, "so the breakdown in futuristic determinism is not due to the development of a singularity". C2 fails, in the source's own words.</td></tr>
+<tr><th>Shock waves, in [<a href="#r4">4</a>] §15</th><td><span class="y">C1&#10003;</span> <span class="y">C2&#10003;</span> <span class="n">C3&#10007;</span> <span class="n">C4&#10007;</span></td><td>The nearest miss. Ordinary solutions fail to exist after a finite time; uniqueness is then lost <em>because</em> weak solutions are admitted. The two failures are sequential, and the non-uniqueness arises from changing the solution concept. C4 fails.</td></tr>
+<tr><th>Berndl et al. [<a href="#r2">2</a>]</th><td><span class="n">C1&#10007;</span> <span class="y">C2&#10003;</span> — <span class="y">C4&#10003;</span></td><td>Catalogues, for Bohmian trajectories, both escape to infinity in finite time and singular points of the velocity field. But at a node the field is unbounded, so "the solution would break down" — non-existence, not branching. C1 fails. (They also note that failure of essential self-adjointness makes the evolution of the wave function non-unique; that is a different phenomenon, concerning which operator the theory is about.)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="wrap">
+
+<p>Earman raises a closely related question at [<a href="#r4">4</a>] §7: discussing non-collision singularities, he writes that it is not clear to what extent such solutions undermine determinism, "for it is not obvious under what conditions such solutions can be joined onto a normal solution." That question concerns the Newtonian <span class="m">N</span>-body problem, and nothing here answers it. Our construction is a scalar autonomous equation in which the joining is exhibited explicitly, which is a much weaker statement.</p>
+
+<div class="callout">
+  <h4>Novelty, stated as what it is</h4>
+  <p style="margin-bottom:0"><b>In the literature searched for this project, we found no example satisfying C1–C4 simultaneously.</b> The search covered Earman [<a href="#r4">4</a>] ch. III in full text, Norton [<a href="#r9">9</a>], Malament [<a href="#r7">7</a>], Fletcher [<a href="#r5">5</a>], Korolev (abstracts), Xia [<a href="#r11">11</a>], Xue [<a href="#r12">12</a>], Mather–McGehee [<a href="#r8">8</a>] as reported in [<a href="#r4">4</a>], Berndl et al. [<a href="#r2">2</a>], Alexander [<a href="#r1">1</a>], and keyword searches of the differential-equations literature on Osgood-type uniqueness criteria and on finite-time blow-up. <b>This is a bounded search finding, not a proof of priority.</b> The relevant conditions are classical — Osgood's uniqueness criterion [<a href="#r10">10</a>] dates from 1898 — and the standard textbook treatments (Hartman [<a href="#r6">6</a>]; Coddington and Levinson [<a href="#r3">3</a>]) were searched by keyword only, not read. A precedent, particularly as an exercise, would not surprise us.</p>
+</div>
+
+<h2 id="s9"><span class="num">9</span>Is this indeterminism?</h2>
+
+<p>We do not think this question has an obvious answer, and we set out the competing readings rather than choosing.</p>
+
+<p>The situation is: a state <span class="m">x = 0</span>; exactly one solution through it that is defined for all forward time; continuum-many maximal solutions through it, all but one of which cease to exist at a finite time. Five distinct things are in play and are easy to run together.</p>
+
+<ol>
+  <li><b>Mathematical non-uniqueness of the initial-value problem.</b> Unambiguous: it holds, by Theorem 7(c).</li>
+  <li><b>Uniqueness among globally defined histories.</b> Also unambiguous: it holds, by Theorem 7(d).</li>
+  <li><b>Existence of maximal alternatives.</b> Holds, and they are not pathological objects — each is a perfectly good <span class="m up">C</span><sup>1</sup> solution on its interval.</li>
+  <li><b>Physical determinism.</b> A thesis about physically possible histories, which requires (5) to be settled first.</li>
+  <li><b>Whether an incomplete history is a complete physical history.</b> The crux.</li>
+</ol>
+
+<h3>The reading on which determinism survives</h3>
+
+<p>If a physical history must be defined at every time, then the branches are not histories at all, and the state <span class="m">x = 0</span> has exactly one future. The alternatives are artefacts of a permissive solution concept, in the same way that a solution defined only on <span class="m">[0,1)</span> is not a candidate history of a world that persists. On this reading the example shows something about the initial-value problem and nothing about determinism, and the appropriate response is to define possible histories as the globally defined solutions and observe that they are unique.</p>
+
+<h3>The reading on which determinism fails</h3>
+
+<p>This reading objects that the totality requirement is doing the work and is not independently motivated. Requiring histories to be total makes finite-time blow-up into <em>non-existence</em> rather than indeterminism, which already looks like a stipulation; and it has the consequence that a law can be "deterministic" while admitting no possible history at all. Further, the branches are not merely formal: an observer stationed at the origin would have no way to rule them out at any finite time, since every branch agrees with the zero solution on an initial interval of arbitrary length. On this reading, restricting to global solutions is a way of legislating determinism rather than establishing it.</p>
+
+<h3>The reading on which the question is malformed</h3>
+
+<p>A third response holds that "is it deterministic?" is not well posed until the solution concept is fixed, and that the example simply demonstrates that the two natural choices give different answers for the same law. On this reading the interest is diagnostic: it shows that the phrase "the possible histories through a state" is ambiguous in a way that can change a determinism verdict, not merely an existence verdict. This is the reading we find most defensible, but we record it as a position and not as a result.</p>
+
+<p>One observation that seems robust across all three. The distinction here cannot be dissolved by demanding more regularity of <span class="m">f</span>, or more physics. The witness is continuous everywhere and <span class="m up">C</span><sup>1</sup> away from a single point; the failure of local Lipschitz continuity occurs only at the equilibrium; and the branches blow up because the equation is superlinear at infinity, which is ordinary behaviour. Whatever the right verdict, it is not reached by ruling out pathology.</p>
+
+<h2 id="s10"><span class="num">10</span>Limitations</h2>
+
+<ul>
+  <li><b>Scope.</b> Everything proved here concerns a <em>scalar autonomous</em> ordinary differential equation. Lemma 5 uses the scalar order structure and Lemma 6(iv) uses scalar monotonicity. Neither survives to systems without new arguments, and we prove nothing about <span class="m">N</span>-body Newtonian dynamics.</li>
+  <li><b>Not a physical theorem.</b> Theorem 7 is a statement about an equation, not about a physical system. §11 discusses what a mechanical realisation would require.</li>
+  <li><b>Novelty.</b> See the boxed statement in §8: a bounded literature-search finding, not a priority claim.</li>
+  <li><b>The two-sided case is conditional.</b> Proposition 9 requires (H4), which we show is not removable.</li>
+  <li><b>Interpretation is open.</b> §9 presents three readings and endorses none as established.</li>
+</ul>
+
+<h2 id="s11"><span class="num">11</span>Mechanical realisation</h2>
+
+<p>It is natural to ask whether the mechanism can be produced by a Newtonian particle. We record one negative result and one positive one.</p>
+
+<h3>11.1 Not on a dome</h3>
+
+<p>Norton's construction places a particle on a frictionless surface of revolution, parametrised by arc length <span class="m">r</span> along a meridian from the apex, with <span class="m">h(r)</span> the depth below the apex. The Lagrangian is <span class="m">L = ½mṙ² + mgh(r)</span>, giving <span class="m">r̈ = g h′(r)</span>. Norton takes <span class="m">h(r) = (2/3g) r<sup>3/2</sup></span>, whence <span class="m">r̈ = √r</span>.</p>
+
+<p>An obvious candidate for our mechanism is <span class="m">h(r) = (1/g)(⅔r<sup>3/2</sup> + ⅓r³)</span>, which does give <span class="m">r̈ = √r + r²</span>. It cannot be realised.</p>
+
+<div class="thm neg">
+  <div class="hd">Proposition 10 · No surface of revolution supports finite-time escape in arc length</div>
+  <p>Let a particle move without friction under uniform gravity <span class="m">g</span> on a surface of revolution, with <span class="m">r</span> arc length along a meridian and <span class="m">h(r)</span> depth below the apex. Then <span class="m">|r̈| ≤ g</span> along any motion, so <span class="m">|ṙ(t)| ≤ |ṙ(0)| + gt</span> and <span class="m">r</span> grows at most quadratically. In particular <span class="m">r</span> cannot reach <span class="m">+∞</span> in finite time.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span> Let the meridian be given in the half-plane by <span class="m">(ρ(r), z(r))</span> parametrised by arc length, so <span class="m">ρ′² + z′² = 1</span> and hence <span class="m">|z′(r)| ≤ 1</span>. With <span class="m">h = −z</span> we get <span class="m">|h′(r)| ≤ 1</span>. The equation of motion is <span class="m">r̈ = g h′(r)</span>, so <span class="m">|r̈| ≤ g</span>. Integrating twice gives the growth bound. <span class="qed">∎</span>
+</div>
+
+<p>For the candidate above, <span class="m">h′(r) = (√r + r²)/g</span> exceeds <span class="m">1</span> once <span class="m">√r + r² &gt; g</span> — with <span class="m">g = 9.8</span>, for <span class="m">r ≳ 2.85</span> — so no such surface exists beyond that radius. The same bound applies to Norton's own dome, which is why it is presented as a dome of finite extent; for Norton nothing is lost, since only local behaviour near the apex is needed. For us the escape requires <span class="m">r → ∞</span>, so the obstruction is fatal. <b>The two mechanisms require different kinds of model:</b> a constraint surface can produce spontaneous departure but never finite-time escape.</p>
+
+<h3>11.2 In a potential</h3>
+
+<p>Dropping the constraint surface and taking a particle of unit mass on a line in a potential removes the obstruction, at the cost of a potential unbounded below — the setting of [<a href="#r4">4</a>] §3.6.</p>
+
+<div class="thm">
+  <div class="hd">Proposition 11 · A one-dimensional realisation</div>
+  <p>Let <span class="m">V(x) = −(⅔ x<sup>3/2</sup> + ⅓ x³)</span> for <span class="m">x ≥ 0</span>, and consider <span class="m">ẍ = −V′(x) = √x + x²</span> with <span class="m">x(0) = ẋ(0) = 0</span>. Then the solutions departing from rest at the origin satisfy the first-order equation <span class="m">ẋ = G(x)</span>, <span class="m">G(x) = (4/3·x<sup>3/2</sup> + 2/3·x³)<sup>1/2</sup></span>, which satisfies (H1), (H2), (H3). Consequently the conclusions of Theorem 7 apply: <span class="m">x ≡ 0</span> is the unique forward-global solution, and there are continuum-many maximal solutions, departing at arbitrary times and blowing up after a further</p>
+  <p class="disp" style="border:none;margin:8px 0">T<sub>∗</sub><sup>mech</sup> = ∫<sub>0</sub><sup>∞</sup> dx/G(x) = (2/3)·√(3/2)·2<sup>−1/3</sup>·B(⅙, ⅓) ≈ 5.4521363617.</p>
+</div>
+
+<div class="proof">
+  <span class="lab">Proof</span> Energy conservation from rest at the origin gives <span class="m">½ẋ² = −V(x)</span>, i.e. <span class="m">ẋ = G(x)</span> on any interval where <span class="m">ẋ &gt; 0</span>; conversely <span class="m">G G′ = d/dx(½G²) = √x + x²</span>, so solutions of <span class="m">ẋ = G(x)</span> solve the second-order equation. <span class="m">G</span> is continuous on <span class="m">[0,∞)</span> with <span class="m">G(0) = 0</span> and <span class="m">G &gt; 0</span> on <span class="m">(0,∞)</span>, giving (H1) on the half-line. As <span class="m">x → 0<sup>+</sup></span>, <span class="m">G(x) ≍ x<sup>3/4</sup></span> with exponent <span class="m">3/4 &lt; 1</span>, giving (H2) by the Corollary of §5; as <span class="m">x → ∞</span>, <span class="m">G(x) ≍ x<sup>3/2</sup></span> with exponent <span class="m">3/2 &gt; 1</span>, giving (H3). For the constant, write <span class="m">G = √(2/3)·x<sup>3/4</sup>(2 + x<sup>3/2</sup>)<sup>1/2</sup></span>, substitute <span class="m">w = x<sup>3/2</sup></span> then <span class="m">w = 2v</span>, and use <span class="m">∫<sub>0</sub><sup>∞</sup> v<sup>p−1</sup>(1+v)<sup>−(p+q)</sup> dv = B(p,q)</span> with <span class="m">p = ⅙</span>, <span class="m">q = ⅓</span>. <span class="qed">∎</span></p>
+</div>
+
+<p>We record two caveats. First, this is a particle in a potential unbounded below, which is exactly the idealisation that attracts the standard objection to escape solutions — that it draws on an infinitely deep well. Second, <span class="m">V</span> is <span class="m up">C</span><sup>1</sup> but not <span class="m up">C</span><sup>2</sup> at the origin, which is what permits the departure; the force <span class="m">√x + x²</span> is continuous and not locally Lipschitz there. Whether such a force law should count as a legitimate Newtonian system is the same question that the dome literature asks about <span class="m">√r</span> [<a href="#r5">5</a>, <a href="#r7">7</a>, <a href="#r9">9</a>], and we take no position on it here.</p>
+
+<h2 id="s12"><span class="num">12</span>Conclusion</h2>
+
+<p>For scalar autonomous equations with a continuous right-hand side positive off an equilibrium, the convergence of a single integral <span class="m">∫<sub>0</sub><sup>∞</sup> du/f(u)</span> is necessary and sufficient for a configuration in which uniqueness fails at the equilibrium, every non-trivial branch terminates in finite time, and exactly one solution is defined for all forward time. The witness <span class="m">|x|<sup>2/3</sup> + x²</span> realises it with blow-up time <span class="m">3√2π/4</span>.</p>
+
+<p>The mathematical content is elementary and the proofs are short. What we think is worth attention is the distinction it isolates: <b>uniqueness among global histories and uniqueness among maximal histories are different properties of the same law, and they can disagree.</b> Discussions of determinism that speak of "the possible histories through a state" without saying which class is meant are, in the presence of this mechanism, ambiguous in a way that changes the verdict.</p>
+
+<hr>
+
+<h2 id="refs" style="border:none;padding-top:0"><span class="num">—</span>References</h2>
+
+<p class="foot" style="margin-bottom:14px"><span class="tag">READ</span> the full text was consulted for the claims attributed here. <span class="tag">METADATA</span> the record was confirmed but the full text was not read; characterisations are ours and unchecked.</p>
+
+<ol class="refs">
+<li id="r1">Alexander, J. McKenzie (2024). On the incompleteness of classical mechanics. Preprint, London School of Economics. <span class="tag">READ</span></li>
+<li id="r2">Berndl, K., Dürr, D., Goldstein, S., Peruzzi, G., &amp; Zanghì, N. (1995). On the global existence of Bohmian mechanics. <em>Communications in Mathematical Physics</em> 173(3), 647–673. <span class="tag">READ</span></li>
+<li id="r3">Coddington, E. A., &amp; Levinson, N. (1955). <em>Theory of Ordinary Differential Equations</em>. McGraw–Hill. <span class="tag">METADATA</span></li>
+<li id="r4">Earman, J. (1986). <em>A Primer on Determinism</em>. Dordrecht: Reidel. Chapter III. <span class="tag">READ</span></li>
+<li id="r5">Fletcher, S. C. (2012). What counts as a Newtonian system? The view from Norton's dome. <em>European Journal for Philosophy of Science</em> 2(3), 275–297. <span class="tag">READ</span></li>
+<li id="r6">Hartman, P. (1964). <em>Ordinary Differential Equations</em>. Wiley. <span class="tag">METADATA</span></li>
+<li id="r7">Malament, D. B. (2008). Norton's slippery slope. <em>Philosophy of Science</em> 75(5), 799–816. <span class="tag">READ</span></li>
+<li id="r8">Mather, J. N., &amp; McGehee, R. (1975). Solutions of the collinear four-body problem which become unbounded in finite time. In J. Moser (ed.), <em>Dynamical Systems, Theory and Applications</em>, Springer. <span class="tag">METADATA</span></li>
+<li id="r9">Norton, J. D. (2008). The dome: an unexpectedly simple failure of determinism. <em>Philosophy of Science</em> 75(5), 786–798. <span class="tag">READ</span></li>
+<li id="r10">Osgood, W. F. (1898). Beweis der Existenz einer Lösung der Differentialgleichung <em>dy/dx = f(x,y)</em> ohne Hinzunahme der Cauchy–Lipschitz'schen Bedingung. <em>Monatshefte für Mathematik und Physik</em> 9, 331–345. <span class="tag">METADATA</span></li>
+<li id="r11">Xia, Z. (1992). The existence of noncollision singularities in Newtonian systems. <em>Annals of Mathematics</em> 135(3), 411–468. <span class="tag">READ</span></li>
+<li id="r12">Xue, J. (2020). Non-collision singularities in a planar 4-body problem. <em>Acta Mathematica</em> 224(2), 253–388. <span class="tag">READ</span></li>
+</ol>
+
+<p class="foot"><b>Computational checks.</b> The substitution of §6, the closed form <span class="m">3√2π/4</span>, the Beta-function evaluation of Proposition 11, and the two counterexamples of Proposition 8 were each confirmed independently by computer algebra; the blow-up of the witness was confirmed by Runge–Kutta integration. All proofs in this note are analytic and do not depend on those checks.</p>
+
+</div>
