@@ -97,7 +97,8 @@ times, does it follow that the state has a unique possible future history?}
 Not necessarily --- not if histories are taken to be solutions that cannot be
 extended any further, rather than solutions defined at every future time. The
 two classes can differ, and where they do, the uniqueness verdict can differ
-with them. That is the whole content of this note, and none of it is new.
+with them. That distinction is the subject of this note; we claim no priority
+for it, nor for the mathematics on which it rests.
 
 We use \emph{history} throughout for a solution regarded as a candidate physical
 evolution. Nothing in Sections~\ref{sec:example}--\ref{sec:senses} depends on
@@ -470,8 +471,14 @@ solutions.
 Without (H2) no branch could leave the origin, and both counts would be $1$;
 without (H3) every $x_{T}$ would be defined on all of $[0,\infty)$, and both
 counts would be $\cont$. Only the conjunction separates them. The margin is also
-the largest available, since by Step 7 no solution set of \eqref{eq:ivp} can
-exceed $\cont$.
+the largest available, and both ends of it are fixed. At the upper end, by
+Step 7 no solution set of \eqref{eq:ivp} can exceed $\cont$. At the lower end,
+(H1) gives $f(0)=0$, so $x_{\infty}\equiv0$ on $[0,\infty)$ satisfies
+Definition~\ref{def:solution} and lies in $\Hglob(0)$; hence
+$|\Hglob(0)|\ge1$ whenever (H1) holds. The pair $(1,\cont)$ of
+Theorem~\ref{thm:counts} therefore realises the smallest global count together
+with the largest forward-maximal one, and no instance of \eqref{eq:ivp}
+satisfying (H1) can separate the two counts further.
 \end{remark}
 
 The remark can be stated exactly, and stating it exactly locates \emph{where}
@@ -555,9 +562,9 @@ $\Hmax(0)$ is not a set of maximal solutions.
 %------------------------------------------------------------------
 \section{What is classical, and where}\label{sec:classical}
 
-None of the mathematics above is new. The attributions below are specific rather
-than general, because a general gesture at ``the classical theory'' would leave
-a reader unable to check them.
+The results above rest on classical theory, and we claim no priority for any of
+them. The attributions below are specific rather than general, because a general
+gesture at ``the classical theory'' would leave a reader unable to check them.
 
 \textbf{Wallach \cite{Wallach}, 1948.} Characterised \emph{all} solutions of
 $\dot x=f\circ x$, $x(0)=0$ for continuous $f$. Binding reports this at
@@ -790,8 +797,8 @@ adjudicate between none of the three readings.
 \section{What this note contributes}\label{sec:contribution}
 
 The phenomenon is classical and the distinction has substantial precedent, so
-the point of the example is not a new theorem about differential equations and
-not a new criterion of determinism. Two things are offered. The first is the
+the note claims no priority for the theory it draws on and offers no new
+criterion of determinism. Two things are offered. The first is the
 worked example itself: a scalar autonomous equation in which both failure modes
 occur together, every quantity is exact, and each step can be checked without
 general relativity, $N$-body mechanics or partial differential equations. Where
@@ -799,10 +806,11 @@ the two failure modes are usually illustrated separately --- Norton's dome
 \cite{Norton} for non-uniqueness; the non-collision
 singularities of Xia \cite{Xia} for finite-time escape --- here they occur in
 one equation. The second is Proposition~\ref{prop:locality}, which says where
-each of the two verdicts is decided: the maximal-history count is fixed by $f$
-near the initial state, the global count is not. The ingredients of that
-proposition are the classical dichotomies of
-Section~\ref{sec:classical}, and we claim no priority for it.
+each of the two verdicts is decided: under (H1), the maximal-history count is
+fixed by $f$ in any neighbourhood of the initial state, while the global count
+is not fixed by $f$ on any bounded set. The ingredients of that proposition are
+the classical dichotomies of Section~\ref{sec:classical}, and we claim no
+priority for it.
 
 \paragraph{Limitations.} Everything above concerns a scalar autonomous equation;
 the monotonicity argument of Step 1 uses the scalar order structure and does not
