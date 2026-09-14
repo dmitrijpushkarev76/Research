@@ -59,8 +59,10 @@ member of that class, $f(x)=|x|^{2/3}+x^{2}$, and works it out completely.
 The example has exactly one solution defined on all of $[0,\infty)$, namely
 $x\equiv 0$, and continuum-many solutions that admit no forward extension: for
 each waiting time $T\ge 0$ there is a solution that rests at the origin until
-$T$, departs, and reaches $+\infty$ at $T+3\sqrt{2}\pi/4$. Two independent
-mechanisms produce the two counts. Failure of local Lipschitz uniqueness at the
+$T$, departs, and reaches $+\infty$ at $T+T_{*}$, where the escape time
+$T_{*}<\infty$ is the same for every branch and is evaluated in closed form
+below. Two independent mechanisms produce the two counts. Failure of local
+Lipschitz uniqueness at the
 equilibrium permits a continuum of waiting-time departures, which is what makes
 the second count $\cont$; finite-time escape prevents every non-trivial branch
 from being global, which is what leaves the first count at $1$. Neither
@@ -181,8 +183,12 @@ Then $dx=3u^{2}\,du$, $x^{2/3}=u^{2}$, $x^{2}=u^{6}$, and
   =\frac{3\,du}{1+u^{4}}.
 \]
 
-(iv) By (iii) the two integrals become $\int_{0}^{1}3\,du/(1+u^{4})\le 3$ and
-$\int_{1}^{\infty}3\,du/(1+u^{4})\le\int_{1}^{\infty}3u^{-4}\,du=1$.
+(iv) By (iii) the two integrals become $\int_{0}^{1}3\,du/(1+u^{4})$ and
+$\int_{1}^{\infty}3\,du/(1+u^{4})$. The first is finite because its integrand is
+continuous on the compact interval $[0,1]$; the second because
+$3/(1+u^{4})\le 3u^{-4}$ there, and $u^{-4}$ is integrable on $[1,\infty)$. Both
+pieces are evaluated together in Proposition~\ref{prop:Tstar}, where their sum is
+computed exactly.
 \end{proof}
 
 The two halves of (iv) do different work: (H2) is what allows a solution to
@@ -210,7 +216,7 @@ $n=4$; the third is arithmetic, since $\sin(\pi/4)=\sqrt2/2$.
 The rationale for this $f$ is exactly that and no more: the substitution
 $x=u^{3}$ rationalises the integrand completely, reducing the escape integral to
 the elementary $3\int_{0}^{\infty}du/(1+u^{4})$ and giving the convenient closed
-form $T_{*}=3\sqrt2\pi/4$. We claim no uniqueness or optimality for the choice.
+form for $T_{*}$. We claim no uniqueness or optimality for the choice.
 Other members of the class are in some respects more economical --- for
 $f(x)=\sqrt{|x|}\,(1+|x|)$ one has $F(x)=2\arctan\sqrt{x}$, hence $T_{*}=\pi$
 and the elementary family $x_{T}(t)=\tan^{2}\!\big((t-T)/2\big)$, whereas here
@@ -275,7 +281,7 @@ immediate from $f(0)=0$.
 
 In words: the solution rests at the equilibrium as long as it likes, leaves with
 zero slope at a time of its choosing, and then --- after exactly
-$T_{*}=3\sqrt2\pi/4$ more, the same for every branch --- runs off to $+\infty$.
+$T_{*}$ more, the same for every branch --- runs off to $+\infty$.
 
 \begin{figure}[t]
 \centering
@@ -303,7 +309,7 @@ $T_{*}=3\sqrt2\pi/4$ more, the same for every branch --- runs off to $+\infty$.
 \caption{Four members of the family, departing at $T=0,\,1.6,\,3.2,\,4.8$. Each
 curve is $\varphi$, traced \emph{for the drawing only} by sampling $x$ and
 plotting $\big(T+F(x),\,x\big)$, so that $F$ is evaluated and never inverted;
-the blow-up time is the analytic $T_{*}=3\sqrt2\pi/4$ of
+the blow-up time is the analytic $T_{*}$ of
 Proposition~\ref{prop:Tstar}, and nothing here is offered as evidence for it.
 The curves are drawn only up to $x=6$; that ceiling is graphical, and each
 branch in fact runs to $+\infty$ as $t$ approaches $T+T_{*}$. Along the axis is
@@ -492,13 +498,15 @@ a reader unable to check them.
 \textbf{Wallach \cite{Wallach}, 1948.} Characterised \emph{all} solutions of
 $\dot x=f\circ x$, $x(0)=0$ for continuous $f$. Binding reports this at
 \cite[p.~184]{Binding} --- ``Wallach characterized all solutions of (1.1)'' ---
-and credits the monotonicity lemma to \cite[\S2]{Wallach} and the structure
-theorem to \cite[\S7]{Wallach}. \emph{We know this paper only through Binding;
-we have not read it.}
+and credits the monotonicity lemma and the structure theorem to two sections of
+it, which he cites as Wallach's \S2 and \S7 respectively. \emph{We know this
+paper only through Binding and have not read it; the two section numbers are
+Binding's citations, reproduced here, and we have not checked them against
+Wallach.}
 
 \textbf{Binding \cite[\S3, pp.~186--188]{Binding}.} The machinery of
 Theorem~\ref{thm:counts}. Lemma 3.2: every solution is monotonic, which Binding
-credits to Wallach \cite[\S2]{Wallach} for continuous $f$ --- our Step 1.
+credits to Wallach \cite{Wallach} for continuous $f$ --- our Step 1.
 Theorem 3.3: the separation identity
 $\lambda([s,t]\setminus\dot x^{-1}(0))=\int_{x(s)}^{x(t)}1/f$ in
 measure-theoretic form, of which the computation in Step 6 is the elementary
@@ -619,7 +627,7 @@ Earman's phrase \cite[\S6.4]{Earman}, often ``not maximal simpliciter'', and the
 larger extensions are not unique. Smeenk and W\"uthrich \cite{SmeenkWuthrich}
 organise their treatment around whether global hyperbolicity should be imposed
 by fiat, established from weaker assumptions, or justified from outside the
-theory --- their \S5 is titled ``Global Hyperbolicity by Fiat'' --- and note
+theory --- the preprint's \S5 is titled ``Global Hyperbolicity by Fiat'' --- and note
 that their analysis ``runs parallel to recent discussions of determinism in
 Newtonian particle mechanics.''
 
@@ -891,7 +899,10 @@ Hinzunahme der Cauchy--Lipschitz'schen Bedingung,
 
 \bibitem{SmeenkWuthrich}
 C.~Smeenk and C.~W\"uthrich,
-Determinism and general relativity, arXiv:2009.07555, 2020.
+Determinism and general relativity,
+\emph{Philos. Sci.} \textbf{88} (2021) 638--664;
+preprint arXiv:2009.07555 (2020).
+The section reference in the text is to the preprint.
 
 \bibitem{Wallach}
 S.~Wallach,
