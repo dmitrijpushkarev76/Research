@@ -38,7 +38,11 @@
 \DeclareMathOperator{\sgn}{sgn}
 
 \title{One State, Many Maximal Futures}
-\author{\normalsize [author name] \\ \normalsize [affiliation] \\ \normalsize [email]}
+\author{%
+  Dmitry Pushkarev \\
+  \normalsize Independent Researcher \\
+  \normalsize \texttt{dmitrijpushkarev76@gmail.com}%
+}
 \date{}
 
 \begin{document}
@@ -327,10 +331,9 @@ further to go inside $[0,\infty)$. The main statement is that the two classes
 are nevertheless as far apart as they could be.
 
 \begin{theorem}\label{thm:counts}
-Assume \textup{(H1)--(H3)}; in particular $f^{-1}(0)=\{0\}$, which is part of
-\textup{(H1)}. Then, with $\Hmax(0)$ the forward-maximal solutions of
-Definition~\ref{def:classes} and not the two-sided maximal solutions of
-Section~\ref{sec:senses},
+Assume \textup{(H1)--(H3)}. Then, with $\Hmax(0)$ the \emph{forward}-maximal
+solutions of Definition~\ref{def:classes} --- not the two-sided maximal
+solutions of Section~\ref{sec:senses} ---
 \[
   \Hglob(0)=\{x_{\infty}\},
   \qquad
@@ -381,14 +384,14 @@ $x=x_{\infty}$.
 \smallskip
 \emph{Step 6 (the case $T<\infty$).} First, $T\in I$. Otherwise $I$ is an
 interval containing $[0,T)$ but not $T$, hence $I\subseteq[0,T)$ and $x\equiv0$
-on $I$. Then $x$ has the finite right endpoint $T\notin I$ at which it remains
-finite --- indeed $x(t)\to0$ as $t\uparrow T$ --- so setting $x(T)=0$ extends it
-continuously, and the extension solves \eqref{eq:ivp} at $T$ because $f(0)=0$.
-(In general this is the continuation principle used in Step 4: at a finite right
-endpoint where the solution stays finite, Peano's theorem supplies a local
-solution from the limiting value, so the solution extends. Here the limiting
-value is the equilibrium and the extension is explicit.) Either way maximality
-is contradicted.
+on $I$, so $x(t)\to0$ as $t\uparrow T$. Setting $x(T)=0$ extends $x$
+continuously to $[0,T]$, and the extension solves \eqref{eq:ivp} at $T$ because
+$f(0)=0$; it is then extended further by the zero solution. This contradicts
+maximality. (Step 4 handles the general version of the same situation: at a
+compact right endpoint at which the solution is finite, Peano's existence
+theorem gives a local solution from that value, which concatenates to a proper
+extension. Here the value is the equilibrium, so the extension is the zero
+solution and no appeal to Peano is needed.)
 
 For $t\in I$ with $t>T$ we have $x(t)\ne0$ by the definition of $T$ as
 $\sup Z$, and $x(t)\ge x(T)=0$ by Step 1; hence $x(t)>0$. On $I\cap(T,\infty)$
@@ -514,9 +517,19 @@ at all zeroes of $b$''. Case (6.5) is exactly hypothesis (H3): when
 $\int^{\infty}1/f<\infty$, Binding writes, ``we have the phenomenon of escape to
 infinity for at least one solution''; his case (6.2), where it diverges, is the
 complementary one in which the branch survives on the whole half-line. Lemma 6.3
-is a duality --- $\hat f(\alpha)=\alpha^{2}f(1/\alpha)$ turns escape to infinity
-into non-uniqueness at the origin --- so the observation that (H2) and (H3) are
-the two ends of one integral is his; he credits awareness of it to Wintner and
+is a duality: the reciprocal substitution turns escape to infinity into
+non-uniqueness at the origin, since $x=1/\alpha$ carries $\dot x=f(x)$ into
+$\dot\alpha=-\hat f(\alpha)$ with
+\begin{equation}\label{eq:dual}
+  \hat f(\alpha)=\alpha^{2}f(1/\alpha),
+\end{equation}
+and $dx/f(x)=d\alpha/\hat f(\alpha)$, so $\int^{\infty}1/f$ and
+$\int_{0}1/\hat f$ converge together. The form \eqref{eq:dual} is the one the
+substitution requires and is verified by that computation; Binding's own printed
+definition of the dual is illegible in the scan we consulted, so we do not
+attribute the displayed formula to his notation. The observation that (H2) and
+(H3) are the two ends of one integral is nonetheless his, and he credits
+awareness of it to Wintner and
 to Brauer and Sternberg.
 
 \textbf{Binding \cite[Lemma 7.5, p.~194]{Binding}.} The structure theorem: every
