@@ -1,7 +1,10 @@
 % One State, Many Maximal Futures
-% Expository note, formatted for an expository mathematics journal
-% (American Mathematical Monthly / Mathematics Magazine house style:
-%  plain article class, 12pt, single column, numbered theorem environments).
+% Note for a philosophy-of-science venue (European Journal for Philosophy of
+% Science): plain article class, 12pt, single column, numbered theorem
+% environments.
+%
+% ANONYMISED FOR BLIND REVIEW. The author block, affiliation, postal address
+% and e-mail address have been removed; restore them before publication.
 %
 % Build:  pdflatex one-state-many-futures  (twice, for cross-references)
 % The figure needs figure-branches.tex, produced by make_figure_data.py.
@@ -38,12 +41,8 @@
 \DeclareMathOperator{\sgn}{sgn}
 
 \title{One State, Many Maximal Futures}
-\author{%
-  Dmitry Pushkarev \\
-  \normalsize Independent Researcher \\
-  \normalsize Al-Farabi 101, Almaty, Kazakhstan \\
-  \normalsize \texttt{dmitrijpushkarev76@gmail.com}%
-}
+% Author block removed for blind review; restore before publication.
+\author{}
 \date{}
 
 \begin{document}
@@ -75,8 +74,10 @@ not introduced here either. It is discussed for general relativity by Earman
 \cite{Earman}, Smeenk and W\"uthrich \cite{SmeenkWuthrich} and Doboszewski
 \cite{Doboszewski}, for Newtonian blow-up by Wilson \cite{Wilson}, and within a
 broader formulation of indeterminism by Azhar and Namjoo \cite{AzharNamjoo}.
-What is offered here is a minimal worked example in which every quantity is
-available in closed form. \textbf{The example does not by itself establish that
+What is offered here is an explicit worked example in which every quantity is
+available in closed form, together with one proposition
+(Proposition~\ref{prop:locality}) locating where each of the two uniqueness
+verdicts is decided. \textbf{The example does not by itself establish that
 any physical theory is indeterministic.} What it shows is that a uniqueness
 verdict depends on which class of solutions is quantified over;
 Section~\ref{sec:determinism} sets out the competing readings and adjudicates
@@ -216,13 +217,11 @@ $n=4$; the third is arithmetic, since $\sin(\pi/4)=\sqrt2/2$.
 
 The rationale for this $f$ is exactly that and no more: the substitution
 $x=u^{3}$ rationalises the integrand completely, reducing the escape integral to
-the elementary $3\int_{0}^{\infty}du/(1+u^{4})$ and giving the convenient closed
-form for $T_{*}$. We claim no uniqueness or optimality for the choice.
-Other members of the class are in some respects more economical --- for
-$f(x)=\sqrt{|x|}\,(1+|x|)$ one has $F(x)=2\arctan\sqrt{x}$, hence $T_{*}=\pi$
-and the elementary family $x_{T}(t)=\tan^{2}\!\big((t-T)/2\big)$, whereas here
-$\varphi$ itself has no elementary closed form. Nothing in what follows depends
-on the choice; any member of the class would serve.
+the elementary $3\int_{0}^{\infty}du/(1+u^{4})$ and giving $T_{*}$ in closed
+form. We claim no uniqueness or optimality for the choice. Nothing in what
+follows depends on it; any member of the class would serve, and the results of
+Sections~\ref{sec:family}--\ref{sec:counts} are stated for the class rather
+than for this $f$.
 
 %------------------------------------------------------------------
 \section{The solution family}\label{sec:family}
@@ -283,6 +282,16 @@ immediate from $f(0)=0$.
 In words: the solution rests at the equilibrium as long as it likes, leaves with
 zero slope at a time of its choosing, and then --- after exactly
 $T_{*}$ more, the same for every branch --- runs off to $+\infty$.
+
+One remark on why a one-parameter family is the whole of it. In the general
+structure theorem of Wallach and Binding, recorded in
+Section~\ref{sec:classical}, a solution is assembled from the extremal one by
+adding two increasing parts supported on $f^{-1}(0)$: a continuous singular part
+and a jump part. Here $f^{-1}(0)=\{0\}$ is a single point, so the continuous
+singular part contributes nothing and the jump part reduces to a single number,
+the waiting time $T$. Theorem~\ref{thm:counts} proves completeness directly and
+does not rely on this; the remark is only to say where the one parameter comes
+from.
 
 \begin{figure}[t]
 \centering
@@ -465,6 +474,58 @@ the largest available, since by Step 7 no solution set of \eqref{eq:ivp} can
 exceed $\cont$.
 \end{remark}
 
+The remark can be stated exactly, and stating it exactly locates \emph{where}
+each of the two verdicts is decided. The next proposition does no more than
+read that off the three cases; its ingredients are the classical dichotomies
+attributed in Section~\ref{sec:classical}, and we claim no priority for it.
+
+\begin{proposition}[Where each verdict is decided]\label{prop:locality}
+Assume \textup{(H1)}, but not necessarily \textup{(H2)} or \textup{(H3)}. Then
+\[
+  |\Hmax(0)|=1 \iff \neg\textup{(H2)},
+  \qquad
+  |\Hglob(0)|=1 \iff \neg\textup{(H2)}\ \vee\ \textup{(H3)} .
+\]
+The condition on the left is decided by the restriction of $f$ to any
+neighbourhood of the origin. The condition on the right is not decided by the
+restriction of $f$ to any bounded set.
+\end{proposition}
+
+\begin{proof}
+Three cases exhaust the possibilities. If (H2) fails, the departure criterion of
+Section~\ref{sec:classical} leaves $x\equiv0$ as the only solution, so
+$\Hmax(0)=\Hglob(0)=\{x_{\infty}\}$ and both counts are $1$. If (H2) and (H3)
+both hold, Theorem~\ref{thm:counts} gives $|\Hmax(0)|=\cont$ and
+$|\Hglob(0)|=1$. If (H2) holds and (H3) fails, then $F$ is a bijection from
+$(0,\infty)$ onto $(0,\infty)$, so $\varphi$ is defined on all of $[0,\infty)$
+and every $x_{T}$ is global; the argument of Theorem~\ref{thm:counts} is
+otherwise unchanged, and $\Hmax(0)=\Hglob(0)=\{x_{T}:T\in[0,\infty)\}\cup
+\{x_{\infty}\}$, of cardinality $\cont$. Reading the two counts off the three
+cases gives the two equivalences.
+
+For the locality claims: (H2) is decided by $f$ on $(0,\delta)$ for every
+$\delta>0$, because $1/f$ is continuous, hence integrable, on $[\delta,1]$. (H3)
+is not decided by $f$ on any bounded set. It is enough to exhibit one pair.
+Take $f(x)=|x|^{2/3}+x^{2}$ as in Section~\ref{sec:example} and put
+\[
+  f_{\flat}(x)=\begin{cases}
+    |x|^{2/3}+x^{2}, & |x|\le 1,\\[2pt]
+    2|x|, & |x|\ge 1 .
+  \end{cases}
+\]
+Since $f(\pm1)=2$, $f_{\flat}$ is continuous, and it satisfies (H1). It agrees
+with $f$ on $[-1,1]$, so it satisfies (H2) for the same reason $f$ does; but
+$\int_{1}^{\infty}dx/(2x)=\infty$, so (H3) fails for it. Hence $f$ and
+$f_{\flat}$ have the same restriction to $[-1,1]$ while
+$|\Hglob(0)|=1$ for $f$ and $|\Hglob(0)|=\cont$ for $f_{\flat}$; the maximal
+count is $\cont$ for both.
+\end{proof}
+
+So the two counts are not decided in the same place. Whether one solution or
+continuum-many cannot be extended is settled by the law near the state; whether
+one solution or continuum-many are defined at every later time is not, and no
+amount of information about the law near the state settles it.
+
 %------------------------------------------------------------------
 \section{Three senses of ``maximal''}\label{sec:senses}
 
@@ -480,8 +541,10 @@ once and then keep the prefix.
         \emph{No $x_{T}$ is maximal in this sense.} Setting $x(t)=0$ for $t<0$
         always extends it, since $f(0)=0$. Appendix~\ref{app:twosided}
         classifies the genuinely maximal solutions.
-  \item \textbf{Maximal (extremal):} the pointwise \emph{largest} solution. Here
-        that is $x_{0}$, which departs immediately; the pointwise smallest is
+  \item \textbf{Maximal (extremal):} the \emph{largest} solution pointwise on
+        the common interval of existence --- the qualification matters here,
+        since the candidates have different domains. That solution is $x_{0}$,
+        which departs immediately; the smallest in the same sense is
         $x_{\infty}$. Hartman \cite[ch.~III \S2]{Hartman} uses the word in this
         sense.
 \end{itemize}
@@ -522,24 +585,33 @@ where Theorem 6.1 is Kamke's and Corollary 6.2 is Osgood's. Fjordholm
 \cite{Fjordholm}, whose own subject is Filippov uniqueness for discontinuous
 fields, restates the continuous case as ``it was shown by Binding that the
 solution is unique if and only if $b$ satisfies the so-called Osgood condition
-at all zeroes of $b$''. Case (6.5) is exactly hypothesis (H3): when
-$\int^{\infty}1/f<\infty$, Binding writes, ``we have the phenomenon of escape to
-infinity for at least one solution''; his case (6.2), where it diverges, is the
-complementary one in which the branch survives on the whole half-line. Lemma 6.3
+at all zeroes of $b$''. His case (6.5) corresponds to (H2) and (H3) together,
+not to (H3) alone: the integral in that case runs from the equilibrium, so its
+convergence near the origin is (H2) and its convergence at infinity is (H3).
+With (H2) standing, as it does throughout this note, it is (H3) that does the
+work. Of that case Binding writes, ``we have the phenomenon of escape to
+infinity for at least one solution''; his case (6.2), where the integral
+diverges, is the complementary one in which the branch survives on the whole
+half-line. Lemma 6.3
 is a duality: the reciprocal substitution turns escape to infinity into
 non-uniqueness at the origin, since $x=1/\alpha$ carries $\dot x=f(x)$ into
 $\dot\alpha=-\hat f(\alpha)$ with
 \begin{equation}\label{eq:dual}
   \hat f(\alpha)=\alpha^{2}f(1/\alpha),
 \end{equation}
-and $dx/f(x)=d\alpha/\hat f(\alpha)$, so $\int^{\infty}1/f$ and
-$\int_{0}1/\hat f$ converge together. The form \eqref{eq:dual} is the one the
-substitution requires and is verified by that computation; Binding's own printed
-definition of the dual is illegible in the scan we consulted, so we do not
-attribute the displayed formula to his notation. The observation that (H2) and
-(H3) are the two ends of one integral is nonetheless his, and he credits
-awareness of it to Wintner and
-to Brauer and Sternberg.
+and, up to the orientation of the two integrals, $dx/f(x)=d\alpha/\hat
+f(\alpha)$, so $\int^{\infty}1/f$ and $\int_{0}1/\hat f$ converge together. The
+form \eqref{eq:dual} is Binding's own: it is the definition printed immediately
+before his Lemma 6.3, and his inversion identity --- the display numbered (6.6)
+in the JDE printing --- is the computation just given.
+% TODO: confirm p.~193 and the display number (6.6) against the offprint before
+% submission. Checked there by the author; re-check at proof stage.
+The observation that (H2) and (H3) are the two ends of one integral is likewise
+his, and he credits awareness of it to Wintner, to Brauer and Sternberg, and to
+Yoshizawa.
+% Wintner, Brauer--Sternberg and Yoshizawa are named as Binding names them; none
+% has a bibliography entry here, in line with the treatment of the other authors
+% Binding credits.
 
 \textbf{Binding \cite[Lemma 7.5, p.~194]{Binding}.} The structure theorem: every
 solution is obtained from the extremal one by inserting constant segments at
@@ -572,17 +644,21 @@ solution'' against ``global existence'' as basic vocabulary in a foundational
 setting, and list escape to infinity in finite time among the ways a solution
 may cease to exist.
 
-Given Lemma 7.5 and case (6.5) together, Theorem~\ref{thm:counts} follows in two
-lines; the self-contained proof above is written out because it is short, not
-because it is new. The wider uniqueness and non-uniqueness literature is
+Given Lemma 7.5 and case (6.5) together, Theorem~\ref{thm:counts} is close to
+immediate, with one gap that has to be closed by hand: Binding's \S7 carries the
+standing hypothesis that all solutions are positive for $t>0$, which excludes
+$x_{\infty}$ --- the one solution whose status in $\Hglob(0)$ is the point at
+issue --- so the zero solution and the bookkeeping of Steps 3 and 4 are not
+supplied by his Lemma 7.5 as printed. The self-contained proof above is written
+out because it is short and because of that gap, not because the result is
+new. The wider uniqueness and non-uniqueness literature is
 surveyed in Agarwal and Lakshmikantham \cite{AgarwalLakshmikantham}.
 
 On the particular choice of $f$: we have not found a prior publication using
 $|x|^{2/3}+x^{2}$ to illustrate this point, though the search behind that remark
 is bounded and we make no priority claim. What can be said without qualification
-is that the choice gives a compact closed-form blow-up time. It is not the most
-economical member of the class --- Section~\ref{sec:example} names one that is
---- and we claim no advantage for it beyond convenience.
+is that the substitution puts the blow-up time in closed form; we claim no
+advantage for the choice beyond that.
 
 %------------------------------------------------------------------
 \section{Bearing on determinism}\label{sec:determinism}
@@ -630,7 +706,10 @@ organise their treatment around whether global hyperbolicity should be imposed
 by fiat, established from weaker assumptions, or justified from outside the
 theory --- the preprint's \S5 is titled ``Global Hyperbolicity by Fiat'' --- and note
 that their analysis ``runs parallel to recent discussions of determinism in
-Newtonian particle mechanics.''
+Newtonian particle mechanics.'' The parallel is one of form and not of kind: in
+general relativity the restriction that secures uniqueness is a restriction on
+which models count as models of the theory, whereas the restriction at issue
+here is on the temporal domain a solution must have.
 
 A closer analogue, though only an analogue, is Doboszewski's discussion
 \cite[p.~12]{Doboszewski} of spacetimes that simply stop --- Minkowski space
@@ -677,7 +756,10 @@ As to the positions, the example adds nothing. What it adds is a test case in
 which the three readings give visibly different verdicts about one state of one
 system, with no idealisation to argue over: the equation is scalar and
 autonomous, $f$ is continuous everywhere and $C^{1}$ away from one point, and
-every quantity is exact. One point is common to all three readings: the
+every quantity is exact. Proposition~\ref{prop:locality} adds one constraint
+that any defence of either reading must accommodate --- on Reading~2 the verdict
+at a state is fixed by the law near that state, on Reading~1 it is not --- and
+we record it as a constraint and not as a reason to prefer either. One point is common to all three readings: the
 distinction is not dissolved by demanding more regularity. The Lipschitz failure
 sits at the equilibrium alone, and the branches terminate because the equation
 is superlinear at infinity, which is ordinary behaviour.
@@ -686,14 +768,20 @@ is superlinear at infinity, which is ordinary behaviour.
 \section{What this note contributes}\label{sec:contribution}
 
 The phenomenon is classical and the distinction has substantial precedent, so
-the point of the example is not a theorem or a new criterion of determinism. It
-is that the whole thing is cheap: a scalar autonomous equation, elementary
-integrals, an exact blow-up time, an explicit family that can be drawn, and no
-general relativity, $N$-body mechanics or partial differential equations needed
-to check any step. Where the standard illustrations of the two failure modes are
-Norton's dome \cite{Norton} for non-uniqueness and the non-collision
-singularities of Xia \cite{Xia} for finite-time escape, here both occur in one
-equation that fits on a line.
+the point of the example is not a new theorem about differential equations and
+not a new criterion of determinism. Two things are offered. The first is the
+worked example itself: a scalar autonomous equation in which both failure modes
+occur together, every quantity is exact, and each step can be checked without
+general relativity, $N$-body mechanics or partial differential equations. Where
+the two failure modes are usually illustrated separately --- Norton's dome
+\cite{Norton}, and the class it specialises \cite{BhatBernstein}, for
+non-uniqueness; the non-collision
+singularities of Xia \cite{Xia} for finite-time escape --- here they occur in
+one equation. The second is Proposition~\ref{prop:locality}, which says where
+each of the two verdicts is decided: the maximal-history count is fixed by $f$
+near the initial state, the global count is not. The ingredients of that
+proposition are the classical dichotomies of
+Section~\ref{sec:classical}, and we claim no priority for it.
 
 \paragraph{Limitations.} Everything above concerns a scalar autonomous equation;
 the monotonicity argument of Step 1 uses the scalar order structure and does not
@@ -716,12 +804,13 @@ disagree at the same state, by the largest margin available.
 
 The forward account says nothing about $x<0$, and for this $f$, which is even,
 the negative half-line is populated: solutions can also arrive at the origin
-from below in finite time. Accounting for them identifies the solutions maximal
-in the standard sense and confirms that they are not the objects counted in
+from below in finite time. Accounting for them exhibits solutions maximal in the
+standard sense and confirms that they are not the objects counted in
 Theorem~\ref{thm:counts}.
 
 Write $S_{*}=\int_{-\infty}^{0}du/f(u)$. Two conditions are involved, and they
-are logically separate:
+can fail independently in at least one direction; the converse witness is not
+given here:
 \begin{enumerate}
   \item[(H4a)] $\int_{-1}^{0}du/f<\infty$ --- finite-time access to the
         equilibrium from below;
@@ -729,8 +818,10 @@ are logically separate:
         $-\infty$ in backward time.
 \end{enumerate}
 
-For an even $f$ both follow from (H2) and (H3); in general neither follows from
-anything on the positive side.
+For an even $f$ both follow from (H2) and (H3). In general they need not:
+Example~\ref{ex:independence} exhibits (H4b) without (H4a), so (H4a) does not
+follow from the conditions imposed on the positive half-line. We do not give the
+witness in the other direction.
 
 \begin{example}[\textup{(H4b)} without \textup{(H4a)}]\label{ex:independence}
 Take $f(x)=x^{2/3}+x^{2}$ for $x\ge0$ and $f(x)=|x|+x^{2}$ for $x<0$. This is
@@ -744,8 +835,10 @@ When $T_{*}$ and $S_{*}$ are both finite, the same classical mechanism applied
 to $\tilde f(y)=f(-y)$ in reversed time gives a two-parameter family: for
 $(S,T)\in[0,\infty]^{2}$ there is a solution whose zero set is $[-S,T]$, defined
 on $(-S-S_{*},\,T+T_{*})$, with the convention that an infinite parameter
-removes the corresponding bound. These are the maximal solutions in the standard
-sense, and $x\equiv0$ is the only one defined on all of $\R$.
+removes the corresponding bound. Each of these is maximal in the standard sense,
+and among them $x\equiv0$ is the only one defined on all of $\R$. We do not
+claim this family is exhaustive; nothing below needs that, since the point
+turns on the solutions the family does contain.
 
 The point relevant to Section~\ref{sec:senses} falls out. For every $S$, the
 restriction to $[0,\infty)$ of the solution indexed by $(S,T)$ is the same
@@ -762,9 +855,24 @@ can, though not in the way one first tries.
 
 Norton's construction \cite{Norton} places a particle on a frictionless surface
 of revolution, with $r$ the arc length along a meridian from the apex and $h(r)$
-the depth below it, giving $\ddot r=g\,h'(r)$. The obvious candidate here,
+the depth below it, giving $\ddot r=g\,h'(r)$. The example has antecedents in a
+class of systems given earlier by Bhat and Bernstein \cite{BhatBernstein}, and
+the construction has been discussed at length by Malament \cite{Malament} and
+Fletcher \cite{Fletcher}.
+% TODO: the relation to Bhat--Bernstein is stated here only as antecedence. The
+% dome is often described as a limiting case of their class; that stronger
+% statement has not been checked against their article and is not made. The obvious candidate here,
 $h(r)=\tfrac1g\big(\tfrac23 r^{3/2}+\tfrac13 r^{3}\big)$, does give
 $\ddot r=\sqrt r+r^{2}$, but it cannot be realised.
+
+What blocks it is a constraint already present in Norton's own presentation.
+Writing the tangential force as $g\sin\theta$ with $\sin\theta=dh/dr$
+\cite{Norton} makes $|h'|\le1$ mandatory, since a sine is at most $1$; the same
+bound is what an arc-length parametrisation forces, and it is why a dome of this
+kind extends only to a finite radius. \emph{Neither the bound nor
+Proposition~\ref{prop:dome} below is claimed as new.} The proposition is stated
+only to close one route from the example of Section~\ref{sec:example} to a
+Newtonian realisation.
 
 \begin{proposition}\label{prop:dome}
 In a Norton-type model --- frictionless, uniform gravity, arc-length meridional
@@ -797,8 +905,9 @@ with
 \]
 and conversely $GG'=\tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=\sqrt x+x^{2}$, so
 solutions of the first-order equation solve the second-order one. The even
-extension $\hat G(x)=G(|x|)$ is continuous with $\hat G(0)=0$ and $\hat G>0$ off
-the origin; $G(x)\asymp x^{3/4}$ as $x\to0^{+}$ and $\asymp x^{3/2}$ as
+extension $\hat G(x)=G(|x|)$ --- an extension of the vector field, not something
+derived from a potential on $x<0$, where $V$ is not defined --- is continuous
+with $\hat G(0)=0$ and $\hat G>0$ off the origin; $G(x)\asymp x^{3/4}$ as $x\to0^{+}$ and $\asymp x^{3/2}$ as
 $x\to\infty$, so (H2) and (H3) hold. Everything in
 Sections~\ref{sec:family}--\ref{sec:counts} therefore applies, with
 \[
@@ -822,10 +931,14 @@ This realises the \emph{mechanism} of Theorem~\ref{thm:counts} in a Newtonian
 system --- not the example of Section~\ref{sec:example}. The reduced right-hand
 side $G$ is not $|x|^{2/3}+x^{2}$, and accordingly
 $T_{*}^{\mathrm{mech}}\ne T_{*}$: a different member of the same class. Two
-caveats. The potential is unbounded below, the idealisation that attracts the
-standard objection to escape solutions \cite{Earman}; and $V$ is $C^{1}$ but not
-$C^{2}$ at the origin, the force being continuous and not locally Lipschitz
-there. Whether such a force law counts as a legitimate Newtonian system is the
+caveats. The potential is unbounded below; finite-time escape in Newtonian
+systems, and the responses available to it, are discussed by Earman
+\cite{Earman}.
+% TODO: add a page or section reference for Earman here. The earlier wording
+% attributed to that chapter a specific objection to unbounded-below potentials;
+% that attribution was not located in the chapter and has been weakened.
+And $V$ is $C^{1}$ but not $C^{2}$ at the origin, the force being continuous and
+not locally Lipschitz there. Whether such a force law counts as a legitimate Newtonian system is the
 question the dome literature asks about $\sqrt r$ \cite{Fletcher, Norton}; we
 take no position.
 
@@ -841,6 +954,14 @@ Equations}, Series in Real Analysis 6, World Scientific, 1993.
 F.~Azhar and M.~H. Namjoo,
 Spacetime singularities and a novel formulation of indeterminism,
 arXiv:2101.10887, 2021.
+
+\bibitem{BhatBernstein}
+S.~P. Bhat and D.~S. Bernstein,
+Example of indeterminacy in classical dynamics,
+\emph{Internat. J. Theoret. Phys.} \textbf{36} (1997) 545--550.
+% TODO: author must confirm the bibliographic details against the printed
+% article before submission. Cited here for the prior class of examples only;
+% the article has not been read.
 
 \bibitem{Berndl}
 K.~Berndl, D.~D\"urr, S.~Goldstein, G.~Peruzzi and N.~Zangh\`i,
@@ -886,6 +1007,14 @@ What counts as a Newtonian system? The view from Norton's dome,
 \bibitem{Hartman}
 P.~Hartman,
 \emph{Ordinary Differential Equations}, Wiley, 1964.
+
+\bibitem{Malament}
+D.~B. Malament,
+Norton's slippery slope,
+\emph{Philos. Sci.} \textbf{75} (2008) 799--816.
+% TODO: author must confirm the bibliographic details against the printed
+% article before submission. Cited here as a discussion of the dome only; the
+% article has not been read.
 
 \bibitem{Norton}
 J.~D. Norton,
