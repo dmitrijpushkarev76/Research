@@ -53,13 +53,14 @@ general form by Binding \cite{Binding} in 1979. This note takes one concrete
 member of that class, $f(x)=|x|^{2/3}+x^{2}$, and works it out completely.
 
 The example has exactly one solution defined on all of $[0,\infty)$, namely
-$x\equiv 0$. It also has continuum-many solutions that admit no forward
-extension: for each waiting time $T\ge 0$ there is a solution that rests at the
-origin until $T$, departs, and reaches $+\infty$ at $T+3\sqrt{2}\pi/4$. Every
-non-trivial branch terminates in finite time, which is exactly why the first
-count is one; the second count is $\cont$ for an independent reason, that the
-equilibrium can be left at any moment. Each hypothesis moves one count, and only
-their conjunction separates the two.
+$x\equiv 0$, and continuum-many solutions that admit no forward extension: for
+each waiting time $T\ge 0$ there is a solution that rests at the origin until
+$T$, departs, and reaches $+\infty$ at $T+3\sqrt{2}\pi/4$. Two independent
+mechanisms produce the two counts. Failure of local Lipschitz uniqueness at the
+equilibrium permits a continuum of waiting-time departures, which is what makes
+the second count $\cont$; finite-time escape prevents every non-trivial branch
+from being global, which is what leaves the first count at $1$. Neither
+mechanism alone separates them.
 
 The distinction this illustrates --- between uniqueness among globally defined
 solutions and uniqueness among solutions that merely cannot be extended --- is
@@ -68,7 +69,11 @@ not introduced here either. It is discussed for general relativity by Earman
 \cite{Doboszewski}, for Newtonian blow-up by Wilson \cite{Wilson}, and within a
 broader formulation of indeterminism by Azhar and Namjoo \cite{AzharNamjoo}.
 What is offered here is a minimal worked example in which every quantity is
-available in closed form.
+available in closed form. \textbf{The example does not by itself establish that
+any physical theory is indeterministic.} What it shows is that a uniqueness
+verdict depends on which class of solutions is quantified over;
+Section~\ref{sec:determinism} sets out the competing readings and adjudicates
+between none of them.
 \end{abstract}
 
 %------------------------------------------------------------------
@@ -198,13 +203,15 @@ standard evaluation $\int_{0}^{\infty}du/(1+u^{n})=(\pi/n)/\sin(\pi/n)$ at
 $n=4$; the third is arithmetic, since $\sin(\pi/4)=\sqrt2/2$.
 \end{proof}
 
-That closed form is a convenience, and not a reason to prefer this $f$ to other
-members of the class. Some of them do better. For $f(x)=\sqrt{|x|}\,(1+|x|)$ one
-has $F(x)=2\arctan\sqrt{x}$, so $T_{*}=\pi$ exactly, and every branch is
-elementary: $x_{T}(t)=\tan^{2}\!\big((t-T)/2\big)$ on $(T,T+\pi)$. The $f$ used
-here admits no such closed form for $\varphi$ itself, which is why
-Figure~\ref{fig:branches} is drawn by inverting $F$ numerically. Nothing in what
-follows depends on the choice; any member of the class would serve.
+The rationale for this $f$ is exactly that and no more: the substitution
+$x=u^{3}$ rationalises the integrand completely, reducing the escape integral to
+the elementary $3\int_{0}^{\infty}du/(1+u^{4})$ and giving the convenient closed
+form $T_{*}=3\sqrt2\pi/4$. We claim no uniqueness or optimality for the choice.
+Other members of the class are in some respects more economical --- for
+$f(x)=\sqrt{|x|}\,(1+|x|)$ one has $F(x)=2\arctan\sqrt{x}$, hence $T_{*}=\pi$
+and the elementary family $x_{T}(t)=\tan^{2}\!\big((t-T)/2\big)$, whereas here
+$\varphi$ itself has no elementary closed form. Nothing in what follows depends
+on the choice; any member of the class would serve.
 
 %------------------------------------------------------------------
 \section{The solution family}\label{sec:family}
@@ -320,7 +327,10 @@ further to go inside $[0,\infty)$. The main statement is that the two classes
 are nevertheless as far apart as they could be.
 
 \begin{theorem}\label{thm:counts}
-Assume \textup{(H1)--(H3)} and let $f^{-1}(0)=\{0\}$. Then
+Assume \textup{(H1)--(H3)}; in particular $f^{-1}(0)=\{0\}$, which is part of
+\textup{(H1)}. Then, with $\Hmax(0)$ the forward-maximal solutions of
+Definition~\ref{def:classes} and not the two-sided maximal solutions of
+Section~\ref{sec:senses},
 \[
   \Hglob(0)=\{x_{\infty}\},
   \qquad
@@ -330,7 +340,7 @@ so that $|\Hglob(0)|=1$ while $|\Hmax(0)|=\cont$.
 \end{theorem}
 
 \begin{proof}
-We argue in seven steps.
+We argue in eight steps.
 
 \smallskip
 \emph{Step 1 (monotonicity).} Since $f\ge0$ everywhere, every solution has
@@ -371,7 +381,14 @@ $x=x_{\infty}$.
 \smallskip
 \emph{Step 6 (the case $T<\infty$).} First, $T\in I$. Otherwise $I$ is an
 interval containing $[0,T)$ but not $T$, hence $I\subseteq[0,T)$ and $x\equiv0$
-on $I$, which extends by $0$ --- contradicting maximality.
+on $I$. Then $x$ has the finite right endpoint $T\notin I$ at which it remains
+finite --- indeed $x(t)\to0$ as $t\uparrow T$ --- so setting $x(T)=0$ extends it
+continuously, and the extension solves \eqref{eq:ivp} at $T$ because $f(0)=0$.
+(In general this is the continuation principle used in Step 4: at a finite right
+endpoint where the solution stays finite, Peano's theorem supplies a local
+solution from the limiting value, so the solution extends. Here the limiting
+value is the equilibrium and the extension is explicit.) Either way maximality
+is contradicted.
 
 For $t\in I$ with $t>T$ we have $x(t)\ne0$ by the definition of $T$ as
 $\sup Z$, and $x(t)\ge x(T)=0$ by Step 1; hence $x(t)>0$. On $I\cap(T,\infty)$
@@ -391,19 +408,32 @@ domain is not compact, and by maximality together with Step 3 it cannot be a
 proper subinterval of $[0,T+T_{*})$; hence $I=[0,T+T_{*})$ and $x=x_{T}$.
 
 \smallskip
-\emph{Step 7 (the two counts).} Steps 3, 5 and 6 together give the stated
-description of $\Hmax(0)$. The map $T\mapsto x_{T}$ is injective: if
-$T_{1}<T_{2}$ then $x_{T_{1}}>0=x_{T_{2}}$ on $(T_{1},T_{2}]$, an interval of
-positive length. Hence $|\Hmax(0)|\ge|[0,\infty)|=\cont$. Conversely a solution
-is a continuous real function on a subinterval of $[0,\infty)$; there are
-$\cont$ such subintervals, and a continuous function on an interval is
-determined by its values on a countable dense set, so each interval carries at
-most $\cont^{\aleph_{0}}=\cont$ of them. Thus
-$|\Hmax(0)|\le\cont\cdot\cont=\cont$, and equality holds.
+\emph{Step 7 (the cardinality of $\Hmax(0)$).} Steps 3, 5 and 6 together give
+the stated description of $\Hmax(0)$. For the lower bound, $T\mapsto x_{T}$ is
+injective: if $T_{1}<T_{2}$ then on the interval $(T_{1},T_{2}]$, of positive
+length, $x_{T_{1}}=\varphi(\,\cdot-T_{1})>0$ while $x_{T_{2}}=0$, so the two
+functions differ. Moreover $x_{\infty}\ne x_{T}$ for every $T<\infty$, since
+$x_{\infty}\equiv0$ while $x_{T}>0$ on $(T,T+T_{*})$; so the listed solutions
+are pairwise distinct and $|\Hmax(0)|\ge|[0,\infty)|=\cont$.
 
-Finally, each $x_{T}$ with $T<\infty$ has bounded domain and so is not globally
-defined, while $x_{\infty}\in\Hglob(0)$. Since
-$\Hglob(0)\subseteq\Hmax(0)$, this leaves $\Hglob(0)=\{x_{\infty}\}$.
+For the upper bound, every solution is a continuous real-valued function on a
+subinterval of $[0,\infty)$. There are $\cont$ such subintervals, and a
+continuous function on an interval is determined by its values on a countable
+dense subset, so each interval carries at most $\cont^{\aleph_{0}}=\cont$ of
+them. Hence $|\Hmax(0)|\le\cont\cdot\cont=\cont$. Combining the bounds,
+$|\Hmax(0)|=\cont$.
+
+\smallskip
+\emph{Step 8 (the globally defined solutions).} Let $x\in\Hglob(0)$, so
+$I=[0,\infty)$. A solution on $[0,\infty)$ admits no extension inside
+$[0,\infty)$, so $\Hglob(0)\subseteq\Hmax(0)$ and $x$ is on the list above. It
+is not any $x_{T}$ with $T<\infty$: by Lemma~\ref{lem:phi} such a branch
+satisfies $x_{T}(t)\to+\infty$ as $t\uparrow T+T_{*}$, so it is defined only on
+the bounded interval $[0,T+T_{*})$ and in particular not at $t=T+T_{*}$. Every
+non-zero branch therefore reaches $+\infty$ after the finite additional time
+$T_{*}$ and fails to be global. The only remaining possibility is
+$x=x_{\infty}$, which is indeed defined on all of $[0,\infty)$. Hence
+$\Hglob(0)=\{x_{\infty}\}$ and $|\Hglob(0)|=1$.
 \end{proof}
 
 \begin{remark}[The counts do not depend on the solution concept]\label{rem:AC}
@@ -474,9 +504,13 @@ continuous $f$ with $x>0$, in his words, to ``$f>0$ and $1/f$ integrable, as
 given by Wallach''.
 
 \textbf{Binding \cite[\S\S5--6, pp.~190--193]{Binding}.} Theorem 5.3 is the
-uniqueness criterion, in the Osgood \cite{Osgood} and Kamke line; see Hartman
-\cite[ch.~III \S6]{Hartman} and, for a modern restatement citing Binding,
-Fjordholm \cite{Fjordholm}. Case (6.5) is exactly hypothesis (H3): when
+uniqueness criterion, in the Osgood \cite{Osgood} and Kamke line --- Binding
+names both on the same page --- and see Hartman \cite[ch.~III \S6]{Hartman},
+where Theorem 6.1 is Kamke's and Corollary 6.2 is Osgood's. Fjordholm
+\cite{Fjordholm}, whose own subject is Filippov uniqueness for discontinuous
+fields, restates the continuous case as ``it was shown by Binding that the
+solution is unique if and only if $b$ satisfies the so-called Osgood condition
+at all zeroes of $b$''. Case (6.5) is exactly hypothesis (H3): when
 $\int^{\infty}1/f<\infty$, Binding writes, ``we have the phenomenon of escape to
 infinity for at least one solution''; his case (6.2), where it diverges, is the
 complementary one in which the branch survives on the whole half-line. Lemma 6.3
@@ -495,15 +529,21 @@ $f$ carries over.
 Wintner: if $\int^{\infty}du/\psi=\infty$ and $|f|\le\psi$, solutions exist on
 the whole strip; finite-time escape requires the negation. Exercise 6.4 (p.~33),
 attributed in the chapter Notes to Wallach, states the departure criterion as an
-exact dichotomy. The general fact that non-uniqueness forces continuum-many
+exact dichotomy; it is also the standard source for the textbook waiting-time
+examples $\dot x=x^{1/3}$ and $\dot x=\sqrt{|x|}$, whose continuum of
+wait-then-depart solutions is the classical Peano phenomenon and is not due to
+any recent author. The general fact that non-uniqueness forces continuum-many
 solutions --- our Step 7, in far greater generality --- is Kneser's theorem,
 \cite[ch.~II \S4 Thm.~4.1]{Hartman}.
 
-\textbf{Drivas and Mailybaev \cite{DrivasMailybaev}, 2018.} State the
-continuum-many waiting-time solutions explicitly for $\dot x=x^{1/3}$: ``a
-continuum infinity of solutions, which stay at the origin until an arbitrary
-time $t_{1}$ and peal [sic] off.'' There the branches are global, so no gap
-between the two counts arises.
+\textbf{Drivas and Mailybaev \cite{DrivasMailybaev}} (preprint 2018; published
+2021). Cited here for continuation past a non-Lipschitz singularity and the
+regularisation that selects among the continuations --- the context their paper
+is actually about --- and not as the origin of the waiting-time family, which is
+classical. In passing they record it for $\dot x=x^{1/3}$: ``a continuum
+infinity of solutions, which stay at the origin until an arbitrary time $t_{1}$
+and peal [sic] off.'' There the branches are global, so no gap between the two
+counts arises.
 
 \textbf{Berndl et al.\ \cite{Berndl}, 1995.} Use ``maximal (non-extendible)
 solution'' against ``global existence'' as basic vocabulary in a foundational
@@ -744,6 +784,17 @@ Sections~\ref{sec:family}--\ref{sec:counts} therefore applies, with
   =\tfrac23\sqrt{\tfrac32}\,2^{-1/3}B\!\left(\tfrac16,\tfrac13\right)
   \approx 5.4521363617 .
 \]
+The closed form is obtained as follows, and the reader can check every step.
+Factor $G^{2}=\tfrac43 x^{3/2}\big(1+\tfrac12 x^{3/2}\big)$ and substitute
+$s=\tfrac12 x^{3/2}$, so that $x=(2s)^{2/3}$ and
+$dx=\tfrac23 2^{2/3}s^{-1/3}\,ds$. Then
+\[
+  \frac{dx}{G(x)}
+  =\tfrac23\sqrt{\tfrac32}\,2^{-1/3}\,s^{-5/6}(1+s)^{-1/2}\,ds ,
+\]
+and since $\int_{0}^{\infty}s^{a-1}(1+s)^{-a-b}\,ds=B(a,b)$ with $a=\tfrac16$
+and $b=\tfrac13$, the integral is $\tfrac23\sqrt{\tfrac32}\,2^{-1/3}
+B\big(\tfrac16,\tfrac13\big)$ as stated.
 
 This realises the \emph{mechanism} of Theorem~\ref{thm:counts} in a Newtonian
 system --- not the example of Section~\ref{sec:example}. The reduced right-hand
@@ -790,7 +841,8 @@ the journal's.
 T.~D. Drivas and A.~A. Mailybaev,
 ``Life after death'' in ordinary differential equations with a non-Lipschitz
 singularity,
-\emph{Nonlinearity} \textbf{34} (2021) 2296--2326.
+\emph{Nonlinearity} \textbf{34} (2021) 2296--2326;
+preprint arXiv:1806.09001 (2018).
 
 \bibitem{Earman}
 J.~Earman,
