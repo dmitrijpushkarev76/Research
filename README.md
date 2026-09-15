@@ -4,14 +4,14 @@ An expository note and a critical survey on determinism, plus the retracted deve
 
 | Path | What it is |
 |---|---|
-| `paper/one-state-many-futures.html` | **One State, Many Maximal Futures** — an expository note |
+| `paper/one-state-many-futures.html` | **One State, Many Forward-Maximal Futures** — an expository note |
 | `paper/ways-determinism-fails.html` | **The Ways Determinism Fails** — a critical survey, including the retraction |
 | `verification/gap_checks.py` | 49 symbolic/numerical checks for the first note |
 | `verification/note_checks.py` | 14 symbolic checks for the second |
 | `retracted/Indexed.lean` | The withdrawn paper's development (39 theorems) |
 | `retracted/Referee.lean` | The counter-development that refutes it (7 theorems) |
 
-## One State, Many Maximal Futures
+## One State, Many Forward-Maximal Futures
 
 An expository note. For `x' = f(x)`, `x(0) = 0` with `f` continuous, `f(0) = 0` and
 `f > 0` off the origin, take

@@ -1,4 +1,4 @@
-% One State, Many Maximal Futures
+% One State, Many Forward-Maximal Futures
 % Note for a philosophy-of-science venue (European Journal for Philosophy of
 % Science): plain article class, 12pt, single column, numbered theorem
 % environments.
@@ -40,7 +40,7 @@
 \newcommand{\Hmax}{\mathcal{H}^{+}_{\max}}
 \DeclareMathOperator{\sgn}{sgn}
 
-\title{One State, Many Maximal Futures}
+\title{One State, Many Forward-Maximal Futures}
 % Author block removed for blind review; restore before publication.
 \author{}
 \date{}
@@ -69,15 +69,15 @@ from being global, which is what leaves the first count at $1$. Neither
 mechanism alone separates them.
 
 The distinction this illustrates --- between uniqueness among globally defined
-solutions and uniqueness among solutions that merely cannot be extended --- is
-not introduced here either. It is discussed for general relativity by Earman
+solutions and uniqueness among solutions that merely cannot be extended
+forward --- is not introduced here either. It is discussed for general relativity by Earman
 \cite{Earman}, Smeenk and W\"uthrich \cite{SmeenkWuthrich} and Doboszewski
 \cite{Doboszewski}, for Newtonian blow-up by Wilson \cite{Wilson}, and within a
 broader formulation of indeterminism by Azhar and Namjoo \cite{AzharNamjoo}.
 What is offered here is an explicit worked example in which every quantity is
 available in closed form, together with one proposition
 (Proposition~\ref{prop:locality}) locating where each of the two uniqueness
-verdicts is decided. \textbf{The example does not by itself establish that
+verdicts is determined. \textbf{The example does not by itself establish that
 any physical theory is indeterministic.} What it shows is that a uniqueness
 verdict depends on which class of solutions is quantified over;
 Section~\ref{sec:determinism} sets out the competing readings and adjudicates
@@ -95,7 +95,7 @@ times, does it follow that the state has a unique possible future history?}
 \end{quote}
 
 Not necessarily --- not if histories are taken to be solutions that cannot be
-extended any further, rather than solutions defined at every future time. The
+extended to any later time, rather than solutions defined at every future time. The
 two classes can differ, and where they do, the uniqueness verdict can differ
 with them. That distinction is the subject of this note; we claim no priority
 for it, nor for the mathematics on which it rests.
@@ -482,19 +482,19 @@ satisfying (H1) can separate the two counts further.
 \end{remark}
 
 The remark can be stated exactly, and stating it exactly locates \emph{where}
-each of the two verdicts is decided. The next proposition does no more than
+each of the two verdicts is determined. The next proposition does no more than
 read that off the three cases; its ingredients are the classical dichotomies
 attributed in Section~\ref{sec:classical}, and we claim no priority for it.
 
-\begin{proposition}[Where each verdict is decided]\label{prop:locality}
+\begin{proposition}[Where each verdict is determined]\label{prop:locality}
 Assume \textup{(H1)}, but not necessarily \textup{(H2)} or \textup{(H3)}. Then
 \[
   |\Hmax(0)|=1 \iff \neg\textup{(H2)},
   \qquad
   |\Hglob(0)|=1 \iff \neg\textup{(H2)}\ \vee\ \textup{(H3)} .
 \]
-The condition on the left is decided by the restriction of $f$ to any
-neighbourhood of the origin. The condition on the right is not decided by the
+The condition on the left is determined by the restriction of $f$ to any
+neighbourhood of the origin. The condition on the right is not determined by the
 restriction of $f$ to any bounded set.
 \end{proposition}
 
@@ -550,7 +550,7 @@ otherwise unchanged, and $\Hmax(0)=\Hglob(0)=\{x_{T}:T\in[0,\infty)\}\cup
 Reading the two counts off the three cases gives the two equivalences.
 
 \smallskip
-\emph{The locality claims.} First, (H2) is decided by the restriction of $f$ to
+\emph{The locality claims.} First, (H2) is determined by the restriction of $f$ to
 $(0,\delta)$ for every $\delta\in(0,1]$: by (H1) $f>0$ on the compact interval
 $[\delta,1]\subset(0,\infty)$, so $1/f$ is continuous and hence integrable
 there, and therefore $\int_{0}^{1}du/f$ and $\int_{0}^{\delta}du/f$ converge
@@ -559,7 +559,7 @@ $(0,\delta)\supseteq(0,1)$. Equivalently: if two functions satisfying (H1) agree
 on some neighbourhood of the origin, then either both satisfy (H2) or neither
 does.
 
-Second, (H3) is not decided by the restriction of $f$ to any bounded set. Every
+Second, (H3) is not determined by the restriction of $f$ to any bounded set. Every
 bounded set is contained in $[-M,M]$ for some $M>0$, so it suffices to produce,
 for each $M>0$, two functions satisfying (H1) that agree on the whole of
 $[-M,M]$ and disagree about (H3). One pair agreeing on $[-1,1]$ would settle
@@ -599,13 +599,26 @@ So $f$ satisfies (H2) and (H3), while $f^{\flat}_{M}$ satisfies (H2) and not
 (H3), and the two agree on $[-M,M]$. By the equivalences just proved,
 $|\Hglob(0)|=1$ for $f$ and $|\Hglob(0)|=\cont$ for $f^{\flat}_{M}$, whereas
 $|\Hmax(0)|=\cont$ for both. Since $M>0$ was arbitrary and every bounded set
-lies in some $[-M,M]$, no bounded set decides (H3).
+lies in some $[-M,M]$, no bounded set determines (H3).
 \end{proof}
 
-So the two counts are not decided in the same place. Whether one solution or
-continuum-many cannot be extended is settled by the law near the state; whether
+So the two counts are not determined in the same place. Whether one solution or
+continuum-many cannot be extended forward is settled by the law near the state;
+whether
 one solution or continuum-many are defined at every later time is not, and no
 amount of information about the law near the state settles it.
+
+One remark, to forestall a misreading. Proposition~\ref{prop:locality} locates
+each condition in the coordinate $x$, in which the initial state and both
+solution classes are posed; it does not say that finite-time escape has no local
+description at all. The reciprocal substitution recorded in
+Section~\ref{sec:classical} carries $\dot x=f(x)$ into
+$\dot\alpha=-\hat f(\alpha)$ with $\hat f(\alpha)=\alpha^{2}f(1/\alpha)$, and
+Binding's Lemma 6.3 records that escape to infinity for $f$ corresponds to
+non-uniqueness at the origin for $\hat f$. Read in $\alpha$ instead of in $x$,
+(H3) is again a condition at the origin; the contrast drawn by the proposition
+is between two conditions read in two different coordinates, not between one
+that has a local reading and one that has none.
 
 %------------------------------------------------------------------
 \section{Three senses of ``maximal''}\label{sec:senses}
@@ -686,8 +699,6 @@ f(\alpha)$, so $\int^{\infty}1/f$ and $\int_{0}1/\hat f$ converge together. The
 form \eqref{eq:dual} is Binding's own: it is the definition printed immediately
 before his Lemma 6.3, and his inversion identity --- the display numbered (6.6)
 in the JDE printing --- is the computation just given.
-% TODO: confirm p.~193 and the display number (6.6) against the offprint before
-% submission. Checked there by the author; re-check at proof stage.
 The observation that (H2) and (H3) are the two ends of one integral is likewise
 his, and he credits awareness of it to Wintner, to Brauer and Sternberg, and to
 Yoshizawa.
@@ -764,6 +775,29 @@ precisely the choice Theorem~\ref{thm:counts} makes visible. Other criteria are
 in circulation and give different verdicts on this example; we take no stand on
 which is correct, and the example is not evidence for any of them.
 
+M\"uller and Placek \cite{MullerPlacek} separate three families of definition ---
+one reading determinism off a theory's defining differential equations, one off
+mappings between temporal realizations, one off branching models --- and the two
+readings below sit inside that survey rather than outside it. Their
+equation-based family draws the present distinction directly, observing that
+``it is global uniqueness that naturally corresponds to determinism'' while the
+classical theorems supply only local solutions, so that ``[n]on-extendability
+then points to a possible failure of determinism''; and their branching
+definition counts \emph{maximal chains} rather than total ones, which gives it
+Reading~2's shape rather than Reading~1's. They apply all three criteria to
+Norton's dome \cite{Norton}, where the wait-then-depart branches are global and
+the gap counted in Theorem~\ref{thm:counts} therefore does not arise; we do not
+suggest that they consider the present equation, and nothing below is offered as
+a reading of their view. One further observation of theirs bears on the count
+itself. If the state has been at the equilibrium for all earlier times, they
+note, the branches are related by a time-translation symmetry, ``which suggests
+that all these solutions represent a single possibility''; a footnote adds that
+this collapse fails when there is a first moment at which the state is set,
+since the branches are then ``not time-translation symmetric''. Here
+Definition~\ref{def:solution} imposes $\min I=0$, so it is the second case that
+obtains, and the branches of Proposition~\ref{prop:xT} are not time-translates
+of one another within $[0,\infty)$.
+
 \subsection*{Reading 1: the global-solution criterion}
 
 If a physical history must be defined at every time, the branches $x_{T}$ are
@@ -775,9 +809,10 @@ as descriptive holes such issues should be addressed, \emph{not as failures of
 determinism}.'' He names Earman and Norton as holding the contrary view and
 calls their classification ``terminologically unfortunate''.
 
-\subsection*{Reading 2: the maximal-history criterion}
+\subsection*{Reading 2: the forward-maximal-history criterion}
 
-If a solution that cannot be extended counts as a history even though it ends,
+If a solution that cannot be extended forward counts as a history even though it
+ends,
 the same state has continuum-many futures, and requiring totality looks like a
 stipulation that secures determinism rather than a discovery that it holds. The
 structure of this objection is familiar from general relativity, where the
@@ -850,7 +885,7 @@ it supplies is this: a uniqueness-based criterion that quantifies over the
 solution classes studied in this paper should make explicit whether its
 uniqueness verdict at a state is fixed by the law in a neighbourhood of that
 state. For $\Hmax(0)$, the class Reading~2 quantifies over, the answer is yes:
-$|\Hmax(0)|=1$ exactly when (H2) fails, and (H2) is decided by $f$ near the
+$|\Hmax(0)|=1$ exactly when (H2) fails, and (H2) is determined by $f$ near the
 origin. For $\Hglob(0)$, the class Reading~1 quantifies over, the answer is no:
 $|\Hglob(0)|=1$ exactly when (H2) fails or (H3) holds, and (H3) is a condition
 on the tail of $f$. The witnesses in the proof make the difference concrete: for
@@ -881,7 +916,7 @@ the two failure modes are usually illustrated separately --- Norton's dome
 \cite{Norton} for non-uniqueness; the non-collision
 singularities of Xia \cite{Xia} for finite-time escape --- here they occur in
 one equation. The second is Proposition~\ref{prop:locality}, which says where
-each of the two verdicts is decided: under (H1), the count of forward-maximal
+each of the two verdicts is determined: under (H1), the count of forward-maximal
 histories is fixed by $f$ in any neighbourhood of the initial state, while the global count
 is not fixed by $f$ on any bounded set. The ingredients of that proposition are
 the classical dichotomies of Section~\ref{sec:classical}, and we claim no
@@ -898,7 +933,7 @@ open, as it is in the literature cited there.
 \paragraph{Conclusion.} The example shows, in a simple setting, why a statement
 about uniqueness must specify the class of solutions being quantified over.
 Uniqueness among globally defined solutions and uniqueness among solutions that
-cannot be extended are different properties of the same law, and here they
+cannot be extended forward are different properties of the same law, and here they
 disagree at the same state, by the largest margin available.
 
 %------------------------------------------------------------------
@@ -1011,11 +1046,9 @@ interval $I\subseteq[0,\infty)$ with $\min I=0$, satisfying the equation
 throughout and both initial conditions. Put
 \[
   G(x)=\Big(\tfrac43 x^{3/2}+\tfrac23 x^{3}\Big)^{1/2},
-  \qquad\text{so that}\qquad
-  \tfrac12 G^{2}=-V
-  \quad\text{and}\quad
-  \tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=GG'=\sqrt x+x^{2}\ \ (x>0).
 \]
+so that $\tfrac12 G^{2}=-V$, and
+$\tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=GG'=\sqrt x+x^{2}$ for $x>0$.
 Both directions of the correspondence between \eqref{eq:mech} and
 $\dot x=G(x)$ are needed --- one to transport the continuum of branches into the
 mechanical system, the other to show the mechanical system has no further
@@ -1197,6 +1230,14 @@ Norton's slippery slope,
 % TODO: author must confirm the bibliographic details against the printed
 % article before submission. Cited here as a discussion of the dome only; the
 % article has not been read.
+
+\bibitem{MullerPlacek}
+T.~M\"uller and T.~Placek,
+Defining determinism,
+\emph{British J. Philos. Sci.} \textbf{69} (2018) 215--252.
+Section and footnote references in the text are to the preprint
+(PhilSci-Archive 11437, 27 April 2015), whose numbering may differ from the
+journal's.
 
 \bibitem{Norton}
 J.~D. Norton,
