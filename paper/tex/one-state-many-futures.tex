@@ -499,33 +499,107 @@ restriction of $f$ to any bounded set.
 \end{proposition}
 
 \begin{proof}
-Three cases exhaust the possibilities. If (H2) fails, the departure criterion of
-Section~\ref{sec:classical} leaves $x\equiv0$ as the only solution, so
-$\Hmax(0)=\Hglob(0)=\{x_{\infty}\}$ and both counts are $1$. If (H2) and (H3)
-both hold, Theorem~\ref{thm:counts} gives $|\Hmax(0)|=\cont$ and
-$|\Hglob(0)|=1$. If (H2) holds and (H3) fails, then $F$ is a bijection from
+Three cases exhaust the possibilities.
+
+\smallskip
+\emph{Case $\neg$\textup{(H2)}.} We claim $x\equiv0$ is the only solution. This
+is the departure criterion recorded in Section~\ref{sec:classical}; the direct
+argument is short enough to give, and keeps the proposition self-contained.
+Suppose some solution $x$ on $I$ had $x(t_{0})>0$ for some $t_{0}\in I$. Steps 1
+and 2 of Theorem~\ref{thm:counts} use only (H1), so $x$ is non-decreasing and
+non-negative and $Z=\{t\in I:x(t)=0\}$ is an interval containing $0$. Since
+$t_{0}\notin Z$, and $Z$ is an interval containing $0$, we get
+$Z\subseteq[0,t_{0})$; hence $T:=\sup Z\le t_{0}<\infty$ and
+$[0,T)\subseteq Z$. As $[0,t_{0}]\subseteq I$ we have $T\in I$, and $x(T)=0$ by
+continuity; moreover $T<t_{0}$, since $x(T)=0<x(t_{0})$. And $x(s)>0$ for every
+$s\in(T,t_{0}]$, since such an $s$ lies outside $Z$ while $x\ge0$. The computation in Step 6 of
+Theorem~\ref{thm:counts} --- which uses only (H1) and the strict positivity of
+$x$ on $I\cap(T,\infty)$, not (H2) or (H3) --- gives
+\[
+  t_{0}-s=\int_{x(s)}^{x(t_{0})}\frac{du}{f(u)}
+  \qquad\text{for every } s\in(T,t_{0}) .
+\]
+Let $s\downarrow T$. The left-hand side tends to $t_{0}-T<\infty$. On the right,
+$x(s)\to x(T)=0$ by continuity and $1/f>0$ on $(0,\infty)$, so the integral
+increases to $\int_{0}^{x(t_{0})}du/f(u)$. That limit is $+\infty$. Indeed, put
+$c=\min\big(1,x(t_{0})\big)>0$; all three terms in
+$\int_{0}^{1}du/f=\int_{0}^{c}du/f+\int_{c}^{1}du/f$ are non-negative, the left
+side is $+\infty$ by $\neg$(H2), and $\int_{c}^{1}du/f$ is finite because $1/f$
+is continuous on the compact interval $[c,1]\subset(0,\infty)$; so
+$\int_{0}^{c}du/f=+\infty$, and $\int_{0}^{x(t_{0})}du/f$ dominates it. This
+contradicts $t_{0}-T<\infty$. Hence no solution takes a positive value, and with
+Step 1 every solution is identically $0$ on its domain. The extension argument
+inside Step 5 --- which also uses only (H1), and does not depend on that step's
+case hypothesis --- then forces $I=[0,\infty)$ for a forward-maximal solution:
+a solution identically $0$ on a proper subinterval of $[0,\infty)$ is properly
+extended by the zero solution. So
+$\Hmax(0)=\Hglob(0)=\{x_{\infty}\}$ and both counts are $1$.
+
+\smallskip
+\emph{Case \textup{(H2)} and \textup{(H3)}.} Theorem~\ref{thm:counts} gives
+$|\Hmax(0)|=\cont$ and $|\Hglob(0)|=1$.
+
+\smallskip
+\emph{Case \textup{(H2)} and $\neg$\textup{(H3)}.} Then $F$ is a bijection from
 $(0,\infty)$ onto $(0,\infty)$, so $\varphi$ is defined on all of $[0,\infty)$
 and every $x_{T}$ is global; the argument of Theorem~\ref{thm:counts} is
 otherwise unchanged, and $\Hmax(0)=\Hglob(0)=\{x_{T}:T\in[0,\infty)\}\cup
-\{x_{\infty}\}$, of cardinality $\cont$. Reading the two counts off the three
-cases gives the two equivalences.
+\{x_{\infty}\}$, of cardinality $\cont$.
 
-For the locality claims: (H2) is decided by $f$ on $(0,\delta)$ for every
-$\delta>0$, because $1/f$ is continuous, hence integrable, on $[\delta,1]$. (H3)
-is not decided by $f$ on any bounded set. It is enough to exhibit one pair.
-Take $f(x)=|x|^{2/3}+x^{2}$ as in Section~\ref{sec:example} and put
+\smallskip
+Reading the two counts off the three cases gives the two equivalences.
+
+\smallskip
+\emph{The locality claims.} First, (H2) is decided by the restriction of $f$ to
+$(0,\delta)$ for every $\delta\in(0,1]$: by (H1) $f>0$ on the compact interval
+$[\delta,1]\subset(0,\infty)$, so $1/f$ is continuous and hence integrable
+there, and therefore $\int_{0}^{1}du/f$ and $\int_{0}^{\delta}du/f$ converge
+together. For $\delta>1$ the claim is immediate, since then
+$(0,\delta)\supseteq(0,1)$. Equivalently: if two functions satisfying (H1) agree
+on some neighbourhood of the origin, then either both satisfy (H2) or neither
+does.
+
+Second, (H3) is not decided by the restriction of $f$ to any bounded set. Every
+bounded set is contained in $[-M,M]$ for some $M>0$, so it suffices to produce,
+for each $M>0$, two functions satisfying (H1) that agree on the whole of
+$[-M,M]$ and disagree about (H3). One pair agreeing on $[-1,1]$ would settle
+only the case $M=1$. Take $f(x)=|x|^{2/3}+x^{2}$ as in
+Section~\ref{sec:example}, fix $M>0$, and put
 \[
-  f_{\flat}(x)=\begin{cases}
-    |x|^{2/3}+x^{2}, & |x|\le 1,\\[2pt]
-    2|x|, & |x|\ge 1 .
+  f^{\flat}_{M}(x)=\begin{cases}
+    f(x), & |x|\le M,\\[2pt]
+    f(M)\,|x|/M, & |x|\ge M .
   \end{cases}
 \]
-Since $f(\pm1)=2$, $f_{\flat}$ is continuous, and it satisfies (H1). It agrees
-with $f$ on $[-1,1]$, so it satisfies (H2) for the same reason $f$ does; but
-$\int_{1}^{\infty}dx/(2x)=\infty$, so (H3) fails for it. Hence $f$ and
-$f_{\flat}$ have the same restriction to $[-1,1]$ while
-$|\Hglob(0)|=1$ for $f$ and $|\Hglob(0)|=\cont$ for $f_{\flat}$; the maximal
-count is $\cont$ for both.
+\emph{Continuity.} Each branch is continuous where it is defined, and at
+$|x|=M$ the second reads $f(M)M/M=f(M)$, so the branches agree there; hence
+$f^{\flat}_{M}$ is continuous on $\R$.
+
+\emph{\textup{(H1)}.} The hypothesis asks for continuity, the value $0$ at the
+origin, and positivity off the origin, and for nothing else. Continuity is just
+shown; $f^{\flat}_{M}(0)=f(0)=0$, since $0\le M$; for $0<|x|\le M$ we have
+$f^{\flat}_{M}(x)=f(x)>0$; and for $|x|\ge M$ we have
+$f^{\flat}_{M}(x)=f(M)|x|/M>0$, because $f(M)=M^{2/3}+M^{2}>0$ and $M>0$.
+
+\emph{\textup{(H2)} is preserved.} $f^{\flat}_{M}$ agrees with $f$ on
+$[-\min(M,1),\min(M,1)]$, a neighbourhood of the origin, so by the paragraph
+above it satisfies (H2) exactly when $f$ does --- which $f$ does, by
+Lemma~\ref{lem:properties}(iv).
+
+\emph{\textup{(H3)} fails.} Put $N=\max(M,1)$. On $[N,\infty)$ we have
+$f^{\flat}_{M}(x)=f(M)x/M$, so
+$\int_{N}^{\infty}dx/f^{\flat}_{M}=(M/f(M))\int_{N}^{\infty}dx/x=\infty$, while
+$\int_{1}^{N}dx/f^{\flat}_{M}$ is finite, its integrand being continuous on the
+compact interval $[1,N]\subset(0,\infty)$. Hence
+$\int_{1}^{\infty}dx/f^{\flat}_{M}=\infty$.
+
+\emph{Agreement.} By construction $f^{\flat}_{M}=f$ on the whole of $[-M,M]$.
+
+So $f$ satisfies (H2) and (H3), while $f^{\flat}_{M}$ satisfies (H2) and not
+(H3), and the two agree on $[-M,M]$. By the equivalences just proved,
+$|\Hglob(0)|=1$ for $f$ and $|\Hglob(0)|=\cont$ for $f^{\flat}_{M}$, whereas
+$|\Hmax(0)|=\cont$ for both. Since $M>0$ was arbitrary and every bounded set
+lies in some $[-M,M]$, no bounded set decides (H3).
 \end{proof}
 
 So the two counts are not decided in the same place. Whether one solution or
@@ -592,12 +666,13 @@ where Theorem 6.1 is Kamke's and Corollary 6.2 is Osgood's. Fjordholm
 \cite{Fjordholm}, whose own subject is Filippov uniqueness for discontinuous
 fields, restates the continuous case as ``it was shown by Binding that the
 solution is unique if and only if $b$ satisfies the so-called Osgood condition
-at all zeroes of $b$''. His case (6.5) corresponds to (H2) and (H3) together,
+at all zeroes of $b$''. Binding's case (6.5) corresponds to (H2) and (H3)
+together,
 not to (H3) alone: the integral in that case runs from the equilibrium, so its
 convergence near the origin is (H2) and its convergence at infinity is (H3).
 With (H2) standing, as it does throughout this note, it is (H3) that does the
 work. Of that case Binding writes, ``we have the phenomenon of escape to
-infinity for at least one solution''; his case (6.2), where the integral
+infinity for at least one solution''; Binding's case (6.2), where the integral
 diverges, is the complementary one in which the branch survives on the whole
 half-line. Lemma 6.3
 is a duality: the reciprocal substitution turns escape to infinity into
@@ -778,10 +853,10 @@ state. For $\Hmax(0)$, the class Reading~2 quantifies over, the answer is yes:
 $|\Hmax(0)|=1$ exactly when (H2) fails, and (H2) is decided by $f$ near the
 origin. For $\Hglob(0)$, the class Reading~1 quantifies over, the answer is no:
 $|\Hglob(0)|=1$ exactly when (H2) fails or (H3) holds, and (H3) is a condition
-on the tail of $f$. The witness in the proof makes the difference concrete:
-$f_{\flat}$ agrees with $f$ on $[-1,1]$ and differs from it only in the tail,
-and that change alone leaves the maximal count at $\cont$ while moving the
-global count from $1$ to $\cont$.
+on the tail of $f$. The witnesses in the proof make the difference concrete: for
+each $M>0$, $f^{\flat}_{M}$ agrees with $f$ on all of $[-M,M]$ and differs from
+it only in the tail, and that change alone leaves the forward-maximal count at
+$\cont$ while moving the global count from $1$ to $\cont$.
 
 The three readings pay for this differently, and the proposition ranks nothing.
 On Reading~1 the verdict at a state depends on the law arbitrarily far from that
@@ -806,8 +881,8 @@ the two failure modes are usually illustrated separately --- Norton's dome
 \cite{Norton} for non-uniqueness; the non-collision
 singularities of Xia \cite{Xia} for finite-time escape --- here they occur in
 one equation. The second is Proposition~\ref{prop:locality}, which says where
-each of the two verdicts is decided: under (H1), the maximal-history count is
-fixed by $f$ in any neighbourhood of the initial state, while the global count
+each of the two verdicts is decided: under (H1), the count of forward-maximal
+histories is fixed by $f$ in any neighbourhood of the initial state, while the global count
 is not fixed by $f$ on any bounded set. The ingredients of that proposition are
 the classical dichotomies of Section~\ref{sec:classical}, and we claim no
 priority for it.
@@ -912,7 +987,7 @@ reaching $r=+\infty$ in finite time.
 
 \begin{proof}
 Parametrising the meridian by arc length forces $\rho'^{2}+z'^{2}=1$ and hence
-$|h'|\le1$, so $|\ddot r|\le g$. Integrating this bound twice from rest gives
+$|h'|\le1$, so $|\ddot r|\le g$. Integrating this bound twice gives
 $r(t)\le r(0)+\dot r(0)t+\tfrac12 g t^{2}$, which is finite for every finite
 $t$.
 \end{proof}
@@ -925,20 +1000,98 @@ closes one route and no more.
 
 \subsection{In a potential}
 
-Let $V(x)=-\big(\tfrac23 x^{3/2}+\tfrac13 x^{3}\big)$ for $x\ge0$, so
-$\ddot x=-V'(x)=\sqrt x+x^{2}$, with $x(0)=\dot x(0)=0$. Energy conservation
-from rest at the origin gives $\tfrac12\dot x^{2}=-V(x)$, that is $\dot x=G(x)$
-with
+Let $V(x)=-\big(\tfrac23 x^{3/2}+\tfrac13 x^{3}\big)$ for $x\ge0$, so that
+$-V'(x)=\sqrt x+x^{2}$. The Newtonian problem is
+\begin{equation}\label{eq:mech}
+  \ddot x=\sqrt x+x^{2},\qquad x(0)=\dot x(0)=0 .
+\end{equation}
+The force is defined only for $x\ge0$, so by a \emph{solution} of
+\eqref{eq:mech} we mean a twice differentiable $x\colon I\to[0,\infty)$ on an
+interval $I\subseteq[0,\infty)$ with $\min I=0$, satisfying the equation
+throughout and both initial conditions. Put
 \[
   G(x)=\Big(\tfrac43 x^{3/2}+\tfrac23 x^{3}\Big)^{1/2},
+  \qquad\text{so that}\qquad
+  \tfrac12 G^{2}=-V
+  \quad\text{and}\quad
+  \tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=GG'=\sqrt x+x^{2}\ \ (x>0).
 \]
-and conversely $GG'=\tfrac{d}{dx}\big(\tfrac12 G^{2}\big)=\sqrt x+x^{2}$, so
-solutions of the first-order equation solve the second-order one. The even
-extension $\hat G(x)=G(|x|)$ --- an extension of the vector field, not something
-derived from a potential on $x<0$, where $V$ is not defined --- is continuous
-with $\hat G(0)=0$ and $\hat G>0$ off the origin; $G(x)\asymp x^{3/4}$ as $x\to0^{+}$ and $\asymp x^{3/2}$ as
-$x\to\infty$, so (H2) and (H3) hold. Everything in
-Sections~\ref{sec:family}--\ref{sec:counts} therefore applies, with
+Both directions of the correspondence between \eqref{eq:mech} and
+$\dot x=G(x)$ are needed --- one to transport the continuum of branches into the
+mechanical system, the other to show the mechanical system has no further
+solutions --- so we record them together. The reduction is the standard one for
+a one-dimensional conservative system, and we claim no priority for it; it is
+written out because the second direction is what licenses the counts below.
+
+\begin{lemma}\label{lem:mech}
+Let $I\subseteq[0,\infty)$ be an interval with $\min I=0$. A function
+$x\colon I\to[0,\infty)$ solves \eqref{eq:mech} if and only if it solves
+$\dot x=G(x)$, $x(0)=0$.
+\end{lemma}
+
+\begin{proof}
+($\Rightarrow$) Let $x$ solve \eqref{eq:mech}. Since $x\ge0$ we have
+$\ddot x=\sqrt x+x^{2}\ge0$ on $I$, so $\dot x$ is non-decreasing; with
+$\dot x(0)=0$ this gives $\dot x\ge0$ throughout, hence $x$ is non-decreasing
+and $x\ge x(0)=0$. (So the range constraint $x\ge0$ is maintained by the
+equation rather than imposed by it: a solution cannot be carried out of
+$[0,\infty)$ forward in time.) For the energy, extend $V$ to $\R$ by
+$V_{e}=V$ on $[0,\infty)$ and $V_{e}=0$ on $(-\infty,0)$. Then $V_{e}$ is
+$C^{1}$: away from $0$ this is clear, and at $0$ both one-sided derivatives
+vanish while $V'(u)=-(\sqrt u+u^{2})\to0$ as $u\to0^{+}$, so $V_{e}'$ is
+continuous there. Since $x$ is $C^{1}$ and takes values in $[0,\infty)$, where
+$V_{e}=V$, the chain rule applies and
+$E=\tfrac12\dot x^{2}+V_{e}(x)$ is differentiable with
+\[
+  \dot E=\dot x\,\ddot x+V_{e}'(x)\,\dot x
+        =\dot x\big(\ddot x-(\sqrt x+x^{2})\big)=0 .
+\]
+Hence $E\equiv E(0)=\tfrac12\cdot0^{2}+V(0)=0$, so
+$\dot x^{2}=-2V(x)=G(x)^{2}$. As $\dot x\ge0$ and $G\ge0$, this gives
+$\dot x=G(x)$; and $x(0)=0$.
+
+($\Leftarrow$) Let $x$ solve $\dot x=G(x)$, $x(0)=0$. Then $\dot x(0)=G(0)=0$,
+and $x$ is $C^{1}$ because $G\circ x$ is continuous. Since $G\ge0$ on
+$[0,\infty)$, $x$ is non-decreasing, so $Z=\{t\in I:x(t)=0\}$ is an interval
+containing $0$; put $T=\sup Z$. If $Z=I$ then $x\equiv0$ and
+$\ddot x\equiv0=\sqrt0+0^{2}$, so assume otherwise. On the interior of $Z$ we
+have $\dot x\equiv0$ and hence $\ddot x\equiv0=\sqrt0+0^{2}$. On
+$I\cap(T,\infty)$ we have $x>0$, where $G^{2}$ is smooth and positive, so $G$ is
+$C^{1}$ and $\ddot x=G'(x)\dot x=G'(x)G(x)=\sqrt x+x^{2}$. Only $t=T$ remains
+(when $T\in I$). For $T>0$ the left derivative of $\dot x$ at $T$ is $0$, since
+$\dot x\equiv0$ on $[0,T]$; for $T=0$ no left derivative is in question, $0$
+being the left endpoint of $I$. For the right derivative, note that $u^{3}\le u^{3/2}$ for $u\in[0,1]$, so
+$G(u)^{2}\le 2u^{3/2}$ and $G(u)\le\sqrt2\,u^{3/4}$ there. Hence, on any
+subinterval of $I\cap(T,\infty)$ on which $x\le1$,
+\[
+  \frac{d}{dt}\,x^{1/4}=\tfrac14 x^{-3/4}\dot x=\tfrac14 x^{-3/4}G(x)
+  \le\frac{\sqrt2}{4},
+\]
+and integrating from $T+\varepsilon$ to $T+h$ and letting $\varepsilon\downarrow0$,
+where $x(T+\varepsilon)\to x(T)=0$ by continuity, gives
+$x(T+h)^{1/4}\le(\sqrt2/4)h$ for all small $h>0$. Therefore
+\[
+  \frac{\dot x(T+h)-\dot x(T)}{h}=\frac{G(x(T+h))}{h}
+  \le\frac{\sqrt2\,\big(x(T+h)^{1/4}\big)^{3}}{h}
+  \le\frac{\sqrt2\,(\sqrt2/4)^{3}h^{3}}{h}=\frac{h^{2}}{16}
+  \xrightarrow[h\to0^{+}]{}0 ,
+\]
+so $\ddot x(T)$ exists and equals $0=\sqrt{x(T)}+x(T)^{2}$. Hence $x$ solves
+\eqref{eq:mech}.
+\end{proof}
+
+The even extension $\hat G(x)=G(|x|)$ --- an extension of the vector field, not
+something derived from a potential on $x<0$, where $V$ is not defined --- is
+continuous with $\hat G(0)=0$ and $\hat G>0$ off the origin;
+$G(x)\asymp x^{3/4}$ as $x\to0^{+}$ and $\asymp x^{3/2}$ as $x\to\infty$, so
+(H1)--(H3) hold for $\hat G$. A solution of $\dot x=\hat G(x)$ with $x(0)=0$ is
+non-decreasing by Step 1 of Theorem~\ref{thm:counts} and so takes values in
+$[0,\infty)$, where $\hat G=G$; so the solutions of $\dot x=\hat G(x)$,
+$x(0)=0$ are exactly those of $\dot x=G(x)$, $x(0)=0$, and by
+Lemma~\ref{lem:mech} exactly those of \eqref{eq:mech}. Everything in
+Sections~\ref{sec:family}--\ref{sec:counts} therefore applies to the Newtonian
+problem \eqref{eq:mech} itself --- it has exactly one solution defined at every
+$t\ge0$, and continuum-many forward-maximal ones --- with
 \[
   T_{*}^{\mathrm{mech}}=\int_{0}^{\infty}\frac{dx}{G(x)}
   =\tfrac23\sqrt{\tfrac32}\,2^{-1/3}B\!\left(\tfrac16,\tfrac13\right)
@@ -956,10 +1109,10 @@ and since $\int_{0}^{\infty}s^{a-1}(1+s)^{-a-b}\,ds=B(a,b)$ with $a=\tfrac16$
 and $b=\tfrac13$, the integral is $\tfrac23\sqrt{\tfrac32}\,2^{-1/3}
 B\big(\tfrac16,\tfrac13\big)$ as stated.
 
-This realises the \emph{mechanism} of Theorem~\ref{thm:counts} in a Newtonian
-system --- not the example of Section~\ref{sec:example}. The reduced right-hand
-side $G$ is not $|x|^{2/3}+x^{2}$, and accordingly
-$T_{*}^{\mathrm{mech}}\ne T_{*}$: a different member of the same class. Two
+So the counts of Theorem~\ref{thm:counts} hold for the Newtonian problem
+\eqref{eq:mech} --- but for a different member of the class, not for the example
+of Section~\ref{sec:example}. The reduced right-hand side $G$ is not
+$|x|^{2/3}+x^{2}$, and accordingly $T_{*}^{\mathrm{mech}}\ne T_{*}$. Two
 caveats. The potential is unbounded below; finite-time escape in Newtonian
 systems, and the responses available to it, are discussed by Earman
 \cite{Earman}.
