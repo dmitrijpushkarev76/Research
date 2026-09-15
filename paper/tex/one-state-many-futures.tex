@@ -20,6 +20,9 @@
 \usepackage{microtype}
 \usepackage{pgfplots}
 \pgfplotsset{compat=1.18}
+% EJPS/Springer Basic house style: author-date, "(Author Year)" with no comma.
+\usepackage[round]{natbib}
+\bibpunct{(}{)}{;}{a}{}{,}
 \usepackage[hidelinks]{hyperref}
 
 \theoremstyle{plain}
@@ -84,6 +87,10 @@ Section~\ref{sec:determinism} sets out the competing readings and adjudicates
 between none of them.
 \end{abstract}
 
+\noindent\textbf{Keywords}\quad Determinism $\cdot$ Indeterminism $\cdot$
+Ordinary differential equations $\cdot$ Non-uniqueness $\cdot$ Finite-time
+escape
+
 %------------------------------------------------------------------
 \section{Introduction}\label{sec:intro}
 
@@ -106,17 +113,16 @@ that identification; Section~\ref{sec:determinism} is where it does work, and
 says so.
 
 The mathematics is classical. For scalar autonomous equations the solution set
-through an equilibrium was characterised by Wallach \cite{Wallach} in 1948, and
+through an equilibrium was characterised by \citet{Wallach}, and
 the general theory --- the exact conditions for departure from an equilibrium,
 for escape to infinity in finite time, and for the structure of the solution set
---- is given by Binding \cite{Binding}. The conceptual point is also familiar.
+--- is given by \citet{Binding}. The conceptual point is also familiar.
 In general relativity the maximal globally hyperbolic development of initial
 data is unique while extensions past a Cauchy horizon are not, and whether to
 restrict attention to the well-behaved class is a live question rather than a
-settled one \cite{Earman, SmeenkWuthrich}. In Newtonian mechanics Wilson
-\cite{Wilson} argues that failures of global existence are descriptive gaps
+settled one \citep{Earman,SmeenkWuthrich}. In Newtonian mechanics \citet{Wilson} argues that failures of global existence are descriptive gaps
 rather than failures of determinism, in explicit opposition to Earman and
-Norton. Azhar and Namjoo \cite{AzharNamjoo} argue that a uniqueness-based
+Norton. \citet{AzharNamjoo} argue that a uniqueness-based
 criterion misses the sense in which a terminating history is itself a failure of
 determination.
 
@@ -457,8 +463,7 @@ $\Hglob(0)=\{x_{\infty}\}$ and $|\Hglob(0)|=1$.
 \end{proof}
 
 \begin{remark}[The counts do not depend on the solution concept]\label{rem:AC}
-Definition~\ref{def:solution} asks for a differentiable solution; Binding
-\cite{Binding} works instead with absolutely continuous $x$ satisfying
+Definition~\ref{def:solution} asks for a differentiable solution; \citet{Binding} works instead with absolutely continuous $x$ satisfying
 $\dot x=f(x)$ almost everywhere. The two give the same sets here. If $x$ is
 absolutely continuous with $\dot x=f(x)$ a.e., then
 $x(t)=x(0)+\int_{0}^{t}f(x(s))\,ds$, and $f\circ x$ is continuous, so $x$ is
@@ -639,7 +644,7 @@ once and then keep the prefix.
         the common interval of existence --- the qualification matters here,
         since the candidates have different domains. That solution is $x_{0}$,
         which departs immediately; the smallest in the same sense is
-        $x_{\infty}$. Hartman \cite[ch.~III \S2]{Hartman} uses the word in this
+        $x_{\infty}$. \citet[ch.~III \S2]{Hartman} uses the word in this
         sense.
 \end{itemize}
 
@@ -653,18 +658,17 @@ The results above rest on classical theory, and we claim no priority for any of
 them. The attributions below are specific rather than general, because a general
 gesture at ``the classical theory'' would leave a reader unable to check them.
 
-\textbf{Wallach \cite{Wallach}, 1948.} Characterised \emph{all} solutions of
-$\dot x=f\circ x$, $x(0)=0$ for continuous $f$. Binding reports this at
-\cite[p.~184]{Binding} --- ``Wallach characterized all solutions of (1.1)'' ---
+\textbf{\citet{Wallach}.} Characterised \emph{all} solutions of
+$\dot x=f\circ x$, $x(0)=0$ for continuous $f$. \citet[p.~184]{Binding} reports this --- ``Wallach characterized all solutions of (1.1)'' ---
 and credits the monotonicity lemma and the structure theorem to two sections of
 it, which he cites as Wallach's \S2 and \S7 respectively. \emph{We know this
 paper only through Binding and have not read it; the two section numbers are
 Binding's citations, reproduced here, and we have not checked them against
 Wallach.}
 
-\textbf{Binding \cite[\S3, pp.~186--188]{Binding}.} The machinery of
+\textbf{\citet[\S3, pp.~186--188]{Binding}.} The machinery of
 Theorem~\ref{thm:counts}. Lemma 3.2: every solution is monotonic, which Binding
-credits to Wallach \cite{Wallach} for continuous $f$ --- our Step 1.
+credits to \citet{Wallach} for continuous $f$ --- our Step 1.
 Theorem 3.3: the separation identity
 $\lambda([s,t]\setminus\dot x^{-1}(0))=\int_{x(s)}^{x(t)}1/f$ in
 measure-theoretic form, of which the computation in Step 6 is the elementary
@@ -672,11 +676,10 @@ case. Theorem 3.5: necessary conditions for local existence, reducing for
 continuous $f$ with $x>0$, in his words, to ``$f>0$ and $1/f$ integrable, as
 given by Wallach''.
 
-\textbf{Binding \cite[\S\S5--6, pp.~190--193]{Binding}.} Theorem 5.3 is the
-uniqueness criterion, in the Osgood \cite{Osgood} and Kamke line --- Binding
-names both on the same page --- and see Hartman \cite[ch.~III \S6]{Hartman},
-where Theorem 6.1 is Kamke's and Corollary 6.2 is Osgood's. Fjordholm
-\cite{Fjordholm}, whose own subject is Filippov uniqueness for discontinuous
+\textbf{\citet[\S\S5--6, pp.~190--193]{Binding}.} Theorem 5.3 is the
+uniqueness criterion, in the \citet{Osgood} and Kamke line --- Binding
+names both on the same page --- and see \citet[ch.~III \S6]{Hartman},
+where Theorem 6.1 is Kamke's and Corollary 6.2 is Osgood's. \citet{Fjordholm}, whose own subject is Filippov uniqueness for discontinuous
 fields, restates the continuous case as ``it was shown by Binding that the
 solution is unique if and only if $b$ satisfies the so-called Osgood condition
 at all zeroes of $b$''. Binding's case (6.5) corresponds to (H2) and (H3)
@@ -706,26 +709,25 @@ Yoshizawa.
 % has a bibliography entry here, in line with the treatment of the other authors
 % Binding credits.
 
-\textbf{Binding \cite[Lemma 7.5, p.~194]{Binding}.} The structure theorem: every
+\textbf{\citet[Lemma 7.5, p.~194]{Binding}.} The structure theorem: every
 solution is obtained from the extremal one by inserting constant segments at
 zeros of $f$. With $f^{-1}(0)=\{0\}$ that is precisely the waiting-time family
 of Proposition~\ref{prop:xT}. Binding notes that Wallach's proof for continuous
 $f$ carries over.
 
-\textbf{Hartman \cite[ch.~III \S5 Thm.~5.1, p.~30]{Hartman}.} A theorem of
+\textbf{\citet[ch.~III \S5 Thm.~5.1, p.~30]{Hartman}.} A theorem of
 Wintner: if $\int^{\infty}du/\psi=\infty$ and $|f|\le\psi$, solutions exist on
 the whole strip; finite-time escape requires the negation. Exercise 6.4 (p.~33),
 attributed in the chapter Notes to Wallach, states the departure criterion as an
 exact dichotomy. The exercise states that criterion and not the standard
 examples; Hartman's own instance of a wait-then-depart family is
-$\dot x=\sqrt{|x|}$, at \cite[ch.~I \S1, eq.~(1.5), p.~2]{Hartman}, whose
+$\dot x=\sqrt{|x|}$, at \citep[][ch.~I \S1, eq.~(1.5), p.~2]{Hartman}, whose
 continuum of solutions is the classical Peano phenomenon and is not due to any
 recent author. The general fact that non-uniqueness forces continuum-many
-solutions --- our Step 7, in far greater generality --- is Kneser's theorem,
-\cite[ch.~II \S4 Thm.~4.1]{Hartman}.
+solutions --- our Step 7, in far greater generality --- is Kneser's theorem
+\citep[][ch.~II \S4 Thm.~4.1]{Hartman}.
 
-\textbf{Drivas and Mailybaev \cite{DrivasMailybaev}} (preprint 2018; published
-2021). Cited here for continuation past a non-Lipschitz singularity and the
+\textbf{\citet{DrivasMailybaev}.} Cited here for continuation past a non-Lipschitz singularity and the
 regularisation that selects among the continuations --- the context their paper
 is actually about --- and not as the origin of the waiting-time family, which is
 classical. In passing they record it for $\dot x=x^{1/3}$: ``a continuum
@@ -733,7 +735,7 @@ infinity of solutions, which stay at the origin until an arbitrary time $t_{1}$
 and peal [sic] off.'' There the branches are global, so no gap between the two
 counts arises.
 
-\textbf{Berndl et al.\ \cite{Berndl}, 1995.} Use ``maximal (non-extendible)
+\textbf{\citet{Berndl}.} Use ``maximal (non-extendible)
 solution'' against ``global existence'' as basic vocabulary in a foundational
 setting, and list escape to infinity in finite time among the ways a solution
 may cease to exist.
@@ -746,7 +748,7 @@ issue --- so the zero solution and the bookkeeping of Steps 3 and 4 are not
 supplied by his Lemma 7.5 as printed. The self-contained proof above is written
 out because it is short and because of that gap, not because the result is
 new. The wider uniqueness and non-uniqueness literature is
-surveyed in Agarwal and Lakshmikantham \cite{AgarwalLakshmikantham}.
+surveyed in \citet{AgarwalLakshmikantham}.
 
 On the particular choice of $f$: we have not found a prior publication using
 $|x|^{2/3}+x^{2}$ to illustrate this point, though the search behind that remark
@@ -762,8 +764,8 @@ here.} We set them out with attributions and do not adjudicate between them.
 
 First, what is being tested. We do not propose a definition of determinism; we
 borrow one already in use, so that the readings below have something definite to
-disagree about. Doboszewski \cite[p.~2]{Doboszewski} adopts the criterion of
-Butterfield (1989) --- his DM2 --- under which a theory is deterministic for a
+disagree about. \citet[p.~2]{Doboszewski} adopts the criterion of
+\citet{Butterfield} --- his DM2 --- under which a theory is deterministic for a
 given kind of region when any two models agreeing on a region of that kind agree
 throughout, so that, in his gloss, ``to find a witness of indeterminism one
 needs merely to find two models that are isomorphic in region $S$ but are not
@@ -776,7 +778,7 @@ precisely the choice Theorem~\ref{thm:counts} makes visible. Other criteria are
 in circulation and give different verdicts on this example; we take no stand on
 which is correct, and the example is not evidence for any of them.
 
-M\"uller and Placek \cite{MullerPlacek} separate three families of definition ---
+\citet{MullerPlacek} separate three families of definition ---
 one reading determinism off a theory's defining differential equations, one off
 mappings between temporal realizations, one off branching models --- and the two
 readings below sit inside that survey rather than outside it. Their
@@ -786,7 +788,7 @@ classical theorems supply only local solutions, so that ``[n]on-extendability
 then points to a possible failure of determinism''; and their branching
 definition counts \emph{maximal chains} rather than total ones, which gives it
 Reading~2's shape rather than Reading~1's. They apply all three criteria to
-Norton's dome \cite{Norton}, where the wait-then-depart branches are global and
+Norton's dome \citep{Norton}, where the wait-then-depart branches are global and
 the gap counted in Theorem~\ref{thm:counts} therefore does not arise; we do not
 suggest that they consider the present equation, and nothing below is offered as
 a reading of their view. One further observation of theirs bears on the count
@@ -809,7 +811,7 @@ the interpretation can be prised apart.
 If a physical history must be defined at every time, the branches $x_{T}$ are
 not histories, the state $x=0$ has exactly one future, and the example says
 something about an initial-value problem and nothing about determinism. This is
-close to the position Wilson \cite[p.~182]{Wilson} defends for Newtonian
+close to the position \citet[p.~182]{Wilson} defends for Newtonian
 mechanics: failures of global existence are ``descriptive holes'', and ``it is
 as descriptive holes such issues should be addressed, \emph{not as failures of
 determinism}.'' He names Earman and Norton as holding the contrary view and
@@ -823,8 +825,8 @@ the same state has continuum-many futures, and requiring totality looks like a
 stipulation that secures determinism rather than a discovery that it holds. The
 structure of this objection is familiar from general relativity, where the
 maximal globally hyperbolic development of initial data is unique but, in
-Earman's phrase \cite[\S6.4]{Earman}, often ``not maximal simpliciter'', and the
-larger extensions are not unique. Smeenk and W\"uthrich \cite{SmeenkWuthrich}
+Earman's phrase \citep[][\S6.4]{Earman}, often ``not maximal simpliciter'', and the
+larger extensions are not unique. \citet{SmeenkWuthrich}
 organise their treatment around whether global hyperbolicity should be imposed
 by fiat, established from weaker assumptions, or justified from outside the
 theory --- the preprint's \S5 is titled ``Global Hyperbolicity by Fiat'' --- and note
@@ -835,7 +837,7 @@ which models count as models of the theory, whereas the restriction at issue
 here is on the temporal domain a solution must have.
 
 A closer analogue, though only an analogue, is Doboszewski's discussion
-\cite[p.~12]{Doboszewski} of spacetimes that simply stop --- Minkowski space
+\citep[][p.~12]{Doboszewski} of spacetimes that simply stop --- Minkowski space
 with a spacelike slice and its future removed --- for which he coins
 \emph{Doomsday indeterminism}, remarking that ``there is no physical reason for
 spacetime to come to an end abruptly in this way.'' The comparison should be
@@ -844,13 +846,13 @@ excising the future by hand, whereas here the finite endpoint is generated by
 the equation. That difference bears on his own desideratum, paraphrased from
 Earman and Norton, that ``determinism may fail, but (one hopes) if it fails, it
 should fail because of reasons of physics, not because of a clever mathematical
-trick'' \cite[p.~2]{Doboszewski}. We claim no priority over that discussion and
+trick'' \citep[][p.~2]{Doboszewski}. We claim no priority over that discussion and
 do not suggest the two constructions are of a kind.
 
 \subsection*{Reading 3: termination as its own failure}
 
 A third position holds that the uniqueness-based formulation is the wrong test
-in the first place. Azhar and Namjoo \cite{AzharNamjoo} propose that
+in the first place. \citet{AzharNamjoo} propose that
 indeterminism arises when future states are ``(i) not unique \dots; (ii) not
 specified; or (iii) `incoherent'\,'', and argue that a Laplacian criterion based
 on non-uniqueness alone ``does not comprehensively capture the relevant sense of
@@ -925,10 +927,9 @@ literature: it is Binding's case (6.5), recorded in
 Section~\ref{sec:classical}. What the example is useful for is narrower, and
 belongs to the philosophical discussion rather than to the mathematics. The
 standard illustrations there do not separate the two readings of
-``throughout''. On Norton's dome \cite{Norton} the wait-then-depart branches are
+``throughout''. On Norton's dome \citep{Norton} the wait-then-depart branches are
 defined at every later time, so the two classes coincide and Readings~1 and~2
-agree that the state has many futures; in the non-collision singularities of Xia
-\cite{Xia} the field is locally Lipschitz away from collisions, so finite-time
+agree that the state has many futures; in the non-collision singularities of \citet{Xia} the field is locally Lipschitz away from collisions, so finite-time
 escape is not accompanied by branching. Here $|\Hglob(0)|=1$ while
 $|\Hmax(0)|=\cont$, so the two readings return different verdicts at one state
 of one system, which is what makes the example serviceable as a diagnostic. The second is Proposition~\ref{prop:locality}, which says where
@@ -1010,11 +1011,11 @@ can, though not in the way one first tries.
 
 \subsection{Not by steepening a dome}
 
-Norton's construction \cite{Norton} places a particle on a frictionless surface
+Norton's construction \citep{Norton} places a particle on a frictionless surface
 of revolution, with $r$ the arc length along a meridian from the apex and $h(r)$
 the depth below it, giving $\ddot r=g\,h'(r)$. The construction has been
-discussed at length by Malament \cite{Malament} and Fletcher \cite{Fletcher};
-see also Bhat and Bernstein \cite{BhatBernstein}.
+discussed at length by \citet{Malament} and \citet{Fletcher};
+see also \citet{BhatBernstein}.
 % No relation between Norton's dome and the Bhat--Bernstein examples is asserted:
 % the citation is a bare "see also". An earlier draft claimed antecedence; that
 % claim was not checked against their article and has been removed.
@@ -1024,7 +1025,7 @@ $\ddot r=\sqrt r+r^{2}$, but it cannot be realised.
 
 What blocks it is a constraint already present in Norton's own presentation.
 Writing the tangential force as $g\sin\theta$ with $\sin\theta=dh/dr$
-\cite{Norton} makes $|h'|\le1$ mandatory, since a sine is at most $1$; the same
+\citep{Norton} makes $|h'|\le1$ mandatory, since a sine is at most $1$; the same
 bound is what an arc-length parametrisation forces, and it is why a dome of this
 kind extends only to a finite radius. \emph{Neither the bound nor
 Proposition~\ref{prop:dome} below is claimed as new.} The proposition is stated
@@ -1167,130 +1168,117 @@ So the counts of Theorem~\ref{thm:counts} hold for the Newtonian problem
 of Section~\ref{sec:example}. The reduced right-hand side $G$ is not
 $|x|^{2/3}+x^{2}$, and accordingly $T_{*}^{\mathrm{mech}}\ne T_{*}$. Two
 caveats. The potential is unbounded below; finite-time escape in Newtonian
-systems, and the responses available to it, are discussed by Earman
-\cite{Earman}.
+systems, and the responses available to it, are discussed by \citet{Earman}.
 % TODO: add a page or section reference for Earman here. The earlier wording
 % attributed to that chapter a specific objection to unbounded-below potentials;
 % that attribution was not located in the chapter and has been weakened.
 And $V$ is $C^{1}$ but not $C^{2}$ at the origin, the force being continuous and
 not locally Lipschitz there. Whether such a force law counts as a legitimate Newtonian system is the
-question the dome literature asks about $\sqrt r$ \cite{Fletcher, Norton}; we
+question the dome literature asks about $\sqrt r$ \citep{Fletcher,Norton}; we
 take no position.
 
 %------------------------------------------------------------------
-\begin{thebibliography}{99}
+\begin{thebibliography}{}
 
-\bibitem{AgarwalLakshmikantham}
-R.~P. Agarwal and V.~Lakshmikantham,
-\emph{Uniqueness and Nonuniqueness Criteria for Ordinary Differential
-Equations}, Series in Real Analysis 6, World Scientific, 1993.
+\bibitem[Agarwal and Lakshmikantham(1993)]{AgarwalLakshmikantham}
+Agarwal, R.P., \& Lakshmikantham, V. (1993). \emph{Uniqueness and nonuniqueness
+criteria for ordinary differential equations}. Series in Real Analysis 6.
+Singapore: World Scientific.
 
-\bibitem{AzharNamjoo}
-F.~Azhar and M.~H. Namjoo,
-Spacetime singularities and a novel formulation of indeterminism,
-arXiv:2101.10887, 2021.
+\bibitem[Azhar and Namjoo(2021)]{AzharNamjoo}
+Azhar, F., \& Namjoo, M.H. (2021). Spacetime singularities and a novel
+formulation of indeterminism. arXiv:2101.10887.
 
-\bibitem{BhatBernstein}
-S.~P. Bhat and D.~S. Bernstein,
-Example of indeterminacy in classical dynamics,
-\emph{Internat. J. Theoret. Phys.} \textbf{36} (1997) 545--550.
+\bibitem[Berndl et al.(1995)]{Berndl}
+Berndl, K., D\"urr, D., Goldstein, S., Peruzzi, G., Zangh\`i, N. (1995). On the
+global existence of Bohmian mechanics. \emph{Communications in Mathematical
+Physics}, 173, 647--673.
+
+\bibitem[Bhat and Bernstein(1997)]{BhatBernstein}
+Bhat, S.P., \& Bernstein, D.S. (1997). Example of indeterminacy in classical
+dynamics. \emph{International Journal of Theoretical Physics}, 36, 545--550.
 % TODO: author must confirm the bibliographic details against the printed
 % article before submission. Cited as a bare "see also"; no claim is made about
 % the relation of these examples to Norton's dome. The article has not been read.
 
-\bibitem{Berndl}
-K.~Berndl, D.~D\"urr, S.~Goldstein, G.~Peruzzi and N.~Zangh\`i,
-On the global existence of Bohmian mechanics,
-\emph{Comm. Math. Phys.} \textbf{173} (1995) 647--673.
+\bibitem[Binding(1979)]{Binding}
+Binding, P. (1979). The differential equation $\dot x=f\circ x$. \emph{Journal
+of Differential Equations}, 31, 183--199.
 
-\bibitem{Binding}
-P.~Binding,
-The differential equation $\dot x=f\circ x$,
-\emph{J. Differential Equations} \textbf{31} (1979) 183--199.
+\bibitem[Butterfield(1989)]{Butterfield}
+Butterfield, J. (1989). The hole truth. \emph{British Journal for the Philosophy
+of Science}, 40(1), 1--28.
 
-\bibitem{Doboszewski}
-J.~Doboszewski,
-Epistemic holes and determinism in classical general relativity,
-\emph{British J. Philos. Sci.} \textbf{71} (2020) 1093--1111.
-Page references in the text are to the preprint, whose pagination differs from
-the journal's.
+\bibitem[Doboszewski(2020)]{Doboszewski}
+Doboszewski, J. (2020). Epistemic holes and determinism in classical general
+relativity. \emph{British Journal for the Philosophy of Science}, 71,
+1093--1111. Page references in the text are to the preprint, whose pagination
+differs from the journal's.
 
-\bibitem{DrivasMailybaev}
-T.~D. Drivas and A.~A. Mailybaev,
-``Life after death'' in ordinary differential equations with a non-Lipschitz
-singularity,
-\emph{Nonlinearity} \textbf{34} (2021) 2296--2326;
-preprint arXiv:1806.09001 (2018).
+\bibitem[Drivas and Mailybaev(2021)]{DrivasMailybaev}
+Drivas, T.D., \& Mailybaev, A.A. (2021). ``Life after death'' in ordinary
+differential equations with a non-Lipschitz singularity. \emph{Nonlinearity},
+34, 2296--2326. Preprint arXiv:1806.09001 (2018).
 
-\bibitem{Earman}
-J.~Earman,
-Aspects of determinism in modern physics,
-in J.~Butterfield and J.~Earman (eds.),
-\emph{Handbook of the Philosophy of Science: Philosophy of Physics},
-North-Holland, 2007, pp.~1369--1434.
+\bibitem[Earman(2007)]{Earman}
+Earman, J. (2007). Aspects of determinism in modern physics. In Butterfield, J.,
+\& Earman, J. (Eds.) \emph{Handbook of the philosophy of science: Philosophy of
+physics} (pp. 1369--1434). Amsterdam: North-Holland.
+% TODO: add a page or section reference for the unbounded-below potential
+% discussion. The earlier wording attributed to that chapter a specific
+% objection; that attribution was not located in the chapter and has been
+% weakened.
 
-\bibitem{Fjordholm}
-U.~S. Fjordholm,
-Sharp uniqueness conditions for one-dimensional, autonomous ordinary
-differential equations, arXiv:1804.08377, 2018.
+\bibitem[Fjordholm(2018)]{Fjordholm}
+Fjordholm, U.S. (2018). Sharp uniqueness conditions for one-dimensional,
+autonomous ordinary differential equations. arXiv:1804.08377.
 
-\bibitem{Fletcher}
-S.~C. Fletcher,
-What counts as a Newtonian system? The view from Norton's dome,
-\emph{European J. Philos. Sci.} \textbf{2} (2012) 275--297.
+\bibitem[Fletcher(2012)]{Fletcher}
+Fletcher, S.C. (2012). What counts as a Newtonian system? The view from Norton's
+dome. \emph{European Journal for Philosophy of Science}, 2, 275--297.
 
-\bibitem{Hartman}
-P.~Hartman,
-\emph{Ordinary Differential Equations}, Wiley, 1964.
+\bibitem[Hartman(1964)]{Hartman}
+Hartman, P. (1964). \emph{Ordinary differential equations}. New York: Wiley.
 
-\bibitem{Malament}
-D.~B. Malament,
-Norton's slippery slope,
-\emph{Philos. Sci.} \textbf{75} (2008) 799--816.
+\bibitem[Malament(2008)]{Malament}
+Malament, D.B. (2008). Norton's slippery slope. \emph{Philosophy of Science},
+75, 799--816.
 % TODO: author must confirm the bibliographic details against the printed
 % article before submission. Cited here as a discussion of the dome only; the
 % article has not been read.
 
-\bibitem{MullerPlacek}
-T.~M\"uller and T.~Placek,
-Defining determinism,
-\emph{British J. Philos. Sci.} \textbf{69} (2018) 215--252.
-Section and footnote references in the text are to the preprint
-(PhilSci-Archive 11437, 27 April 2015), whose numbering may differ from the
-journal's.
+\bibitem[M\"uller and Placek(2018)]{MullerPlacek}
+M\"uller, T., \& Placek, T. (2018). Defining determinism. \emph{British Journal
+for the Philosophy of Science}, 69, 215--252. Section and footnote references in
+the text are to the preprint (PhilSci-Archive 11437, 27 April 2015), whose
+numbering may differ from the journal's.
 
-\bibitem{Norton}
-J.~D. Norton,
-The dome: an unexpectedly simple failure of determinism,
-\emph{Philos. Sci.} \textbf{75} (2008) 786--798.
+\bibitem[Norton(2008)]{Norton}
+Norton, J.D. (2008). The dome: An unexpectedly simple failure of determinism.
+\emph{Philosophy of Science}, 75, 786--798.
 
-\bibitem{Osgood}
-W.~F. Osgood,
-Beweis der Existenz einer L\"osung der Differentialgleichung $dy/dx=f(x,y)$ ohne
-Hinzunahme der Cauchy--Lipschitz'schen Bedingung,
-\emph{Monatsh. Math. Phys.} \textbf{9} (1898) 331--345.
+\bibitem[Osgood(1898)]{Osgood}
+Osgood, W.F. (1898). Beweis der Existenz einer L\"osung der
+Differentialgleichung $dy/dx=f(x,y)$ ohne Hinzunahme der
+Cauchy--Lipschitz'schen Bedingung. \emph{Monatshefte f\"ur Mathematik und
+Physik}, 9, 331--345.
 
-\bibitem{SmeenkWuthrich}
-C.~Smeenk and C.~W\"uthrich,
-Determinism and general relativity,
-\emph{Philos. Sci.} \textbf{88} (2021) 638--664;
-preprint arXiv:2009.07555 (2020).
+\bibitem[Smeenk and W\"uthrich(2021)]{SmeenkWuthrich}
+Smeenk, C., \& W\"uthrich, C. (2021). Determinism and general relativity.
+\emph{Philosophy of Science}, 88, 638--664. Preprint arXiv:2009.07555 (2020).
 The section reference in the text is to the preprint.
 
-\bibitem{Wallach}
-S.~Wallach,
-The differential equation $y'=f(y)$,
-\emph{Amer. J. Math.} \textbf{70} (1948) 345--350.
+\bibitem[Wallach(1948)]{Wallach}
+Wallach, S. (1948). The differential equation $y'=f(y)$. \emph{American Journal
+of Mathematics}, 70, 345--350.
 
-\bibitem{Wilson}
-M.~Wilson,
-Determinism and the mystery of the missing physics,
-\emph{British J. Philos. Sci.} \textbf{60} (2009) 173--193.
+\bibitem[Wilson(2009)]{Wilson}
+Wilson, M. (2009). Determinism and the mystery of the missing physics.
+\emph{British Journal for the Philosophy of Science}, 60, 173--193.
 
-\bibitem{Xia}
-Z.~Xia,
-The existence of noncollision singularities in Newtonian systems,
-\emph{Ann. of Math.} \textbf{135} (1992) 411--468.
+\bibitem[Xia(1992)]{Xia}
+Xia, Z. (1992). The existence of noncollision singularities in Newtonian
+systems. \emph{Annals of Mathematics}, 135, 411--468.
 
 \end{thebibliography}
 
