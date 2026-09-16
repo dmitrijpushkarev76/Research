@@ -317,6 +317,10 @@ from.
       {display cut-off $x=6$};
 \draw[black, line width=1.3pt] (axis cs:0.35,4.9) -- (axis cs:0.95,4.9);
 \node[anchor=west, font=\footnotesize] at (axis cs:1.05,4.9) {$x_{\infty}\equiv 0$};
+\node[anchor=east, font=\footnotesize] at (axis cs:3.085,4.2) {$T=0$};
+\node[anchor=east, font=\footnotesize] at (axis cs:4.685,4.2) {$T=1.6$};
+\node[anchor=east, font=\footnotesize] at (axis cs:6.285,4.2) {$T=3.2$};
+\node[anchor=east, font=\footnotesize] at (axis cs:7.885,4.2) {$T=4.8$};
 \end{axis}
 \end{tikzpicture}
 \caption{Four members of the family, departing at $T=0,\,1.6,\,3.2,\,4.8$. Each
@@ -909,6 +913,21 @@ altogether, so the proposition does not reach it; the cost there is that
 whatever settles the verdict must be supplied from outside that formulation. We
 adjudicate between none of the three readings.
 
+What the example is for, then, is not adjudication. It is that the two readings
+return different verdicts here at all. The standard illustrations do not
+separate them. On Norton's dome \citep{Norton} the wait-then-depart branches are
+defined at every later time, so $\Hglob$ and $\Hmax$ coincide there and
+Readings~1 and~2 agree that the state has many futures; the disagreement that
+example generates is about whether those branches are legitimate, not about
+which class to count. In the non-collision singularities of \citet{Xia} there is
+finite-time escape but the field is locally Lipschitz away from collisions, so
+nothing branches and the question does not arise. Here $|\Hglob(0)|=1$ while
+$|\Hmax(0)|=\cont$, so a criterion quantifying over the one class and a criterion
+quantifying over the other disagree about one state of one system, with every
+quantity exact. That is what the example supplies to a debate it does not
+settle: a place where the choice of class is doing all of the work, and can be
+seen doing it.
+
 %------------------------------------------------------------------
 \section{What this note contributes}\label{sec:contribution}
 
@@ -921,14 +940,10 @@ general relativity, $N$-body mechanics or partial differential equations. That
 the two failure modes occur together is not unusual in the differential-equations
 literature: it is Binding's case (6.5), recorded in
 Section~\ref{sec:classical}. What the example is useful for is narrower, and
-belongs to the philosophical discussion rather than to the mathematics. The
-standard illustrations there do not separate the two readings of
-``throughout''. On Norton's dome \citep{Norton} the wait-then-depart branches are
-defined at every later time, so the two classes coincide and Readings~1 and~2
-agree that the state has many futures; in the non-collision singularities of \citet{Xia} the field is locally Lipschitz away from collisions, so finite-time
-escape is not accompanied by branching. Here $|\Hglob(0)|=1$ while
-$|\Hmax(0)|=\cont$, so the two readings return different verdicts at one state
-of one system, which is what makes the example serviceable as a diagnostic. The second is Proposition~\ref{prop:locality}, which says where
+belongs to the philosophical discussion rather than to the mathematics: it is a
+state at which criteria quantifying over the two classes return different
+verdicts, which the standard illustrations do not supply.
+Section~\ref{sec:determinism} sets that out. The second is Proposition~\ref{prop:locality}, which says where
 each of the two verdicts is determined: under (H1), the count of forward-maximal
 histories is fixed by $f$ in any neighbourhood of the initial state, while the global count
 is not fixed by $f$ on any bounded set. The ingredients of that proposition are
@@ -1010,8 +1025,10 @@ can, though not in the way one first tries.
 Norton's construction \citep{Norton} places a particle on a frictionless surface
 of revolution, with $r$ the arc length along a meridian from the apex and $h(r)$
 the depth below it, giving $\ddot r=g\,h'(r)$. The construction has been
-discussed at length by \citet{Malament} and \citet{Fletcher};
-see also \citet{BhatBernstein}.
+discussed at length by \citet{Malament} and \citet{Fletcher}, and more
+recently by \citet{Berry}, who sets it beside an exactly solvable quantum
+counterpart showing no trace of the phenomenon; see also
+\citet{BhatBernstein}.
 % No relation between Norton's dome and the Bhat--Bernstein examples is asserted:
 % the citation is a bare "see also". An earlier draft claimed antecedence; that
 % claim was not checked against their article and has been removed.
@@ -1189,6 +1206,10 @@ formulation of indeterminism. arXiv:2101.10887.
 Berndl, K., D\"urr, D., Goldstein, S., Peruzzi, G., Zangh\`i, N. (1995). On the
 global existence of Bohmian mechanics. \emph{Communications in Mathematical
 Physics}, 173, 647--673.
+
+\bibitem[Berry(2025)]{Berry}
+Berry, M.V. (2025). Newtonian and quantum (in)determinism: Norton's dome and
+cosmic chaos. \emph{European Journal of Physics}, 46(4), 045002.
 
 \bibitem[Bhat and Bernstein(1997)]{BhatBernstein}
 Bhat, S.P., \& Bernstein, D.S. (1997). Example of indeterminacy in classical
