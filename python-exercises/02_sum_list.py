@@ -5,4 +5,6 @@ def sum_list(numbers):
     return total
 
 
-print(sum_list([8, 2, 3, 0, 7]))
+numbers = [int(x) for x in input("Enter numbers separated by spaces: ").split()]
+
+print("Sum:", sum_list(numbers))

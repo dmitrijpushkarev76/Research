@@ -15,7 +15,7 @@ Basic Python practice problems.
 11. `11_perfect_number.py` - check whether a number is perfect
 12. `12_palindrome.py` - check whether a string is a palindrome
 
-Run any of them with:
+Each script asks for its input when you run it:
 
 ```
 python3 01_max_of_three.py

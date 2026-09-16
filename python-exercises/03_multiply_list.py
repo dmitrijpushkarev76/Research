@@ -5,4 +5,6 @@ def multiply_list(numbers):
     return result
 
 
-print(multiply_list([8, 2, 3, -1, 7]))
+numbers = [int(x) for x in input("Enter numbers separated by spaces: ").split()]
+
+print("Product:", multiply_list(numbers))

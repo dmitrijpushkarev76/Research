@@ -4,4 +4,9 @@ def factorial(n):
     return n * factorial(n - 1)
 
 
-print(factorial(5))
+n = int(input("Enter a non-negative integer: "))
+
+if n < 0:
+    print("The number must be non-negative")
+else:
+    print("Factorial:", factorial(n))

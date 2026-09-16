@@ -7,5 +7,9 @@ def is_prime(n):
     return True
 
 
-print(is_prime(7))
-print(is_prime(9))
+n = int(input("Enter a number: "))
+
+if is_prime(n):
+    print(n, "is a prime number")
+else:
+    print(n, "is not a prime number")

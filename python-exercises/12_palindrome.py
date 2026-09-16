@@ -3,6 +3,9 @@ def is_palindrome(text):
     return text == text[::-1]
 
 
-print(is_palindrome("madam"))
-print(is_palindrome("nurses run"))
-print(is_palindrome("python"))
+text = input("Enter a string: ")
+
+if is_palindrome(text):
+    print("Palindrome")
+else:
+    print("Not a palindrome")

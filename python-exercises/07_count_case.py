@@ -9,6 +9,8 @@ def count_case(text):
     return upper, lower
 
 
-upper, lower = count_case("The quick Brow Fox")
+text = input("Enter a string: ")
+upper, lower = count_case(text)
+
 print("No. of Upper case characters :", upper)
 print("No. of Lower case Characters :", lower)

@@ -1,4 +1,4 @@
-numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+numbers = [int(x) for x in input("Enter numbers separated by spaces: ").split()]
 even = []
 
 for n in numbers:

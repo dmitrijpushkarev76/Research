@@ -4,5 +4,11 @@ def in_range(number, start, end):
     return False
 
 
-print(in_range(5, 1, 10))
-print(in_range(15, 1, 10))
+number = int(input("Enter a number: "))
+start = int(input("Enter the start of the range: "))
+end = int(input("Enter the end of the range: "))
+
+if in_range(number, start, end):
+    print(number, "is in the range")
+else:
+    print(number, "is outside the range")

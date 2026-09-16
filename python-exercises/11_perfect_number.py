@@ -8,6 +8,9 @@ def is_perfect(n):
     return total == n
 
 
-print(is_perfect(6))
-print(is_perfect(28))
-print(is_perfect(12))
+n = int(input("Enter a number: "))
+
+if is_perfect(n):
+    print(n, "is a perfect number")
+else:
+    print(n, "is not a perfect number")

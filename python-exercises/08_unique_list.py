@@ -6,4 +6,6 @@ def unique_list(items):
     return result
 
 
-print(unique_list([1, 2, 3, 3, 3, 3, 4, 5]))
+items = [int(x) for x in input("Enter numbers separated by spaces: ").split()]
+
+print("Unique list:", unique_list(items))

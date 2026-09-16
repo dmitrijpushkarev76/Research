@@ -2,4 +2,6 @@ def reverse_string(text):
     return text[::-1]
 
 
-print(reverse_string("1234abcd"))
+text = input("Enter a string: ")
+
+print("Reversed:", reverse_string(text))
